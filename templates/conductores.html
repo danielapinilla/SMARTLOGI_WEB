@@ -1,0 +1,581 @@
+{% extends "base.html" %}
+
+{% block title %}Conductores - SMARTLOGI{% endblock %}
+
+{% block content %}
+
+<style>
+    .info-conductores {
+        margin-top: 15px;
+        margin-bottom: 10px;
+        color: #555;
+        font-size: 14px;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        padding: 10px 0;
+    }
+
+    .pagination a,
+    .pagination span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 38px;
+        height: 36px;
+        padding: 0 10px;
+        border-radius: 7px;
+        text-decoration: none;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    .pagination a {
+        background: #063b2e;
+        color: white;
+    }
+
+    .pagination a:hover {
+        background: #085844;
+    }
+
+    .pagination .pagina-actual {
+        background: #e5eee9;
+        color: #063b2e;
+        font-weight: bold;
+    }
+
+    .pagination .puntos {
+        background: transparent;
+        color: #777;
+    }
+
+    .card-filtro {
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .card-filtro:hover {
+        transform: translateY(-2px);
+    }
+
+    .card-filtro.activa {
+        border: 2px solid #063b2e;
+    }
+
+    #tablaConductores {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    #tablaConductores th,
+    #tablaConductores td {
+        padding: 10px 8px;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #tablaConductores th {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    #tablaConductores th:nth-child(1) {
+        width: 14%;
+    }
+
+    #tablaConductores th:nth-child(2) {
+        width: 25%;
+    }
+
+    #tablaConductores th:nth-child(3) {
+        width: 18%;
+    }
+
+    #tablaConductores th:nth-child(4) {
+        width: 17%;
+    }
+
+    #tablaConductores th:nth-child(5) {
+        width: 13%;
+    }
+
+    #tablaConductores th:nth-child(6) {
+        width: 13%;
+    }
+
+    .orden {
+        font-size: 12px;
+        margin-left: 4px;
+    }
+</style>
+
+
+<h1>👨‍✈️ Conductores</h1>
+
+
+<!-- =========================
+     TARJETAS
+     ========================= -->
+
+<div class="cards">
+
+    <div class="card card-filtro activa" data-estado="">
+        <h3>👨‍✈️ Total conductores</h3>
+        <p>{{ total_registros|miles }}</p>
+    </div>
+
+    <div class="card card-filtro" data-estado="Activo">
+        <h3>🟢 Activos</h3>
+        <p>{{ estados_conductores.get("Activo", 0)|miles }}</p>
+    </div>
+
+    <div class="card card-filtro" data-estado="Inactivo">
+        <h3>🔴 Inactivos</h3>
+        <p>{{ estados_conductores.get("Inactivo", 0)|miles }}</p>
+    </div>
+
+    <div class="card card-filtro" data-estado="Licencia médica">
+        <h3>🩺 Licencia médica</h3>
+        <p>{{ estados_conductores.get("Licencia médica", 0)|miles }}</p>
+    </div>
+
+    <div class="card card-filtro" data-estado="Vacaciones">
+        <h3>🌴 Vacaciones</h3>
+        <p>{{ estados_conductores.get("Vacaciones", 0)|miles }}</p>
+    </div>
+
+</div>
+
+
+<!-- =========================
+     BUSCADOR
+     ========================= -->
+
+<input
+    type="text"
+    id="buscadorConductores"
+    class="buscador"
+    placeholder="🔎 Buscar por ID, nombre, licencia o estado..."
+>
+
+
+<!-- =========================
+     INFORMACIÓN
+     ========================= -->
+
+<div class="info-conductores">
+    Mostrando
+    <strong>{{ ((pagina - 1) * 50) + 1 }}</strong>
+    –
+    <strong>{{ ((pagina - 1) * 50) + conductores|length }}</strong>
+    de
+    <strong>{{ total_registros }}</strong>
+    conductores
+</div>
+
+
+<!-- =========================
+     TABLA
+     ========================= -->
+
+<div style="overflow-x: auto;">
+
+    <table id="tablaConductores">
+
+        <thead>
+            <tr>
+
+                <th data-columna="0">
+                    ID Conductor <span class="orden">↕</span>
+                </th>
+
+                <th data-columna="1">
+                    Nombre <span class="orden">↕</span>
+                </th>
+
+                <th data-columna="2">
+                    Fecha ingreso <span class="orden">↕</span>
+                </th>
+
+                <th data-columna="3">
+                    Experiencia (años) <span class="orden">↕</span>
+                </th>
+
+                <th data-columna="4">
+                    Licencia <span class="orden">↕</span>
+                </th>
+
+                <th data-columna="5">
+                    Estado <span class="orden">↕</span>
+                </th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for conductor in conductores %}
+
+            <tr>
+
+                <td>{{ conductor.conductor_id }}</td>
+
+                <td>{{ conductor.nombre_conductor }}</td>
+
+                <td>{{ conductor.fecha_ingreso }}</td>
+
+                <td>{{ conductor.experiencia_anios }}</td>
+
+                <td>{{ conductor.tipo_licencia }}</td>
+
+                <td>{{ conductor.estado }}</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<!-- =========================
+     PAGINACIÓN
+     ========================= -->
+
+<div class="pagination">
+
+    {% if pagina > 1 %}
+
+        <a href="{{ url_for('conductores', pagina=pagina-1) }}">
+            ←
+        </a>
+
+    {% endif %}
+
+
+    {% if pagina > 3 %}
+
+        <a href="{{ url_for('conductores', pagina=1) }}">
+            1
+        </a>
+
+        <span class="puntos">...</span>
+
+    {% endif %}
+
+
+    {% for numero in range(
+        [1, pagina-2]|max,
+        [total_paginas+1, pagina+3]|min
+    ) %}
+
+        {% if numero == pagina %}
+
+            <span class="pagina-actual">
+                {{ numero }}
+            </span>
+
+        {% else %}
+
+            <a href="{{ url_for('conductores', pagina=numero) }}">
+                {{ numero }}
+            </a>
+
+        {% endif %}
+
+    {% endfor %}
+
+
+    {% if pagina < total_paginas - 2 %}
+
+        <span class="puntos">...</span>
+
+        <a href="{{ url_for('conductores', pagina=total_paginas) }}">
+            {{ total_paginas }}
+        </a>
+
+    {% endif %}
+
+
+    {% if pagina < total_paginas %}
+
+        <a href="{{ url_for('conductores', pagina=pagina+1) }}">
+            →
+        </a>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+     ========================= -->
+
+<script>
+
+const buscador = document.getElementById("buscadorConductores");
+
+const filas = document.querySelectorAll(
+    "#tablaConductores tbody tr"
+);
+
+const tarjetas = document.querySelectorAll(
+    ".card-filtro"
+);
+
+let estadoSeleccionado = "";
+
+
+/* =========================
+   FILTRO + BUSCADOR
+   ========================= */
+
+function actualizarTabla() {
+
+    const texto = buscador.value.toLowerCase().trim();
+
+    filas.forEach(function(fila) {
+
+        const contenido =
+            fila.textContent.toLowerCase();
+
+        const estado =
+            fila.cells[5].textContent.trim();
+
+        const coincideTexto =
+            contenido.includes(texto);
+
+        const coincideEstado =
+            estadoSeleccionado === "" ||
+            estado === estadoSeleccionado;
+
+        if (coincideTexto && coincideEstado) {
+
+            fila.style.display = "";
+
+        } else {
+
+            fila.style.display = "none";
+
+        }
+
+    });
+}
+
+
+/* =========================
+   BUSCADOR
+   ========================= */
+
+buscador.addEventListener("input", function() {
+
+    actualizarTabla();
+
+});
+
+
+/* =========================
+   FILTRO POR TARJETAS
+   ========================= */
+
+tarjetas.forEach(function(tarjeta) {
+
+    tarjeta.addEventListener("click", function() {
+
+        tarjetas.forEach(function(t) {
+
+            t.classList.remove("activa");
+
+        });
+
+        this.classList.add("activa");
+
+        estadoSeleccionado =
+            this.dataset.estado;
+
+        actualizarTabla();
+
+    });
+
+});
+
+
+/* =========================
+   ORDENAMIENTO
+   ========================= */
+
+const encabezados = document.querySelectorAll(
+    "#tablaConductores th"
+);
+
+encabezados.forEach(function(encabezado) {
+
+    encabezado.addEventListener("click", function() {
+
+        const columna =
+            parseInt(this.dataset.columna);
+
+        const tabla =
+            document.getElementById("tablaConductores");
+
+        const tbody =
+            tabla.querySelector("tbody");
+
+        const filasArray =
+            Array.from(
+                tbody.querySelectorAll("tr")
+            );
+
+        const ordenActual =
+            this.dataset.orden === "asc"
+                ? "desc"
+                : "asc";
+
+
+        encabezados.forEach(function(th) {
+
+            th.dataset.orden = "";
+
+            const indicador =
+                th.querySelector(".orden");
+
+            if (indicador) {
+                indicador.textContent = "↕";
+            }
+
+        });
+
+
+        this.dataset.orden =
+            ordenActual;
+
+
+        const indicador =
+            this.querySelector(".orden");
+
+        if (indicador) {
+
+            indicador.textContent =
+                ordenActual === "asc"
+                    ? "↑"
+                    : "↓";
+
+        }
+
+
+        filasArray.sort(function(a, b) {
+
+            let valorA =
+                a.cells[columna]
+                .textContent
+                .trim();
+
+            let valorB =
+                b.cells[columna]
+                .textContent
+                .trim();
+
+
+            /* ID y experiencia */
+            if (
+                columna === 0 ||
+                columna === 3
+            ) {
+
+                valorA =
+                    parseFloat(
+                        valorA.replace(",", ".")
+                    ) || 0;
+
+                valorB =
+                    parseFloat(
+                        valorB.replace(",", ".")
+                    ) || 0;
+
+                return ordenActual === "asc"
+                    ? valorA - valorB
+                    : valorB - valorA;
+            }
+
+
+            /* Fecha */
+            if (columna === 2) {
+
+                const partesA =
+                    valorA.split("/");
+
+                const partesB =
+                    valorB.split("/");
+
+                const fechaA =
+                    new Date(
+                        partesA[2],
+                        partesA[1] - 1,
+                        partesA[0]
+                    );
+
+                const fechaB =
+                    new Date(
+                        partesB[2],
+                        partesB[1] - 1,
+                        partesB[0]
+                    );
+
+                return ordenActual === "asc"
+                    ? fechaA - fechaB
+                    : fechaB - fechaA;
+            }
+
+
+            /* Texto */
+            valorA =
+                valorA.toLowerCase();
+
+            valorB =
+                valorB.toLowerCase();
+
+
+            if (valorA < valorB) {
+                return ordenActual === "asc"
+                    ? -1
+                    : 1;
+            }
+
+            if (valorA > valorB) {
+                return ordenActual === "asc"
+                    ? 1
+                    : -1;
+            }
+
+            return 0;
+
+        });
+
+
+        filasArray.forEach(function(fila) {
+
+            tbody.appendChild(fila);
+
+        });
+
+    });
+
+});
+
+</script>
+
+
+{% endblock %}

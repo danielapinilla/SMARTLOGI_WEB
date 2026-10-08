@@ -1,0 +1,51 @@
+﻿conductor_id,nombre_conductor,fecha_ingreso,experiencia_anios,tipo_licencia,estado
+20001,Carlos Muñoz,15/03/2022,8,Clase A4,Activo
+20002,Daniela Pérez,10/08/2023,5,Clase B,Activo
+20003,Javier Soto,21/01/2021,10,Clase A5,Activo
+20004,Camila Morales,05/06/2024,4,Clase B,Vacaciones
+20005,Andrés Rojas,18/11/2022,7,Clase A4,Activo
+20006,Felipe González,02/02/2025,3,Clase B,Licencia médica
+20007,Antonia Lagos,22/10/2025,1,Clase B,Activo
+20008,Marcela Valdés,31/10/2025,1,Clase B,Activo
+20009,Verónica Ramírez,30/10/2024,2,Clase B,Vacaciones
+20010,Natalia Sánchez,06/03/2022,4,Clase A5,Inactivo
+20011,Sebastián Núñez,02/06/2022,4,Clase B,Activo
+20012,Catalina Fernández,20/03/2022,4,Clase B,Activo
+20013,Fernanda Reyes,25/07/2023,3,Clase B,Inactivo
+20014,Martín Sepúlveda,07/09/2023,3,Clase A4,Vacaciones
+20015,Francisco Morales,18/09/2018,8,Clase B,Vacaciones
+20016,Bárbara Garrido,09/09/2018,8,Clase B,Activo
+20017,José Contreras,10/11/2023,3,Clase A5,Activo
+20018,Valentina Torres,15/04/2025,1,Clase A5,Activo
+20019,Catalina Silva,17/02/2023,3,Clase A5,Licencia médica
+20020,Lucía Martínez,07/12/2023,3,Clase A5,Licencia médica
+20021,Patricio García,02/06/2019,7,Clase B,Inactivo
+20022,Leonardo Castillo,19/08/2024,2,Clase A4,Activo
+20023,Francisco Vargas,11/10/2024,2,Clase B,Vacaciones
+20024,Cristóbal Leiva,21/07/2023,3,Clase A5,Activo
+20025,Natalia Campos,22/04/2023,3,Clase A4,Vacaciones
+20026,Carolina Mendoza,05/06/2019,7,Clase A5,Activo
+20027,Elena Sánchez,13/06/2021,5,Clase B,Licencia médica
+20028,Rodrigo Núñez,20/12/2022,4,Clase A5,Activo
+20029,Elena Araya,10/03/2019,7,Clase B,Activo
+20030,Andrea Martínez,01/05/2019,7,Clase A5,Vacaciones
+20031,Raúl Hernández,17/06/2026,1,Clase A5,Activo
+20032,Lucía Morales,23/12/2018,8,Clase A5,Activo
+20033,Carolina González,16/07/2025,1,Clase A4,Activo
+20034,Sergio Muñoz,02/12/2020,6,Clase A5,Vacaciones
+20035,Mauricio López,18/06/2022,4,Clase A4,Activo
+20036,Francisco Romero,30/12/2019,7,Clase B,Licencia médica
+20037,Bárbara Valdés,14/08/2020,6,Clase A4,Activo
+20038,Manuel Gómez,05/06/2020,6,Clase A4,Inactivo
+20039,Martín Guerrero,06/09/2018,8,Clase A4,Vacaciones
+20040,Bárbara Espinoza,22/04/2018,8,Clase B,Vacaciones
+20041,Vicente Reyes,25/08/2023,3,Clase A5,Activo
+20042,Valentina Mendoza,15/12/2020,6,Clase B,Activo
+20043,Patricio Muñoz,26/09/2019,7,Clase B,Activo
+20044,Catalina Vásquez,18/06/2020,6,Clase B,Vacaciones
+20045,Vicente Navarro,03/04/2020,6,Clase A4,Activo
+20046,Catalina Araya,05/02/2020,6,Clase A4,Activo
+20047,Lucía López,05/12/2020,6,Clase A5,Activo
+20048,Rodrigo Sánchez,13/09/2019,7,Clase A5,Activo
+20049,Gabriela Herrera,29/06/2018,8,Clase B,Activo
+20050,Rafael Vásquez,24/01/2021,5,Clase A5,Inactivo

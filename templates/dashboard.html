@@ -1,0 +1,590 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - SMARTLOGI{% endblock %}
+
+{% block content %}
+
+<style>
+
+    /* ==============================
+       DASHBOARD
+       ============================== */
+
+    .dashboard-titulo {
+        margin-bottom: 20px;
+    }
+
+    /* Tarjetas superiores */
+
+    .dashboard-principales {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-bottom: 18px;
+    }
+
+    /* Tarjetas de estados */
+
+    .dashboard-estados {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-bottom: 18px;
+    }
+
+    /* Gráficos */
+
+    .dashboard-graficos {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-top: 18px;
+    }
+
+    .grafico-card {
+        background: white;
+        border-radius: 10px;
+        padding: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        height: 300px;
+        box-sizing: border-box;
+    }
+
+    .grafico-titulo {
+        margin: 0 0 10px 0;
+        font-size: 16px;
+        color: #063b2e;
+    }
+
+    .grafico-contenedor {
+        position: relative;
+        width: 100%;
+        height: 245px;
+    }
+
+    .grafico-contenedor canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 800px) {
+
+        .dashboard-principales {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .dashboard-estados {
+            grid-template-columns: 1fr;
+        }
+
+        .dashboard-graficos {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+    @media (max-width: 500px) {
+
+        .dashboard-principales {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+</style>
+
+
+<!-- ==============================
+     TÍTULO
+     ============================== -->
+
+<h1 class="dashboard-titulo">📊 Dashboard</h1>
+
+
+<!-- ==============================
+     INDICADORES PRINCIPALES
+     ============================== -->
+
+<div class="dashboard-principales">
+
+    <div class="card">
+        <h3>📦 Pedidos</h3>
+        <p>{{ total_pedidos | string | replace(",", ".") }}</p>
+    </div>
+
+    <div class="card">
+        <h3>🚚 Vehículos</h3>
+        <p>{{ total_vehiculos }}</p>
+    </div>
+
+    <div class="card">
+        <h3>👨‍✈️ Conductores</h3>
+        <p>{{ total_conductores }}</p>
+    </div>
+
+    <div class="card">
+        <h3>🗺️ Rutas</h3>
+        <p>{{ total_rutas }}</p>
+    </div>
+
+</div>
+
+
+<!-- ==============================
+     ESTADOS
+     ============================== -->
+
+<div class="dashboard-estados">
+
+    <div class="card">
+
+        <h3>📦 Estado de pedidos</h3>
+
+        {% for estado, cantidad in estados_pedidos.items() %}
+            <p>
+                {{ estado }}:
+                <strong>{{ cantidad }}</strong>
+            </p>
+        {% endfor %}
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>🚚 Estado de flota</h3>
+
+        {% for estado, cantidad in estados_vehiculos.items() %}
+            <p>
+                {{ estado }}:
+                <strong>{{ cantidad }}</strong>
+            </p>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+<!-- ==============================
+     GRÁFICOS
+     ============================== -->
+
+<div class="dashboard-graficos">
+
+
+    <!-- GRÁFICO DE PEDIDOS -->
+
+    <div class="grafico-card">
+
+        <h3 class="grafico-titulo">
+            🥯 Distribución de pedidos
+        </h3>
+
+        <div class="grafico-contenedor">
+            <canvas id="graficoPedidos"></canvas>
+        </div>
+
+    </div>
+
+
+    <!-- GRÁFICO DE VEHÍCULOS -->
+
+    <div class="grafico-card">
+
+        <h3 class="grafico-titulo">
+            📊 Estado de la flota
+        </h3>
+
+        <div class="grafico-contenedor">
+            <canvas id="graficoVehiculos"></canvas>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==============================
+     CHART.JS
+     ============================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+    // ==========================================
+    // FORMATO DE NÚMEROS
+    // ==========================================
+
+    function formatoMiles(numero) {
+
+        return Number(numero).toLocaleString("es-CL");
+
+    }
+
+
+    // ==========================================
+    // DATOS DE PEDIDOS
+    // ==========================================
+
+    const etiquetasPedidos =
+        {{ estados_pedidos_labels | tojson }};
+
+    const valoresPedidos =
+        {{ estados_pedidos_valores | tojson }};
+
+
+    // ==========================================
+    // DATOS DE VEHÍCULOS
+    // ==========================================
+
+    const etiquetasVehiculos =
+        {{ estados_vehiculos_labels | tojson }};
+
+    const valoresVehiculos =
+        {{ estados_vehiculos_valores | tojson }};
+
+
+    // ==========================================
+    // COLORES
+    // ==========================================
+
+    const colores = [
+        "#3498db",
+        "#ef5b87",
+        "#ff9f43",
+        "#f5c542",
+        "#45b7b3"
+    ];
+
+
+    // ==========================================
+    // PLUGIN: TOTAL EN EL CENTRO
+    // ==========================================
+
+    const textoCentro = {
+
+        id: "textoCentro",
+
+        beforeDraw(chart) {
+
+            if (chart.config.type !== "doughnut") {
+                return;
+            }
+
+            const { ctx } = chart;
+
+            const total = valoresPedidos.reduce(
+                (suma, valor) => suma + Number(valor),
+                0
+            );
+
+            const x =
+                chart.chartArea.left +
+                (chart.chartArea.right - chart.chartArea.left) / 2;
+
+            const y =
+                chart.chartArea.top +
+                (chart.chartArea.bottom - chart.chartArea.top) / 2;
+
+            ctx.save();
+
+            ctx.font = "bold 15px Arial";
+            ctx.fillStyle = "#063b2e";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            ctx.fillText(
+                formatoMiles(total),
+                x,
+                y
+            );
+
+            ctx.restore();
+
+        }
+
+    };
+
+
+    // ==========================================
+    // PLUGIN: NÚMEROS SOBRE LAS BARRAS
+    // ==========================================
+
+    const valoresBarras = {
+
+        id: "valoresBarras",
+
+        afterDatasetsDraw(chart) {
+
+            if (chart.config.type !== "bar") {
+                return;
+            }
+
+            const { ctx } = chart;
+
+            chart.data.datasets.forEach(
+                (dataset, datasetIndex) => {
+
+                    const meta =
+                        chart.getDatasetMeta(datasetIndex);
+
+                    meta.data.forEach(
+                        (barra, index) => {
+
+                            const valor =
+                                dataset.data[index];
+
+                            ctx.save();
+
+                            ctx.font =
+                                "bold 12px Arial";
+
+                            ctx.fillStyle =
+                                "#063b2e";
+
+                            ctx.textAlign =
+                                "center";
+
+                            ctx.textBaseline =
+                                "bottom";
+
+                            ctx.fillText(
+                                formatoMiles(valor),
+                                barra.x,
+                                barra.y - 6
+                            );
+
+                            ctx.restore();
+
+                        }
+                    );
+
+                }
+            );
+
+        }
+
+    };
+
+
+    // ==========================================
+    // GRÁFICO DE PEDIDOS
+    // ==========================================
+
+    const ctxPedidos =
+        document.getElementById("graficoPedidos");
+
+
+    new Chart(ctxPedidos, {
+
+        type: "doughnut",
+
+        data: {
+
+            labels: etiquetasPedidos.map(
+                (nombre, i) => {
+
+                    return nombre +
+                        ": " +
+                        formatoMiles(
+                            valoresPedidos[i]
+                        );
+
+                }
+            ),
+
+            datasets: [{
+
+                data: valoresPedidos,
+
+                backgroundColor: colores,
+
+                borderColor: "#ffffff",
+
+                borderWidth: 2
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            cutout: "58%",
+
+            plugins: {
+
+                legend: {
+
+                    position: "right",
+
+                    labels: {
+
+                        padding: 10,
+
+                        boxWidth: 12,
+
+                        color: "#063b2e",
+
+                        font: {
+
+                            size: 11
+
+                        }
+
+                    }
+
+                },
+
+                tooltip: {
+
+                    callbacks: {
+
+                        label: function(context) {
+
+                            return context.label;
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        },
+
+        plugins: [
+            textoCentro
+        ]
+
+    });
+
+
+    // ==========================================
+    // GRÁFICO DE VEHÍCULOS
+    // ==========================================
+
+    const ctxVehiculos =
+        document.getElementById("graficoVehiculos");
+
+
+    new Chart(ctxVehiculos, {
+
+        type: "bar",
+
+        data: {
+
+            labels: etiquetasVehiculos,
+
+            datasets: [{
+
+                data: valoresVehiculos,
+
+                backgroundColor: [
+                    "#3498db",
+                    "#ef5b87",
+                    "#ff9f43",
+                    "#f5c542"
+                ],
+
+                borderWidth: 0,
+
+                borderRadius: 5
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+
+                    display: false
+
+                },
+
+                tooltip: {
+
+                    callbacks: {
+
+                        label: function(context) {
+
+                            return formatoMiles(
+                                context.raw
+                            );
+
+                        }
+
+                    }
+
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    ticks: {
+
+                        precision: 0,
+
+                        color: "#063b2e",
+
+                        font: {
+
+                            size: 10
+
+                        }
+
+                    }
+
+                },
+
+                x: {
+
+                    ticks: {
+
+                        color: "#063b2e",
+
+                        font: {
+
+                            size: 10
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        },
+
+        plugins: [
+            valoresBarras
+        ]
+
+    });
+
+</script>
+
+
+{% endblock %}

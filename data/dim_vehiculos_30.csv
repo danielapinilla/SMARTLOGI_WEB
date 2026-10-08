@@ -1,0 +1,31 @@
+﻿vehiculo_id,patente,tipo_vehiculo,marca,modelo,anio,capacidad_kg,combustible,fecha_alta,estado
+30001,ABCD12,Furgón,Peugeot,Boxer,2023,1200,Diesel,10/01/2024,Disponible
+30002,EFGH34,Furgón,Hyundai,H1,2022,1000,Diesel,15/02/2024,En ruta
+30003,IJKL56,Camión pequeño,Chevrolet,NQR,2021,3500,Diesel,20/03/2024,Disponible
+30004,MNOP78,Camión pequeño,Hyundai,Mighty,2023,4000,Diesel,05/04/2024,Mantención
+30005,QRST90,Camión mediano,Mercedes-Benz,Atego,2020,8000,Diesel,18/05/2024,En ruta
+30006,UVWX12,Camión mediano,Iveco,Tector,2022,7500,Diesel,10/06/2024,Disponible
+30007,YZAB34,Camión grande,Mercedes-Benz,Actros,2019,15000,Diesel,22/07/2024,Disponible
+30008,CDEF56,Camión grande,Volvo,FH,2021,18000,Diesel,12/08/2024,Fuera de servicio
+30009,GHIJ78,Furgón,Peugeot,Partner,2024,800,Eléctrico,03/01/2025,Disponible
+30010,KLMN90,Camión pequeño,Chevrolet,NKR,2024,3000,Diesel,15/02/2025,Disponible
+30011,FOCU63,Camión grande,Mercedes-Benz,Actros,2022,15000,Diesel,23/10/2024,Disponible
+30012,QCBC91,Camión grande,MAN,TGX,2020,18000,Diesel,12/12/2024,Disponible
+30013,XEGG06,Camión mediano,Mercedes-Benz,Atego,2020,8000,Diesel,03/05/2025,En ruta
+30014,POGL76,Camión grande,Mercedes-Benz,Actros,2026,18000,Diesel,11/06/2026,En ruta
+30015,PPOH95,Camión mediano,Mercedes-Benz,Atego,2019,8000,Diesel,16/08/2024,Disponible
+30016,PBLB61,Camión grande,Mercedes-Benz,Actros,2020,18000,Diesel,08/05/2026,Disponible
+30017,LENR89,Camión pequeño,Chevrolet,NQR,2023,3500,Diesel,17/03/2024,Disponible
+30018,IUBM43,Furgón,Mercedes-Benz,Sprinter,2020,1500,Diesel,08/06/2025,Mantención
+30019,RBLQ90,Camión grande,Mercedes-Benz,Actros,2021,18000,Diesel,24/08/2026,Disponible
+30020,OBHK19,Camión pequeño,Kia,Frontier,2019,3500,Diesel,19/12/2025,Disponible
+30021,XDAX46,Camión mediano,Iveco,Tector,2020,7500,Diesel,22/11/2024,Disponible
+30022,DZIA66,Camión grande,MAN,TGX,2022,20000,Diesel,09/06/2024,Fuera de servicio
+30023,NBWK28,Camión pequeño,Hyundai,Mighty,2020,2500,Diesel,07/04/2024,En ruta
+30024,UDAB58,Camión pequeño,Chevrolet,NQR,2023,3500,Diesel,17/01/2024,Disponible
+30025,HDGK76,Camión pequeño,JAC,X200,2024,3500,Diesel,11/09/2024,Mantención
+30026,MURW43,Camión pequeño,JAC,X200,2026,3000,Diesel,22/08/2026,En ruta
+30027,MQEB24,Camión grande,Mercedes-Benz,Actros,2023,18000,Diesel,06/05/2026,Disponible
+30028,HEQR37,Furgón,Mercedes-Benz,Sprinter,2019,1500,Diesel,23/08/2024,Mantención
+30029,QTIR91,Camión mediano,Hino,500,2019,10000,Diesel,26/10/2024,Disponible
+30030,LBGA07,Camión grande,Mercedes-Benz,Actros,2025,12000,Diesel,04/05/2025,Disponible

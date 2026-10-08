@@ -1,0 +1,741 @@
+{% extends "base.html" %}
+
+{% block title %}Vehículos - SMARTLOGI{% endblock %}
+
+{% block content %}
+
+<style>
+
+    /* =========================
+       INFORMACIÓN
+       ========================= */
+
+    .info-vehiculos {
+        margin-top: 15px;
+        margin-bottom: 10px;
+        color: #555;
+        font-size: 14px;
+    }
+
+
+    /* =========================
+       TARJETAS
+       ========================= */
+
+    .card {
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-2px);
+    }
+
+    .card.activa {
+        outline: 2px solid #063b2e;
+    }
+
+
+    /* =========================
+       TABLA
+       ========================= */
+
+    #tablaVehiculos {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    #tablaVehiculos th,
+    #tablaVehiculos td {
+        padding: 10px 8px;
+        font-size: 13px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #tablaVehiculos th {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    #tablaVehiculos th:hover {
+        background: #e5eee9;
+    }
+
+    .flecha {
+        margin-left: 4px;
+        color: #063b2e;
+        font-weight: bold;
+    }
+
+    /* Anchos de columnas */
+
+    #tablaVehiculos th:nth-child(1),
+    #tablaVehiculos td:nth-child(1) {
+        width: 10%;
+    }
+
+    #tablaVehiculos th:nth-child(2),
+    #tablaVehiculos td:nth-child(2) {
+        width: 11%;
+    }
+
+    #tablaVehiculos th:nth-child(3),
+    #tablaVehiculos td:nth-child(3) {
+        width: 12%;
+    }
+
+    #tablaVehiculos th:nth-child(4),
+    #tablaVehiculos td:nth-child(4) {
+        width: 12%;
+    }
+
+    #tablaVehiculos th:nth-child(5),
+    #tablaVehiculos td:nth-child(5) {
+        width: 12%;
+    }
+
+    #tablaVehiculos th:nth-child(6),
+    #tablaVehiculos td:nth-child(6) {
+        width: 9%;
+    }
+
+    #tablaVehiculos th:nth-child(7),
+    #tablaVehiculos td:nth-child(7) {
+        width: 13%;
+    }
+
+    #tablaVehiculos th:nth-child(8),
+    #tablaVehiculos td:nth-child(8) {
+        width: 11%;
+    }
+
+    #tablaVehiculos th:nth-child(9),
+    #tablaVehiculos td:nth-child(9) {
+        width: 10%;
+    }
+
+
+    /* =========================
+       PAGINACIÓN
+       ========================= */
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        padding: 10px 0;
+    }
+
+    .pagination a,
+    .pagination span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 38px;
+        height: 36px;
+        padding: 0 10px;
+        border-radius: 7px;
+        text-decoration: none;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    .pagination a {
+        background: #063b2e;
+        color: white;
+    }
+
+    .pagination a:hover {
+        background: #085844;
+    }
+
+    .pagination .pagina-actual {
+        background: #e5eee9;
+        color: #063b2e;
+        font-weight: bold;
+    }
+
+    .pagination .puntos {
+        background: transparent;
+        color: #777;
+    }
+
+</style>
+
+
+<h1>🚚 Vehículos</h1>
+
+
+<!-- =========================
+     TARJETAS RESUMEN
+     ========================= -->
+
+<div class="cards">
+
+    <div class="card" data-estado="Todos">
+
+        <h3>🚚 Total vehículos</h3>
+
+        <p>{{ total_registros|miles }}</p>
+
+    </div>
+
+
+    <div class="card" data-estado="Disponible">
+
+        <h3>✅ Disponibles</h3>
+
+        <p>{{ estados_vehiculos.get("Disponible", 0)|miles }}</p>
+
+    </div>
+
+
+    <div class="card" data-estado="En ruta">
+
+        <h3>🛣️ En ruta</h3>
+
+        <p>{{ estados_vehiculos.get("En ruta", 0)|miles }}</p>
+
+    </div>
+
+
+    <div class="card" data-estado="Mantención">
+
+        <h3>🔧 En mantención</h3>
+
+        <p>{{ estados_vehiculos.get("Mantención", 0)|miles }}</p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     BUSCADOR
+     ========================= -->
+
+<input
+    type="text"
+    id="buscadorVehiculos"
+    class="buscador"
+    placeholder="🔎 Buscar por ID, patente, marca, modelo o estado..."
+>
+
+
+<!-- =========================
+     INFORMACIÓN
+     ========================= -->
+
+<div class="info-vehiculos">
+
+    Mostrando
+
+    <strong>{{ ((pagina - 1) * 50) + 1 }}</strong>
+
+    –
+
+    <strong>
+        {{ ((pagina - 1) * 50) + vehiculos|length }}
+    </strong>
+
+    de
+
+    <strong>{{ total_registros|miles }}</strong>
+
+    vehículos
+
+</div>
+
+
+<!-- =========================
+     TABLA
+     ========================= -->
+
+<div style="overflow-x: auto;">
+
+    <table id="tablaVehiculos">
+
+        <thead>
+
+            <tr>
+
+                <th data-columna="0">
+                    ID Vehículo
+                    <span class="flecha">↕</span>
+                </th>
+
+                <th data-columna="1">
+                    Patente
+                    <span class="flecha">↕</span>
+                </th>
+
+                <th data-columna="2">
+                    Tipo
+                    <span class="flecha">↕</span>
+                </th>
+
+                <th data-columna="3">
+                    Marca
+                    <span class="flecha">↕</span>
+                </th>
+
+                <th data-columna="4">
+                    Modelo
+                    <span class="flecha">↕</span>
+                </th>
+
+                <th data-columna="5">
+                    Año
+                    <span class="flecha">↕</span>
+                </th>
+
+                <th data-columna="6">
+                    Capacidad (kg)
+                    <span class="flecha">↕</span>
+                </th>
+
+                <th data-columna="7">
+                    Combustible
+                    <span class="flecha">↕</span>
+                </th>
+
+                <th data-columna="8">
+                    Estado
+                    <span class="flecha">↕</span>
+                </th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody>
+
+            {% for vehiculo in vehiculos %}
+
+            <tr>
+
+                <td>{{ vehiculo.vehiculo_id }}</td>
+
+                <td>{{ vehiculo.patente }}</td>
+
+                <td>{{ vehiculo.tipo_vehiculo }}</td>
+
+                <td>{{ vehiculo.marca }}</td>
+
+                <td>{{ vehiculo.modelo }}</td>
+
+                <td>{{ vehiculo.anio }}</td>
+
+                <td>{{ vehiculo.capacidad_kg }}</td>
+
+                <td>{{ vehiculo.combustible }}</td>
+
+                <td>{{ vehiculo.estado }}</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<!-- =========================
+     PAGINACIÓN
+     ========================= -->
+
+<div class="pagination">
+
+    {% if pagina > 1 %}
+
+        <a href="{{ url_for('vehiculos', pagina=pagina-1) }}">
+            ←
+        </a>
+
+    {% endif %}
+
+
+    {% if pagina > 3 %}
+
+        <a href="{{ url_for('vehiculos', pagina=1) }}">
+            1
+        </a>
+
+        <span class="puntos">
+            ...
+        </span>
+
+    {% endif %}
+
+
+    {% for numero in range(
+        [1, pagina-2]|max,
+        [total_paginas+1, pagina+3]|min
+    ) %}
+
+        {% if numero == pagina %}
+
+            <span class="pagina-actual">
+                {{ numero }}
+            </span>
+
+        {% else %}
+
+            <a href="{{ url_for('vehiculos', pagina=numero) }}">
+                {{ numero }}
+            </a>
+
+        {% endif %}
+
+    {% endfor %}
+
+
+    {% if pagina < total_paginas - 2 %}
+
+        <span class="puntos">
+            ...
+        </span>
+
+        <a href="{{ url_for('vehiculos', pagina=total_paginas) }}">
+            {{ total_paginas }}
+        </a>
+
+    {% endif %}
+
+
+    {% if pagina < total_paginas %}
+
+        <a href="{{ url_for('vehiculos', pagina=pagina+1) }}">
+            →
+        </a>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+     ========================= -->
+
+<script>
+
+const buscador =
+    document.getElementById("buscadorVehiculos");
+
+const filas =
+    document.querySelectorAll(
+        "#tablaVehiculos tbody tr"
+    );
+
+const tarjetas =
+    document.querySelectorAll(
+        ".card[data-estado]"
+    );
+
+
+// =========================
+// FILTRO GENERAL
+// =========================
+
+let estadoSeleccionado = "Todos";
+
+
+// =========================
+// FUNCIÓN PARA MOSTRAR FILAS
+// =========================
+
+function actualizarFilas() {
+
+    const texto =
+        buscador.value.toLowerCase().trim();
+
+
+    filas.forEach(function (fila) {
+
+        const contenido =
+            fila.textContent.toLowerCase();
+
+        const estado =
+            fila.children[8]
+                .textContent
+                .trim();
+
+
+        const coincideTexto =
+            contenido.includes(texto);
+
+
+        const coincideEstado =
+            estadoSeleccionado === "Todos" ||
+            estado === estadoSeleccionado;
+
+
+        if (
+            coincideTexto &&
+            coincideEstado
+        ) {
+
+            fila.style.display = "";
+
+        } else {
+
+            fila.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+// =========================
+// BUSCADOR
+// =========================
+
+buscador.addEventListener(
+    "keyup",
+    actualizarFilas
+);
+
+
+// =========================
+// FILTRO POR TARJETAS
+// =========================
+
+tarjetas.forEach(function (tarjeta) {
+
+    tarjeta.addEventListener(
+        "click",
+        function () {
+
+            estadoSeleccionado =
+                this.dataset.estado;
+
+
+            tarjetas.forEach(
+                function (otraTarjeta) {
+
+                    otraTarjeta.classList.remove(
+                        "activa"
+                    );
+
+                }
+            );
+
+
+            this.classList.add("activa");
+
+
+            actualizarFilas();
+
+        }
+    );
+
+});
+
+
+// =========================
+// ORDENAMIENTO
+// =========================
+
+const encabezados =
+    document.querySelectorAll(
+        "#tablaVehiculos thead th"
+    );
+
+
+let columnaOrdenada = null;
+let ordenAscendente = true;
+
+
+encabezados.forEach(
+    function (encabezado) {
+
+        encabezado.addEventListener(
+            "click",
+            function () {
+
+                const columna =
+                    parseInt(
+                        this.dataset.columna
+                    );
+
+
+                const cuerpo =
+                    document.querySelector(
+                        "#tablaVehiculos tbody"
+                    );
+
+
+                const filasArray =
+                    Array.from(
+                        cuerpo.querySelectorAll(
+                            "tr"
+                        )
+                    );
+
+
+                if (
+                    columnaOrdenada === columna
+                ) {
+
+                    ordenAscendente =
+                        !ordenAscendente;
+
+                } else {
+
+                    columnaOrdenada =
+                        columna;
+
+                    ordenAscendente =
+                        true;
+
+                }
+
+
+                filasArray.sort(
+                    function (a, b) {
+
+                        let valorA =
+                            a.children[
+                                columna
+                            ]
+                            .textContent
+                            .trim();
+
+
+                        let valorB =
+                            b.children[
+                                columna
+                            ]
+                            .textContent
+                            .trim();
+
+
+                        const numeroA =
+                            parseFloat(
+                                valorA.replace(
+                                    ",",
+                                    "."
+                                )
+                            );
+
+
+                        const numeroB =
+                            parseFloat(
+                                valorB.replace(
+                                    ",",
+                                    "."
+                                )
+                            );
+
+
+                        if (
+                            !isNaN(numeroA) &&
+                            !isNaN(numeroB)
+                        ) {
+
+                            return ordenAscendente
+                                ? numeroA - numeroB
+                                : numeroB - numeroA;
+
+                        }
+
+
+                        return ordenAscendente
+                            ? valorA.localeCompare(
+                                valorB,
+                                "es",
+                                {
+                                    sensitivity:
+                                        "base"
+                                }
+                            )
+                            : valorB.localeCompare(
+                                valorA,
+                                "es",
+                                {
+                                    sensitivity:
+                                        "base"
+                                }
+                            );
+
+                    }
+                );
+
+
+                filasArray.forEach(
+                    function (fila) {
+
+                        cuerpo.appendChild(
+                            fila
+                        );
+
+                    }
+                );
+
+
+                // Actualizar flechas
+
+                encabezados.forEach(
+                    function (otroEncabezado) {
+
+                        const flecha =
+                            otroEncabezado.querySelector(
+                                ".flecha"
+                            );
+
+
+                        if (flecha) {
+
+                            flecha.textContent =
+                                "↕";
+
+                        }
+
+                    }
+                );
+
+
+                const flechaActual =
+                    this.querySelector(
+                        ".flecha"
+                    );
+
+
+                if (flechaActual) {
+
+                    flechaActual.textContent =
+                        ordenAscendente
+                            ? "↑"
+                            : "↓";
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+// =========================
+// INICIO
+// =========================
+
+actualizarFilas();
+
+</script>
+
+
+{% endblock %}

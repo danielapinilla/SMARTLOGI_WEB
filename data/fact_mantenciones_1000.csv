@@ -1,0 +1,1001 @@
+﻿mantencion_id,vehiculo_id,fecha_mantencion_id,tipo_mantencion,descripcion,costo,kilometraje,dias_fuera_servicio,taller,resultado
+800001,30025,20250223,Preventiva,Revisión de neumáticos,163694,149879,1,Taller Norte,Reparado
+800002,30023,20260503,Preventiva,Revisión general,147498,142727,1,Taller Ruta 5,Reparado
+800003,30027,20250127,Preventiva,Revisión de frenos,119735,94925,2,Taller Sur,Reparado
+800004,30003,20251003,Preventiva,Cambio de filtros,145305,160608,1,Taller Norte,Reparado
+800005,30002,20260809,Preventiva,Cambio de filtros,119150,95725,2,Taller Ruta 5,Reparado
+800006,30012,20251128,Preventiva,Cambio de filtros,91551,146216,1,Taller Mecánica Centro,Reparado
+800007,30013,20260407,Preventiva,Revisión de frenos,70627,38792,2,Taller Norte,Reparado
+800008,30017,20260402,Preventiva,Revisión de neumáticos,83483,154358,2,Taller Ruta 5,Reparado
+800009,30024,20250210,Emergencia,Problema eléctrico grave,810337,49457,9,Taller Norte,Reparado
+800010,30004,20260729,Preventiva,Revisión de neumáticos,105758,67065,2,Taller Sur,Requiere seguimiento
+800011,30012,20260708,Preventiva,Revisión de neumáticos,83247,54300,2,Taller Norte,Reparado
+800012,30026,20250402,Emergencia,Problema eléctrico grave,866588,68044,8,Taller SmartMotor,Reparado
+800013,30026,20250730,Correctiva,Reparación de frenos,283767,154375,4,Taller SmartMotor,Requiere seguimiento
+800014,30011,20250110,Correctiva,Reparación suspensión,279312,42666,2,Taller Norte,Requiere seguimiento
+800015,30020,20260619,Preventiva,Cambio de aceite y filtros,90535,143569,1,Taller Mecánica Centro,Reparado
+800016,30027,20251113,Correctiva,Reparación suspensión,351664,143252,4,Taller SmartMotor,Reparado
+800017,30023,20251009,Correctiva,Reparación suspensión,269176,161278,4,Taller Sur,Reparado
+800018,30013,20250929,Preventiva,Cambio de aceite y filtros,167059,140687,2,Taller Mecánica Centro,Requiere seguimiento
+800019,30025,20260908,Preventiva,Revisión de neumáticos,93827,92623,1,Taller Sur,Reparado
+800020,30013,20250724,Emergencia,Sobrecalentamiento del motor,792296,139556,9,Taller Sur,Reparado
+800021,30016,20251108,Preventiva,Revisión general,78047,56105,1,Taller SmartMotor,Reparado
+800022,30016,20260420,Preventiva,Revisión general,121373,167848,2,Taller Ruta 5,Reparado
+800023,30029,20260603,Preventiva,Revisión general,154856,149101,1,Taller Norte,Reparado
+800024,30021,20261028,Preventiva,Revisión general,153557,91087,2,Taller Sur,Reparado
+800025,30015,20261027,Preventiva,Cambio de aceite y filtros,99353,82733,1,Taller SmartMotor,Reparado
+800026,30018,20260826,Preventiva,Cambio de aceite y filtros,175386,56736,2,Taller Mecánica Centro,Reparado
+800027,30001,20260501,Preventiva,Cambio de aceite y filtros,106717,80859,2,Taller Sur,Requiere seguimiento
+800028,30010,20250327,Preventiva,Revisión general,72688,55342,2,Taller Sur,Reparado
+800029,30027,20260924,Emergencia,Falla transmisión,460078,110623,4,Taller Ruta 5,Reparado
+800030,30023,20250303,Preventiva,Revisión de neumáticos,151906,79811,2,Taller Ruta 5,Reparado
+800031,30030,20261107,Correctiva,Reparación suspensión,292483,163983,4,Taller SmartMotor,Reparado
+800032,30004,20250801,Preventiva,Revisión de frenos,71111,67504,1,Taller SmartMotor,Reparado
+800033,30001,20260324,Preventiva,Revisión de frenos,90306,177718,2,Taller SmartMotor,Reparado
+800034,30018,20261018,Preventiva,Cambio de aceite y filtros,62049,133727,2,Taller Mecánica Centro,Reparado
+800035,30017,20250210,Correctiva,Cambio de neumáticos,419544,147858,4,Taller Ruta 5,Reparado
+800036,30010,20261007,Correctiva,Cambio de neumáticos,424327,173946,2,Taller Sur,Reparado
+800037,30029,20250929,Preventiva,Cambio de aceite y filtros,142018,163272,1,Taller Norte,Reparado
+800038,30030,20250620,Preventiva,Revisión general,121135,80108,1,Taller Sur,Reparado
+800039,30004,20250831,Preventiva,Revisión de neumáticos,146831,165059,2,Taller Ruta 5,Reparado
+800040,30030,20250524,Correctiva,Cambio de neumáticos,406687,137450,4,Taller Mecánica Centro,Reparado
+800041,30030,20260606,Preventiva,Revisión general,90746,79377,1,Taller Sur,Reparado
+800042,30009,20261120,Correctiva,Cambio de neumáticos,375732,123179,2,Taller Sur,Reparado
+800043,30028,20250924,Preventiva,Cambio de aceite y filtros,165983,154123,2,Taller Mecánica Centro,Requiere seguimiento
+800044,30024,20261109,Correctiva,Reparación de frenos,475352,63828,5,Taller Mecánica Centro,Reparado
+800045,30025,20250215,Preventiva,Cambio de filtros,114240,154019,1,Taller SmartMotor,Reparado
+800046,30021,20260326,Preventiva,Revisión de frenos,94584,133746,2,Taller Norte,Reparado
+800047,30027,20250428,Correctiva,Reparación sistema eléctrico,206958,112074,3,Taller SmartMotor,Requiere seguimiento
+800048,30009,20260414,Correctiva,Cambio de neumáticos,359141,135510,2,Taller Norte,Reparado
+800049,30011,20250629,Correctiva,Cambio de neumáticos,422791,169788,5,Taller SmartMotor,Reparado
+800050,30002,20260309,Correctiva,Reparación de frenos,414512,107575,5,Taller Sur,Reparado
+800051,30011,20260715,Correctiva,Reparación de frenos,182097,172038,4,Taller SmartMotor,Reparado
+800052,30008,20261225,Preventiva,Revisión de neumáticos,82677,85609,2,Taller Sur,Reparado
+800053,30012,20251215,Preventiva,Revisión general,128027,143632,2,Taller Sur,Reparado
+800054,30024,20250818,Emergencia,Problema eléctrico grave,539407,103523,8,Taller Norte,No reparado
+800055,30009,20260315,Preventiva,Cambio de aceite y filtros,133847,112750,1,Taller Norte,Reparado
+800056,30001,20261211,Preventiva,Revisión de neumáticos,65949,162222,1,Taller SmartMotor,Reparado
+800057,30010,20260114,Preventiva,Cambio de aceite y filtros,106175,168877,2,Taller Mecánica Centro,Reparado
+800058,30002,20250514,Preventiva,Revisión de neumáticos,113222,59375,1,Taller Mecánica Centro,Reparado
+800059,30007,20250128,Preventiva,Cambio de filtros,178937,97215,1,Taller SmartMotor,Reparado
+800060,30004,20250928,Preventiva,Cambio de filtros,114340,108832,2,Taller Sur,Reparado
+800061,30004,20251230,Preventiva,Revisión de frenos,95247,151172,1,Taller Mecánica Centro,Reparado
+800062,30014,20250830,Preventiva,Revisión de frenos,139605,128116,2,Taller Norte,Reparado
+800063,30024,20260206,Correctiva,Reparación sistema eléctrico,421967,71975,2,Taller Norte,Reparado
+800064,30017,20260603,Preventiva,Revisión general,126387,179143,2,Taller Sur,Reparado
+800065,30017,20250712,Preventiva,Revisión de neumáticos,161042,123610,1,Taller SmartMotor,Reparado
+800066,30005,20251118,Emergencia,Falla de motor,957274,138940,7,Taller Norte,Reparado
+800067,30005,20260806,Preventiva,Revisión de frenos,160386,57350,1,Taller Mecánica Centro,Reparado
+800068,30009,20251207,Correctiva,Reparación sistema eléctrico,357869,95953,4,Taller Sur,Reparado
+800069,30011,20250115,Correctiva,Reparación sistema eléctrico,307164,41338,2,Taller SmartMotor,Reparado
+800070,30001,20250609,Correctiva,Cambio de neumáticos,456569,68756,2,Taller Ruta 5,Reparado
+800071,30021,20260713,Emergencia,Problema eléctrico grave,420640,168429,8,Taller Mecánica Centro,Reparado
+800072,30005,20250816,Correctiva,Reparación suspensión,336141,141888,2,Taller SmartMotor,Reparado
+800073,30013,20260307,Preventiva,Revisión general,99954,109459,2,Taller Ruta 5,Requiere seguimiento
+800074,30001,20261024,Preventiva,Cambio de filtros,142637,81934,2,Taller Norte,Reparado
+800075,30010,20250824,Correctiva,Cambio de batería,276020,132795,2,Taller Mecánica Centro,Reparado
+800076,30003,20251020,Correctiva,Cambio de neumáticos,413206,114076,2,Taller Norte,Reparado
+800077,30010,20260203,Preventiva,Revisión de neumáticos,162634,119930,2,Taller SmartMotor,Requiere seguimiento
+800078,30013,20250524,Correctiva,Reparación de frenos,353664,31542,3,Taller Norte,Reparado
+800079,30026,20251219,Preventiva,Revisión general,79065,118092,1,Taller Mecánica Centro,Reparado
+800080,30013,20250712,Preventiva,Cambio de filtros,151792,162396,2,Taller Sur,Reparado
+800081,30030,20260112,Preventiva,Revisión de neumáticos,177611,56790,1,Taller Ruta 5,Reparado
+800082,30024,20251221,Preventiva,Revisión general,146188,34748,2,Taller Norte,Reparado
+800083,30009,20251017,Correctiva,Cambio de batería,306542,72918,2,Taller Sur,Reparado
+800084,30023,20250105,Emergencia,Problema eléctrico grave,640160,53960,4,Taller Norte,Reparado
+800085,30012,20251206,Preventiva,Revisión de neumáticos,94620,158148,2,Taller Ruta 5,Reparado
+800086,30018,20260623,Emergencia,Problema eléctrico grave,965650,43843,4,Taller SmartMotor,Reparado
+800087,30020,20250420,Preventiva,Cambio de aceite y filtros,167892,140133,2,Taller SmartMotor,Reparado
+800088,30026,20250116,Emergencia,Falla de motor,361023,51447,9,Taller Sur,Reparado
+800089,30020,20251223,Preventiva,Revisión de frenos,106427,91529,2,Taller Norte,Reparado
+800090,30003,20260227,Preventiva,Revisión de neumáticos,64835,50159,1,Taller SmartMotor,Reparado
+800091,30018,20260305,Preventiva,Revisión de neumáticos,117043,127007,1,Taller Ruta 5,Reparado
+800092,30023,20260822,Correctiva,Reparación sistema eléctrico,206178,79407,2,Taller Norte,Reparado
+800093,30028,20250513,Preventiva,Revisión de frenos,116570,31015,1,Taller Norte,Reparado
+800094,30030,20260113,Emergencia,Falla sistema de frenos,478778,92292,5,Taller Ruta 5,Reparado
+800095,30012,20250101,Correctiva,Cambio de batería,301456,48017,2,Taller SmartMotor,Reparado
+800096,30014,20260520,Preventiva,Cambio de filtros,78384,128142,1,Taller Mecánica Centro,No reparado
+800097,30028,20261217,Preventiva,Revisión de neumáticos,70916,34809,2,Taller Mecánica Centro,Reparado
+800098,30024,20250412,Preventiva,Cambio de aceite y filtros,105106,83932,1,Taller SmartMotor,Reparado
+800099,30020,20260922,Correctiva,Reparación sistema eléctrico,186187,168311,4,Taller Norte,Reparado
+800100,30019,20250513,Preventiva,Revisión general,154074,67131,1,Taller Mecánica Centro,Reparado
+800101,30030,20260409,Preventiva,Revisión general,102808,49198,1,Taller Mecánica Centro,Reparado
+800102,30010,20251027,Correctiva,Reparación sistema eléctrico,465826,89494,3,Taller Norte,Reparado
+800103,30010,20260101,Preventiva,Revisión de frenos,133553,168013,1,Taller Norte,Reparado
+800104,30011,20250414,Preventiva,Cambio de aceite y filtros,157239,72318,2,Taller Norte,Reparado
+800105,30018,20261208,Correctiva,Cambio de batería,467623,49963,5,Taller Norte,Reparado
+800106,30030,20260110,Correctiva,Reparación sistema eléctrico,219836,134573,4,Taller Ruta 5,Reparado
+800107,30016,20250531,Preventiva,Cambio de aceite y filtros,84214,167162,2,Taller Sur,Reparado
+800108,30019,20261030,Preventiva,Cambio de aceite y filtros,143807,131570,1,Taller Norte,Reparado
+800109,30016,20250923,Correctiva,Reparación suspensión,207108,141195,3,Taller Mecánica Centro,Reparado
+800110,30005,20250410,Preventiva,Revisión de neumáticos,164680,177979,2,Taller SmartMotor,Reparado
+800111,30001,20250311,Preventiva,Revisión de neumáticos,141818,53624,2,Taller SmartMotor,Reparado
+800112,30028,20261003,Correctiva,Reparación suspensión,333868,165504,3,Taller SmartMotor,Requiere seguimiento
+800113,30014,20250821,Preventiva,Cambio de filtros,60302,161127,2,Taller Sur,Reparado
+800114,30026,20250322,Preventiva,Revisión de frenos,76748,135113,2,Taller Ruta 5,Reparado
+800115,30001,20260510,Correctiva,Reparación suspensión,188638,97067,2,Taller Ruta 5,Requiere seguimiento
+800116,30010,20250917,Preventiva,Cambio de aceite y filtros,98518,141076,2,Taller SmartMotor,Reparado
+800117,30019,20250517,Correctiva,Reparación sistema eléctrico,395885,77915,2,Taller Sur,Requiere seguimiento
+800118,30030,20261030,Preventiva,Revisión de frenos,133794,112152,1,Taller Sur,Reparado
+800119,30019,20251222,Preventiva,Revisión de frenos,72910,103479,2,Taller Ruta 5,Reparado
+800120,30005,20261106,Preventiva,Revisión de neumáticos,122981,78447,2,Taller Ruta 5,Reparado
+800121,30001,20261113,Emergencia,Sobrecalentamiento del motor,771240,146148,9,Taller Sur,Reparado
+800122,30024,20250703,Correctiva,Cambio de neumáticos,294118,34324,5,Taller Norte,No reparado
+800123,30023,20261205,Preventiva,Revisión general,147886,161189,1,Taller Ruta 5,Reparado
+800124,30014,20260423,Correctiva,Reparación sistema eléctrico,150846,40954,5,Taller Mecánica Centro,Reparado
+800125,30030,20260802,Correctiva,Reparación sistema eléctrico,454245,94323,4,Taller Sur,Reparado
+800126,30015,20250128,Preventiva,Cambio de aceite y filtros,164537,108477,2,Taller Ruta 5,Reparado
+800127,30020,20260930,Emergencia,Sobrecalentamiento del motor,859930,77362,4,Taller Norte,Reparado
+800128,30029,20251024,Preventiva,Revisión de frenos,62219,69809,1,Taller Sur,Reparado
+800129,30005,20260214,Preventiva,Revisión de neumáticos,168872,123070,2,Taller Ruta 5,Reparado
+800130,30028,20260330,Preventiva,Cambio de aceite y filtros,143524,42219,2,Taller Mecánica Centro,Reparado
+800131,30013,20261030,Correctiva,Cambio de neumáticos,346513,114555,4,Taller Sur,Reparado
+800132,30022,20261128,Correctiva,Reparación suspensión,208596,151101,5,Taller Mecánica Centro,Reparado
+800133,30001,20251006,Preventiva,Revisión general,83930,161149,2,Taller SmartMotor,Requiere seguimiento
+800134,30009,20260714,Correctiva,Cambio de neumáticos,455447,69711,4,Taller SmartMotor,Reparado
+800135,30024,20251003,Correctiva,Cambio de neumáticos,300168,97728,2,Taller Norte,Reparado
+800136,30028,20250829,Preventiva,Revisión general,71302,97506,2,Taller Ruta 5,Requiere seguimiento
+800137,30006,20260707,Preventiva,Cambio de filtros,140910,150430,1,Taller Ruta 5,Reparado
+800138,30014,20251022,Correctiva,Cambio de neumáticos,478800,74028,2,Taller SmartMotor,Requiere seguimiento
+800139,30018,20261107,Preventiva,Revisión de frenos,92265,132916,1,Taller Mecánica Centro,Reparado
+800140,30014,20260714,Preventiva,Cambio de filtros,131895,94435,2,Taller Mecánica Centro,Reparado
+800141,30005,20260207,Preventiva,Cambio de filtros,161195,164828,2,Taller Ruta 5,Reparado
+800142,30004,20250821,Correctiva,Reparación de frenos,280330,101315,4,Taller Norte,No reparado
+800143,30005,20250826,Emergencia,Problema eléctrico grave,556988,103319,9,Taller SmartMotor,Reparado
+800144,30023,20250608,Preventiva,Cambio de filtros,87306,67219,2,Taller Mecánica Centro,Reparado
+800145,30021,20260812,Correctiva,Reparación sistema eléctrico,177632,139945,2,Taller Mecánica Centro,Reparado
+800146,30025,20260716,Preventiva,Cambio de aceite y filtros,63797,174790,1,Taller Mecánica Centro,Reparado
+800147,30017,20250516,Preventiva,Cambio de filtros,177718,49256,1,Taller Ruta 5,Reparado
+800148,30009,20251115,Preventiva,Revisión de neumáticos,71694,86264,1,Taller Sur,Reparado
+800149,30015,20250802,Correctiva,Reparación sistema eléctrico,163224,70738,4,Taller Norte,Reparado
+800150,30005,20250724,Emergencia,Falla de motor,882358,156161,6,Taller SmartMotor,Requiere seguimiento
+800151,30010,20260719,Preventiva,Revisión general,130507,157738,1,Taller SmartMotor,Reparado
+800152,30012,20250613,Preventiva,Revisión de neumáticos,147895,76240,1,Taller Ruta 5,Reparado
+800153,30011,20260104,Correctiva,Reparación de frenos,297313,133892,2,Taller Sur,Reparado
+800154,30008,20261116,Preventiva,Cambio de filtros,112853,126731,1,Taller SmartMotor,No reparado
+800155,30030,20251026,Preventiva,Revisión de neumáticos,101949,122374,1,Taller Ruta 5,Reparado
+800156,30024,20251023,Preventiva,Revisión de neumáticos,87952,120397,2,Taller Norte,Reparado
+800157,30029,20250107,Preventiva,Revisión general,108302,167717,2,Taller Ruta 5,Reparado
+800158,30029,20261201,Preventiva,Cambio de aceite y filtros,112487,159948,1,Taller Norte,Requiere seguimiento
+800159,30028,20250607,Preventiva,Revisión de frenos,112603,156944,1,Taller Norte,Requiere seguimiento
+800160,30028,20250222,Correctiva,Cambio de neumáticos,357606,60678,4,Taller SmartMotor,Reparado
+800161,30019,20250507,Correctiva,Reparación suspensión,189986,115595,4,Taller Ruta 5,Reparado
+800162,30003,20260607,Preventiva,Revisión general,72175,149235,2,Taller Mecánica Centro,Reparado
+800163,30007,20250210,Preventiva,Revisión de frenos,66150,34425,1,Taller Mecánica Centro,Reparado
+800164,30013,20250524,Preventiva,Revisión de neumáticos,101874,174931,1,Taller Norte,Reparado
+800165,30004,20260320,Emergencia,Sobrecalentamiento del motor,437955,133145,5,Taller Sur,Reparado
+800166,30016,20260916,Correctiva,Cambio de batería,282351,141496,3,Taller Ruta 5,Requiere seguimiento
+800167,30026,20260715,Emergencia,Problema eléctrico grave,606713,49063,6,Taller SmartMotor,Requiere seguimiento
+800168,30022,20260219,Preventiva,Cambio de aceite y filtros,62573,65367,2,Taller SmartMotor,Reparado
+800169,30013,20250731,Preventiva,Revisión general,111693,146739,2,Taller Mecánica Centro,Reparado
+800170,30023,20250927,Correctiva,Cambio de batería,494138,86133,3,Taller Norte,Reparado
+800171,30016,20250708,Preventiva,Revisión de frenos,99952,151829,2,Taller Mecánica Centro,Reparado
+800172,30017,20260313,Preventiva,Revisión de neumáticos,111226,111182,2,Taller Norte,Reparado
+800173,30011,20261116,Correctiva,Cambio de neumáticos,197924,104182,3,Taller Norte,Requiere seguimiento
+800174,30009,20251027,Preventiva,Revisión de frenos,96397,158575,2,Taller Ruta 5,Reparado
+800175,30016,20250620,Preventiva,Revisión de neumáticos,71555,83276,1,Taller Ruta 5,Reparado
+800176,30017,20260721,Preventiva,Cambio de aceite y filtros,84762,41046,2,Taller Norte,Reparado
+800177,30027,20260306,Preventiva,Revisión de neumáticos,149399,89129,2,Taller Ruta 5,Reparado
+800178,30003,20250714,Preventiva,Revisión general,72112,151789,1,Taller Norte,Reparado
+800179,30023,20251213,Correctiva,Reparación sistema eléctrico,282596,130424,2,Taller SmartMotor,Reparado
+800180,30017,20260515,Preventiva,Revisión general,143559,85337,1,Taller Ruta 5,Reparado
+800181,30001,20250810,Preventiva,Cambio de filtros,166667,50581,2,Taller Mecánica Centro,Reparado
+800182,30009,20261114,Preventiva,Revisión general,66960,66408,1,Taller Sur,Reparado
+800183,30013,20250511,Preventiva,Revisión general,131431,173326,1,Taller Mecánica Centro,Reparado
+800184,30017,20251029,Correctiva,Cambio de neumáticos,336833,107454,4,Taller Mecánica Centro,No reparado
+800185,30005,20250215,Correctiva,Reparación sistema eléctrico,179711,100342,2,Taller Mecánica Centro,Reparado
+800186,30013,20250106,Preventiva,Revisión de neumáticos,84070,172194,2,Taller Ruta 5,Reparado
+800187,30030,20260927,Emergencia,Falla de motor,637654,49426,5,Taller SmartMotor,Reparado
+800188,30018,20260712,Correctiva,Reparación suspensión,185435,126443,2,Taller Mecánica Centro,Reparado
+800189,30004,20250120,Preventiva,Revisión de frenos,80662,53510,2,Taller SmartMotor,Reparado
+800190,30023,20260619,Preventiva,Cambio de aceite y filtros,67564,143824,2,Taller Sur,Reparado
+800191,30008,20260901,Preventiva,Revisión general,112393,155341,1,Taller Mecánica Centro,Reparado
+800192,30011,20261113,Preventiva,Revisión general,156122,69974,2,Taller SmartMotor,Reparado
+800193,30016,20250818,Preventiva,Revisión de neumáticos,122187,42984,2,Taller SmartMotor,Reparado
+800194,30014,20251018,Correctiva,Cambio de neumáticos,436718,164502,5,Taller SmartMotor,Reparado
+800195,30016,20260925,Preventiva,Revisión de frenos,115619,142573,1,Taller SmartMotor,Reparado
+800196,30005,20250202,Emergencia,Falla sistema de frenos,747710,152744,7,Taller Norte,Reparado
+800197,30016,20260711,Correctiva,Cambio de batería,388506,161878,5,Taller Ruta 5,Requiere seguimiento
+800198,30029,20260804,Emergencia,Falla de motor,529352,54262,7,Taller Sur,Reparado
+800199,30004,20260215,Correctiva,Cambio de batería,476898,107129,4,Taller Norte,Reparado
+800200,30008,20250118,Preventiva,Revisión de frenos,115554,175271,2,Taller SmartMotor,Reparado
+800201,30010,20250719,Preventiva,Cambio de filtros,78297,60448,1,Taller Ruta 5,Reparado
+800202,30027,20250426,Correctiva,Cambio de neumáticos,309903,37906,3,Taller Mecánica Centro,Reparado
+800203,30015,20250407,Preventiva,Cambio de aceite y filtros,162979,64701,1,Taller SmartMotor,Reparado
+800204,30023,20251221,Preventiva,Revisión general,157820,95160,1,Taller Sur,Requiere seguimiento
+800205,30022,20261006,Preventiva,Cambio de aceite y filtros,124772,80106,2,Taller Ruta 5,Reparado
+800206,30027,20260123,Correctiva,Reparación sistema eléctrico,191873,136532,5,Taller Sur,Reparado
+800207,30004,20251130,Preventiva,Cambio de aceite y filtros,163537,155991,1,Taller Mecánica Centro,Reparado
+800208,30019,20250901,Emergencia,Falla transmisión,361303,101719,6,Taller SmartMotor,Requiere seguimiento
+800209,30005,20260825,Correctiva,Reparación suspensión,169623,135228,4,Taller Mecánica Centro,Reparado
+800210,30022,20261220,Correctiva,Reparación suspensión,283541,83947,4,Taller Mecánica Centro,Requiere seguimiento
+800211,30025,20250222,Correctiva,Reparación suspensión,335374,77638,3,Taller Ruta 5,Reparado
+800212,30006,20251223,Preventiva,Revisión de frenos,78787,156209,2,Taller Sur,Reparado
+800213,30011,20250620,Preventiva,Revisión de neumáticos,120461,105418,1,Taller Norte,Reparado
+800214,30014,20250929,Correctiva,Cambio de batería,408722,162079,3,Taller Norte,Reparado
+800215,30016,20260428,Preventiva,Revisión de frenos,121246,31435,2,Taller Mecánica Centro,Reparado
+800216,30008,20251015,Preventiva,Cambio de filtros,132595,113807,2,Taller Ruta 5,Reparado
+800217,30014,20260811,Preventiva,Cambio de filtros,123888,103609,2,Taller Norte,Reparado
+800218,30021,20250723,Preventiva,Revisión de frenos,127889,145374,1,Taller Ruta 5,Reparado
+800219,30019,20260505,Preventiva,Revisión de neumáticos,87083,87372,1,Taller Ruta 5,Reparado
+800220,30029,20260918,Preventiva,Revisión de frenos,71745,56029,2,Taller SmartMotor,No reparado
+800221,30001,20250111,Preventiva,Cambio de aceite y filtros,141958,71846,1,Taller Sur,Reparado
+800222,30019,20251227,Correctiva,Reparación de frenos,434186,82930,2,Taller Sur,No reparado
+800223,30007,20250924,Correctiva,Cambio de batería,334403,78901,4,Taller Ruta 5,Reparado
+800224,30030,20251013,Preventiva,Revisión de frenos,170459,163052,1,Taller SmartMotor,Reparado
+800225,30002,20260111,Correctiva,Reparación sistema eléctrico,430783,115530,5,Taller SmartMotor,Reparado
+800226,30028,20261125,Correctiva,Cambio de batería,355390,112970,3,Taller Ruta 5,Reparado
+800227,30027,20260429,Correctiva,Reparación de frenos,388260,166727,5,Taller Sur,No reparado
+800228,30019,20260204,Correctiva,Cambio de neumáticos,197837,41536,3,Taller Sur,Reparado
+800229,30018,20260726,Preventiva,Cambio de aceite y filtros,65109,79268,2,Taller Ruta 5,Reparado
+800230,30028,20260307,Emergencia,Falla sistema de frenos,976759,113309,9,Taller Mecánica Centro,Reparado
+800231,30017,20260713,Correctiva,Reparación de frenos,432725,60087,4,Taller SmartMotor,Reparado
+800232,30014,20260828,Preventiva,Cambio de aceite y filtros,112269,126347,2,Taller Norte,Reparado
+800233,30028,20261101,Preventiva,Revisión de frenos,66368,142360,1,Taller Mecánica Centro,Reparado
+800234,30018,20260805,Preventiva,Revisión de frenos,141061,80861,2,Taller Norte,Reparado
+800235,30008,20250419,Preventiva,Cambio de filtros,122768,81047,1,Taller Ruta 5,Reparado
+800236,30002,20251017,Preventiva,Cambio de aceite y filtros,86015,63320,2,Taller Norte,Requiere seguimiento
+800237,30022,20260122,Correctiva,Reparación de frenos,473694,54826,4,Taller Sur,Reparado
+800238,30020,20260621,Preventiva,Revisión de frenos,141941,63662,1,Taller Sur,Reparado
+800239,30011,20261109,Correctiva,Reparación suspensión,361957,102715,4,Taller SmartMotor,Reparado
+800240,30003,20260207,Correctiva,Reparación sistema eléctrico,312962,153629,5,Taller Mecánica Centro,Reparado
+800241,30009,20250918,Correctiva,Reparación suspensión,370971,50049,3,Taller Mecánica Centro,Reparado
+800242,30018,20250722,Emergencia,Falla sistema de frenos,834410,109561,6,Taller Mecánica Centro,Requiere seguimiento
+800243,30027,20260916,Preventiva,Cambio de aceite y filtros,90027,142340,1,Taller Sur,Reparado
+800244,30012,20250905,Correctiva,Reparación de frenos,438107,131757,5,Taller Norte,Reparado
+800245,30016,20261117,Correctiva,Cambio de neumáticos,222099,61585,5,Taller Norte,Reparado
+800246,30016,20251116,Correctiva,Reparación sistema eléctrico,441570,47778,3,Taller Sur,Requiere seguimiento
+800247,30013,20260710,Preventiva,Revisión de frenos,144878,87056,1,Taller Sur,Reparado
+800248,30007,20250808,Emergencia,Falla de motor,547133,118397,5,Taller Mecánica Centro,Reparado
+800249,30003,20251031,Preventiva,Cambio de aceite y filtros,95133,126059,1,Taller SmartMotor,Reparado
+800250,30017,20250920,Correctiva,Cambio de neumáticos,211272,97649,4,Taller SmartMotor,Reparado
+800251,30021,20260324,Correctiva,Reparación de frenos,382750,148154,3,Taller Norte,Reparado
+800252,30019,20251119,Preventiva,Cambio de filtros,171453,49816,1,Taller Ruta 5,Reparado
+800253,30002,20250417,Emergencia,Falla sistema de frenos,563567,101635,7,Taller Mecánica Centro,Reparado
+800254,30006,20250817,Preventiva,Cambio de filtros,152324,39847,2,Taller Sur,Reparado
+800255,30012,20250415,Preventiva,Cambio de filtros,80337,111537,1,Taller Sur,Reparado
+800256,30007,20260808,Preventiva,Cambio de aceite y filtros,99030,162130,2,Taller Ruta 5,Reparado
+800257,30023,20251026,Preventiva,Cambio de aceite y filtros,124178,63997,2,Taller Mecánica Centro,Reparado
+800258,30015,20260831,Preventiva,Revisión general,174474,156945,1,Taller SmartMotor,Reparado
+800259,30028,20260427,Preventiva,Revisión general,128785,39110,2,Taller Mecánica Centro,Reparado
+800260,30003,20250403,Preventiva,Revisión de frenos,103753,165542,2,Taller SmartMotor,Requiere seguimiento
+800261,30025,20260422,Correctiva,Cambio de batería,255823,43669,2,Taller Norte,No reparado
+800262,30002,20251005,Correctiva,Reparación sistema eléctrico,275354,118009,3,Taller SmartMotor,Reparado
+800263,30019,20250922,Correctiva,Cambio de neumáticos,462282,84061,5,Taller Ruta 5,Reparado
+800264,30018,20251212,Emergencia,Sobrecalentamiento del motor,822132,140169,9,Taller Norte,Requiere seguimiento
+800265,30005,20261214,Correctiva,Cambio de neumáticos,354456,141279,2,Taller Mecánica Centro,Requiere seguimiento
+800266,30026,20250801,Preventiva,Revisión general,85923,144044,2,Taller Ruta 5,Reparado
+800267,30016,20261022,Correctiva,Reparación sistema eléctrico,395014,47772,4,Taller SmartMotor,Reparado
+800268,30010,20251121,Preventiva,Cambio de aceite y filtros,87723,156969,1,Taller Ruta 5,Reparado
+800269,30009,20260304,Preventiva,Cambio de aceite y filtros,143360,169999,1,Taller Norte,Reparado
+800270,30017,20260820,Preventiva,Revisión de frenos,85537,107576,1,Taller Norte,Reparado
+800271,30027,20250209,Preventiva,Revisión de neumáticos,124732,31177,1,Taller Norte,Reparado
+800272,30004,20250127,Preventiva,Cambio de filtros,106819,103770,2,Taller Norte,Reparado
+800273,30005,20251203,Correctiva,Reparación suspensión,339420,54596,4,Taller Mecánica Centro,Reparado
+800274,30007,20260729,Correctiva,Cambio de neumáticos,278803,169978,4,Taller Mecánica Centro,Reparado
+800275,30006,20250203,Preventiva,Revisión general,106881,76413,1,Taller Mecánica Centro,Reparado
+800276,30029,20260711,Preventiva,Revisión general,102652,174539,1,Taller Norte,Reparado
+800277,30009,20260625,Correctiva,Reparación sistema eléctrico,162289,116365,4,Taller Sur,Reparado
+800278,30004,20260917,Preventiva,Revisión de neumáticos,123646,33654,1,Taller Norte,Reparado
+800279,30026,20251113,Preventiva,Cambio de filtros,179891,137971,2,Taller SmartMotor,Reparado
+800280,30026,20260302,Preventiva,Revisión de neumáticos,73673,118204,1,Taller Mecánica Centro,Reparado
+800281,30023,20250813,Correctiva,Cambio de neumáticos,333321,67384,4,Taller Norte,Reparado
+800282,30014,20250428,Preventiva,Revisión de frenos,131831,149503,1,Taller Mecánica Centro,Reparado
+800283,30002,20261203,Preventiva,Revisión general,96451,168299,1,Taller Norte,Reparado
+800284,30011,20261016,Correctiva,Reparación sistema eléctrico,410337,157556,4,Taller Sur,Reparado
+800285,30020,20260125,Correctiva,Cambio de batería,199104,107231,2,Taller Sur,Reparado
+800286,30011,20261008,Preventiva,Revisión general,117993,37421,1,Taller Ruta 5,Requiere seguimiento
+800287,30014,20250224,Preventiva,Revisión de frenos,154018,154457,2,Taller SmartMotor,Reparado
+800288,30030,20250605,Correctiva,Reparación de frenos,450611,178697,3,Taller Mecánica Centro,Reparado
+800289,30005,20260203,Preventiva,Revisión de neumáticos,170944,175282,1,Taller Ruta 5,Reparado
+800290,30030,20261023,Preventiva,Cambio de filtros,176492,102240,2,Taller Mecánica Centro,Reparado
+800291,30016,20260803,Preventiva,Revisión de neumáticos,116549,103794,2,Taller Norte,Reparado
+800292,30016,20250930,Preventiva,Revisión de frenos,179979,155541,1,Taller Sur,No reparado
+800293,30014,20250710,Preventiva,Cambio de filtros,155673,72828,1,Taller SmartMotor,Reparado
+800294,30006,20261117,Preventiva,Revisión de frenos,177181,118733,1,Taller Sur,Reparado
+800295,30013,20260902,Preventiva,Cambio de filtros,80103,171826,2,Taller Sur,Reparado
+800296,30015,20250323,Emergencia,Sobrecalentamiento del motor,864003,48752,4,Taller Sur,Requiere seguimiento
+800297,30016,20250218,Correctiva,Reparación sistema eléctrico,408503,121878,5,Taller Sur,Reparado
+800298,30028,20250516,Correctiva,Reparación sistema eléctrico,268413,177235,2,Taller Mecánica Centro,Reparado
+800299,30025,20260329,Preventiva,Revisión de neumáticos,95585,60682,1,Taller Ruta 5,Reparado
+800300,30018,20260122,Correctiva,Reparación sistema eléctrico,186035,120373,4,Taller Sur,Requiere seguimiento
+800301,30013,20260203,Correctiva,Reparación sistema eléctrico,383483,128864,3,Taller Mecánica Centro,Reparado
+800302,30029,20261127,Preventiva,Revisión de frenos,123133,103861,1,Taller Sur,Reparado
+800303,30026,20260304,Correctiva,Cambio de batería,436370,36721,4,Taller Norte,Reparado
+800304,30026,20260313,Emergencia,Falla de motor,792111,166728,5,Taller SmartMotor,Reparado
+800305,30012,20260407,Emergencia,Falla sistema de frenos,572317,61055,9,Taller Sur,Requiere seguimiento
+800306,30014,20260819,Preventiva,Cambio de aceite y filtros,83429,80200,1,Taller Mecánica Centro,Reparado
+800307,30008,20260206,Preventiva,Cambio de aceite y filtros,91822,70108,2,Taller Sur,Reparado
+800308,30025,20250603,Preventiva,Cambio de filtros,112188,85099,1,Taller Mecánica Centro,Reparado
+800309,30011,20260425,Preventiva,Revisión de frenos,163483,69922,1,Taller Norte,Reparado
+800310,30026,20250516,Preventiva,Revisión general,109841,149863,1,Taller Ruta 5,Requiere seguimiento
+800311,30015,20260520,Preventiva,Revisión de neumáticos,130984,58141,1,Taller Sur,Reparado
+800312,30029,20251012,Correctiva,Reparación de frenos,204823,53312,2,Taller Sur,Reparado
+800313,30002,20250805,Preventiva,Cambio de filtros,72411,87009,1,Taller Mecánica Centro,Reparado
+800314,30015,20260608,Preventiva,Revisión general,86715,57605,2,Taller Mecánica Centro,Reparado
+800315,30024,20250319,Correctiva,Reparación sistema eléctrico,213037,119818,2,Taller Mecánica Centro,Reparado
+800316,30005,20261005,Correctiva,Reparación sistema eléctrico,286614,90428,2,Taller Mecánica Centro,Requiere seguimiento
+800317,30026,20260131,Emergencia,Falla de motor,796636,161743,7,Taller SmartMotor,Reparado
+800318,30022,20260915,Preventiva,Revisión de neumáticos,177043,150575,1,Taller Sur,Reparado
+800319,30030,20250506,Correctiva,Reparación de frenos,433367,102930,2,Taller Mecánica Centro,Reparado
+800320,30003,20250417,Preventiva,Revisión de neumáticos,124041,147360,1,Taller SmartMotor,Reparado
+800321,30026,20260811,Emergencia,Falla de motor,792939,33631,8,Taller Norte,Reparado
+800322,30024,20260630,Preventiva,Cambio de filtros,111431,157734,2,Taller SmartMotor,Reparado
+800323,30029,20250524,Correctiva,Reparación de frenos,399686,86492,4,Taller Sur,Reparado
+800324,30006,20250829,Preventiva,Revisión de neumáticos,101991,90920,1,Taller Mecánica Centro,Reparado
+800325,30006,20260918,Correctiva,Reparación suspensión,251015,113588,5,Taller Norte,Reparado
+800326,30018,20251029,Preventiva,Cambio de filtros,69866,155426,2,Taller Norte,Reparado
+800327,30018,20260121,Preventiva,Revisión de frenos,102533,108815,2,Taller SmartMotor,Requiere seguimiento
+800328,30007,20260314,Emergencia,Falla de motor,558432,127661,7,Taller SmartMotor,Requiere seguimiento
+800329,30006,20250107,Emergencia,Falla de motor,909252,167050,5,Taller Mecánica Centro,Requiere seguimiento
+800330,30003,20251029,Emergencia,Problema eléctrico grave,969745,177977,4,Taller SmartMotor,No reparado
+800331,30029,20260327,Preventiva,Revisión general,114093,85419,2,Taller Sur,Reparado
+800332,30015,20260206,Preventiva,Revisión de neumáticos,136971,123471,1,Taller Mecánica Centro,Reparado
+800333,30026,20251215,Preventiva,Cambio de aceite y filtros,97643,73950,2,Taller Mecánica Centro,Reparado
+800334,30023,20250627,Emergencia,Problema eléctrico grave,982543,88005,6,Taller Sur,Reparado
+800335,30016,20260425,Preventiva,Revisión de frenos,73057,94028,1,Taller Ruta 5,Reparado
+800336,30022,20260416,Emergencia,Falla transmisión,527558,50567,7,Taller Ruta 5,Requiere seguimiento
+800337,30012,20260204,Correctiva,Cambio de neumáticos,406695,38706,4,Taller Mecánica Centro,Reparado
+800338,30005,20261015,Preventiva,Cambio de filtros,69496,86447,1,Taller Norte,Reparado
+800339,30021,20261106,Preventiva,Cambio de aceite y filtros,115147,121396,1,Taller Ruta 5,No reparado
+800340,30027,20260522,Preventiva,Revisión de frenos,170058,98056,2,Taller Ruta 5,Reparado
+800341,30007,20260525,Preventiva,Cambio de aceite y filtros,127695,147235,2,Taller Norte,Reparado
+800342,30029,20261021,Correctiva,Reparación de frenos,176832,145725,2,Taller SmartMotor,No reparado
+800343,30002,20250101,Correctiva,Reparación suspensión,370894,35110,3,Taller Mecánica Centro,Requiere seguimiento
+800344,30007,20260325,Preventiva,Revisión de neumáticos,163555,137539,2,Taller Ruta 5,Reparado
+800345,30018,20260501,Preventiva,Revisión de neumáticos,138645,32023,1,Taller Sur,Reparado
+800346,30018,20251103,Preventiva,Revisión de neumáticos,75379,57766,1,Taller Ruta 5,Reparado
+800347,30027,20260124,Preventiva,Revisión de frenos,155286,36643,2,Taller Norte,Reparado
+800348,30005,20250314,Preventiva,Revisión general,123646,139458,1,Taller Ruta 5,Reparado
+800349,30025,20251004,Preventiva,Revisión de neumáticos,122539,43428,1,Taller Ruta 5,Reparado
+800350,30024,20251119,Preventiva,Cambio de filtros,65469,58854,1,Taller Norte,Reparado
+800351,30023,20251225,Preventiva,Cambio de aceite y filtros,144730,57386,1,Taller Sur,No reparado
+800352,30026,20260416,Preventiva,Cambio de aceite y filtros,119792,64051,2,Taller Ruta 5,Reparado
+800353,30025,20251123,Correctiva,Reparación de frenos,338490,175544,3,Taller SmartMotor,Reparado
+800354,30012,20260905,Preventiva,Revisión de frenos,94865,76850,1,Taller Mecánica Centro,Reparado
+800355,30023,20260224,Correctiva,Reparación suspensión,233820,53284,4,Taller Norte,Reparado
+800356,30022,20250119,Correctiva,Cambio de batería,420143,52436,5,Taller Norte,Requiere seguimiento
+800357,30006,20251223,Emergencia,Problema eléctrico grave,638345,176150,5,Taller SmartMotor,No reparado
+800358,30025,20250607,Preventiva,Cambio de aceite y filtros,73493,47069,2,Taller SmartMotor,Reparado
+800359,30002,20250707,Correctiva,Cambio de neumáticos,457747,162503,5,Taller Sur,Reparado
+800360,30019,20251125,Preventiva,Cambio de filtros,133997,178087,2,Taller Norte,Reparado
+800361,30021,20251207,Correctiva,Reparación de frenos,191800,126044,5,Taller Sur,Reparado
+800362,30022,20260104,Correctiva,Reparación suspensión,459443,47073,2,Taller Norte,Requiere seguimiento
+800363,30015,20251008,Correctiva,Reparación suspensión,216707,95428,3,Taller SmartMotor,Requiere seguimiento
+800364,30026,20250323,Preventiva,Revisión de neumáticos,88228,152788,2,Taller Ruta 5,Reparado
+800365,30014,20261216,Emergencia,Problema eléctrico grave,956200,167660,4,Taller Mecánica Centro,Reparado
+800366,30012,20251012,Preventiva,Revisión de frenos,75352,159350,2,Taller SmartMotor,Reparado
+800367,30005,20250109,Emergencia,Sobrecalentamiento del motor,488593,48474,4,Taller SmartMotor,Requiere seguimiento
+800368,30002,20260507,Preventiva,Revisión de frenos,129184,43140,1,Taller SmartMotor,Requiere seguimiento
+800369,30003,20260917,Correctiva,Reparación sistema eléctrico,358015,126111,4,Taller Sur,Reparado
+800370,30002,20261224,Preventiva,Cambio de filtros,130202,78777,1,Taller SmartMotor,Reparado
+800371,30028,20260722,Preventiva,Revisión de neumáticos,72819,93870,2,Taller Mecánica Centro,Reparado
+800372,30009,20250920,Correctiva,Reparación de frenos,150781,144586,2,Taller Norte,Reparado
+800373,30009,20250109,Correctiva,Cambio de neumáticos,441262,130417,2,Taller Ruta 5,Reparado
+800374,30030,20260709,Emergencia,Falla sistema de frenos,793945,71971,6,Taller Sur,Reparado
+800375,30019,20260517,Preventiva,Revisión general,139025,133850,1,Taller Ruta 5,Reparado
+800376,30030,20260923,Preventiva,Revisión de frenos,109159,152775,2,Taller Sur,Reparado
+800377,30006,20260713,Preventiva,Cambio de aceite y filtros,81038,67991,2,Taller Sur,Reparado
+800378,30020,20250518,Preventiva,Revisión de frenos,144742,67711,1,Taller Ruta 5,Reparado
+800379,30012,20260327,Preventiva,Cambio de aceite y filtros,145120,119087,2,Taller Sur,Reparado
+800380,30009,20260803,Correctiva,Cambio de batería,217843,69901,3,Taller Ruta 5,No reparado
+800381,30022,20260117,Correctiva,Reparación de frenos,492829,140454,5,Taller Mecánica Centro,No reparado
+800382,30017,20261119,Emergencia,Sobrecalentamiento del motor,727501,149052,5,Taller Norte,Reparado
+800383,30022,20250525,Preventiva,Revisión general,68004,39752,1,Taller SmartMotor,Reparado
+800384,30008,20260325,Correctiva,Reparación sistema eléctrico,411501,62994,2,Taller SmartMotor,Reparado
+800385,30025,20250727,Correctiva,Reparación sistema eléctrico,281717,111835,2,Taller Sur,Reparado
+800386,30004,20260113,Preventiva,Revisión de neumáticos,141623,76305,2,Taller Sur,Reparado
+800387,30021,20261226,Preventiva,Revisión de neumáticos,145751,121353,2,Taller Ruta 5,Reparado
+800388,30001,20250218,Preventiva,Cambio de aceite y filtros,131986,174302,2,Taller SmartMotor,Reparado
+800389,30022,20260514,Preventiva,Cambio de aceite y filtros,132516,179130,2,Taller Ruta 5,Requiere seguimiento
+800390,30005,20250528,Preventiva,Revisión de neumáticos,147969,162161,1,Taller Sur,Reparado
+800391,30001,20250903,Correctiva,Cambio de neumáticos,188547,58795,2,Taller Ruta 5,Requiere seguimiento
+800392,30011,20251129,Correctiva,Cambio de neumáticos,475422,85077,4,Taller Ruta 5,Reparado
+800393,30028,20250416,Correctiva,Cambio de batería,460925,83798,2,Taller Mecánica Centro,Requiere seguimiento
+800394,30030,20261229,Correctiva,Reparación suspensión,498805,102954,4,Taller Ruta 5,Reparado
+800395,30002,20250325,Preventiva,Cambio de filtros,146516,104567,2,Taller Ruta 5,Reparado
+800396,30030,20260126,Preventiva,Cambio de aceite y filtros,175111,91709,2,Taller SmartMotor,Requiere seguimiento
+800397,30014,20261022,Preventiva,Revisión general,144866,35075,1,Taller SmartMotor,Requiere seguimiento
+800398,30028,20260516,Preventiva,Cambio de aceite y filtros,176219,108610,1,Taller Mecánica Centro,Reparado
+800399,30026,20260214,Preventiva,Cambio de aceite y filtros,109437,89711,1,Taller SmartMotor,Reparado
+800400,30019,20260804,Correctiva,Cambio de batería,292312,122493,3,Taller Ruta 5,Reparado
+800401,30029,20260428,Emergencia,Falla de motor,693912,136108,9,Taller Mecánica Centro,Reparado
+800402,30025,20251013,Correctiva,Reparación de frenos,335378,96314,5,Taller Mecánica Centro,Requiere seguimiento
+800403,30028,20260131,Preventiva,Revisión de neumáticos,139151,88643,1,Taller SmartMotor,Reparado
+800404,30012,20260918,Correctiva,Cambio de neumáticos,497580,76403,4,Taller SmartMotor,Requiere seguimiento
+800405,30023,20251110,Preventiva,Cambio de filtros,66581,140155,2,Taller SmartMotor,Reparado
+800406,30015,20260831,Preventiva,Cambio de filtros,148668,175639,1,Taller Sur,Reparado
+800407,30025,20260808,Correctiva,Reparación suspensión,178803,179302,4,Taller Sur,Reparado
+800408,30024,20250604,Preventiva,Revisión de neumáticos,68770,41093,2,Taller Norte,Requiere seguimiento
+800409,30011,20250306,Preventiva,Cambio de aceite y filtros,102752,72070,2,Taller SmartMotor,Reparado
+800410,30010,20251123,Preventiva,Revisión de neumáticos,146795,58933,2,Taller Ruta 5,Requiere seguimiento
+800411,30030,20250308,Preventiva,Cambio de aceite y filtros,171032,72604,1,Taller Ruta 5,Reparado
+800412,30006,20260726,Preventiva,Cambio de filtros,156055,167868,1,Taller SmartMotor,Reparado
+800413,30009,20251203,Preventiva,Revisión general,154611,126038,1,Taller Norte,Reparado
+800414,30006,20250329,Preventiva,Cambio de aceite y filtros,110952,166535,1,Taller SmartMotor,Reparado
+800415,30019,20260620,Preventiva,Revisión general,104602,144598,1,Taller Mecánica Centro,Reparado
+800416,30022,20260916,Correctiva,Reparación suspensión,302458,113276,4,Taller SmartMotor,Reparado
+800417,30002,20261103,Preventiva,Revisión general,104363,108279,1,Taller Sur,Reparado
+800418,30013,20251108,Correctiva,Cambio de neumáticos,407324,164393,2,Taller Ruta 5,Reparado
+800419,30028,20260731,Preventiva,Revisión de neumáticos,126262,164832,1,Taller Norte,Reparado
+800420,30024,20260106,Preventiva,Cambio de aceite y filtros,84995,178049,1,Taller Sur,Reparado
+800421,30026,20250921,Preventiva,Cambio de aceite y filtros,162112,46715,2,Taller SmartMotor,Reparado
+800422,30004,20261026,Emergencia,Sobrecalentamiento del motor,794865,171130,8,Taller Norte,Reparado
+800423,30001,20251225,Preventiva,Cambio de aceite y filtros,165848,136022,2,Taller Ruta 5,Reparado
+800424,30021,20260318,Correctiva,Cambio de batería,311445,167103,3,Taller SmartMotor,Reparado
+800425,30007,20251102,Correctiva,Reparación de frenos,152282,97534,3,Taller SmartMotor,Requiere seguimiento
+800426,30011,20250508,Preventiva,Cambio de aceite y filtros,132982,80583,1,Taller Mecánica Centro,Reparado
+800427,30004,20260710,Correctiva,Reparación sistema eléctrico,381496,92493,5,Taller Ruta 5,Reparado
+800428,30016,20260503,Preventiva,Cambio de filtros,99758,84312,1,Taller Ruta 5,Reparado
+800429,30008,20250305,Preventiva,Revisión de frenos,174682,96677,2,Taller Norte,Reparado
+800430,30013,20251013,Preventiva,Revisión de neumáticos,141926,98803,1,Taller SmartMotor,Reparado
+800431,30011,20260220,Emergencia,Falla transmisión,595404,147961,7,Taller Ruta 5,Reparado
+800432,30014,20251020,Preventiva,Revisión general,154333,41120,2,Taller Norte,Reparado
+800433,30006,20251203,Correctiva,Reparación de frenos,245040,178510,5,Taller Norte,Reparado
+800434,30004,20250224,Preventiva,Revisión general,153762,150906,1,Taller Ruta 5,Reparado
+800435,30004,20250701,Preventiva,Revisión general,132127,144650,2,Taller Ruta 5,Reparado
+800436,30011,20250503,Preventiva,Revisión de neumáticos,113161,163241,1,Taller Sur,Reparado
+800437,30025,20260304,Preventiva,Cambio de filtros,126321,167416,1,Taller Ruta 5,Reparado
+800438,30018,20260112,Emergencia,Problema eléctrico grave,409500,140659,8,Taller SmartMotor,Reparado
+800439,30029,20260605,Preventiva,Revisión de neumáticos,146836,166570,1,Taller Norte,Reparado
+800440,30007,20250123,Correctiva,Cambio de batería,337954,160544,2,Taller Sur,Reparado
+800441,30024,20251214,Preventiva,Revisión general,60358,149619,1,Taller Mecánica Centro,Reparado
+800442,30022,20250213,Preventiva,Revisión de frenos,86762,174355,1,Taller Ruta 5,Reparado
+800443,30013,20251022,Correctiva,Cambio de neumáticos,325767,114754,2,Taller Sur,Reparado
+800444,30019,20251123,Correctiva,Cambio de batería,389779,122021,4,Taller Ruta 5,Reparado
+800445,30023,20260609,Emergencia,Falla transmisión,762811,106021,8,Taller Sur,Requiere seguimiento
+800446,30013,20250609,Preventiva,Cambio de filtros,127496,96093,2,Taller SmartMotor,Requiere seguimiento
+800447,30029,20261002,Emergencia,Falla de motor,480351,68635,7,Taller Norte,Requiere seguimiento
+800448,30029,20261116,Preventiva,Revisión general,88064,152813,2,Taller Ruta 5,Reparado
+800449,30013,20260627,Preventiva,Cambio de aceite y filtros,164946,66593,1,Taller Ruta 5,Reparado
+800450,30007,20250518,Preventiva,Revisión general,82190,36142,1,Taller Mecánica Centro,Reparado
+800451,30027,20250716,Preventiva,Cambio de aceite y filtros,160167,112035,1,Taller SmartMotor,Reparado
+800452,30012,20250725,Preventiva,Revisión general,100510,51826,1,Taller Mecánica Centro,Reparado
+800453,30012,20260526,Emergencia,Falla de motor,508175,166917,6,Taller Norte,Requiere seguimiento
+800454,30022,20260427,Preventiva,Revisión de neumáticos,111151,178683,2,Taller Ruta 5,Reparado
+800455,30009,20250101,Preventiva,Cambio de aceite y filtros,116622,57810,1,Taller Norte,Reparado
+800456,30003,20250320,Correctiva,Reparación suspensión,478768,170836,2,Taller Mecánica Centro,Reparado
+800457,30002,20250907,Correctiva,Cambio de batería,266923,168367,2,Taller Sur,Requiere seguimiento
+800458,30008,20261228,Correctiva,Cambio de neumáticos,171281,84189,3,Taller Ruta 5,Reparado
+800459,30019,20260413,Preventiva,Revisión general,101869,62955,1,Taller Norte,Requiere seguimiento
+800460,30013,20260904,Preventiva,Revisión general,163546,52031,2,Taller Norte,Reparado
+800461,30009,20260826,Correctiva,Reparación de frenos,385841,141041,3,Taller Sur,Reparado
+800462,30019,20250602,Correctiva,Reparación suspensión,218487,178694,3,Taller Ruta 5,Reparado
+800463,30029,20251231,Preventiva,Revisión de neumáticos,88454,97904,1,Taller Mecánica Centro,Reparado
+800464,30004,20260417,Preventiva,Revisión general,171668,154184,2,Taller Norte,Reparado
+800465,30030,20250116,Preventiva,Cambio de filtros,85235,30159,2,Taller Sur,Reparado
+800466,30016,20260524,Preventiva,Revisión de neumáticos,74743,76101,2,Taller Mecánica Centro,Reparado
+800467,30030,20260312,Emergencia,Falla de motor,686907,173309,5,Taller Norte,Reparado
+800468,30025,20251003,Correctiva,Cambio de neumáticos,204238,88608,3,Taller Norte,Requiere seguimiento
+800469,30020,20260830,Preventiva,Cambio de aceite y filtros,87990,92551,2,Taller Mecánica Centro,Reparado
+800470,30022,20250513,Emergencia,Sobrecalentamiento del motor,718266,49008,6,Taller Ruta 5,Reparado
+800471,30010,20251127,Correctiva,Reparación de frenos,263550,121218,2,Taller Sur,Reparado
+800472,30004,20250912,Correctiva,Cambio de neumáticos,182441,92368,5,Taller Norte,Reparado
+800473,30005,20250106,Preventiva,Revisión de neumáticos,72180,128538,1,Taller Sur,Reparado
+800474,30001,20250801,Preventiva,Cambio de filtros,171022,84040,2,Taller Sur,Reparado
+800475,30004,20251006,Correctiva,Reparación de frenos,478996,155737,2,Taller Sur,Reparado
+800476,30013,20250422,Correctiva,Reparación suspensión,399134,97055,3,Taller Ruta 5,Reparado
+800477,30023,20260528,Preventiva,Cambio de filtros,98342,32257,1,Taller Norte,Reparado
+800478,30004,20250402,Preventiva,Cambio de aceite y filtros,112389,148581,2,Taller Sur,Reparado
+800479,30026,20250916,Correctiva,Cambio de batería,364764,87505,2,Taller Sur,Reparado
+800480,30020,20250629,Correctiva,Reparación de frenos,395739,88283,2,Taller SmartMotor,Reparado
+800481,30024,20260808,Correctiva,Reparación de frenos,314074,56672,3,Taller Mecánica Centro,Requiere seguimiento
+800482,30026,20260904,Preventiva,Revisión de neumáticos,170153,58172,1,Taller Norte,Requiere seguimiento
+800483,30002,20260613,Preventiva,Cambio de filtros,162797,61881,1,Taller SmartMotor,Reparado
+800484,30012,20260315,Emergencia,Problema eléctrico grave,362828,126664,7,Taller Norte,Reparado
+800485,30022,20260912,Correctiva,Reparación de frenos,431755,173022,2,Taller Norte,Reparado
+800486,30009,20261210,Correctiva,Cambio de batería,221354,81374,3,Taller Mecánica Centro,Reparado
+800487,30002,20260211,Preventiva,Revisión de neumáticos,89336,70992,1,Taller Sur,Reparado
+800488,30021,20261203,Correctiva,Reparación de frenos,196607,82870,5,Taller SmartMotor,Requiere seguimiento
+800489,30012,20260615,Preventiva,Cambio de aceite y filtros,87606,58151,2,Taller Ruta 5,Reparado
+800490,30023,20260613,Preventiva,Revisión general,154108,136984,1,Taller Sur,Reparado
+800491,30022,20250407,Preventiva,Cambio de filtros,164918,79067,2,Taller SmartMotor,Reparado
+800492,30018,20261204,Preventiva,Cambio de filtros,138257,91215,2,Taller SmartMotor,Reparado
+800493,30005,20250521,Preventiva,Cambio de filtros,120614,107240,2,Taller Ruta 5,Reparado
+800494,30023,20250601,Preventiva,Revisión general,166956,148452,2,Taller Sur,Reparado
+800495,30001,20260602,Correctiva,Cambio de neumáticos,182430,53091,3,Taller Sur,Reparado
+800496,30029,20260724,Preventiva,Cambio de aceite y filtros,179469,66081,2,Taller Mecánica Centro,Reparado
+800497,30009,20250117,Preventiva,Cambio de aceite y filtros,107562,65063,2,Taller Ruta 5,Reparado
+800498,30002,20250409,Correctiva,Cambio de batería,385796,158557,2,Taller Norte,Reparado
+800499,30019,20251122,Preventiva,Revisión de neumáticos,104254,97293,1,Taller Mecánica Centro,Reparado
+800500,30020,20250608,Preventiva,Revisión de neumáticos,153418,169883,1,Taller Ruta 5,Reparado
+800501,30025,20260321,Correctiva,Reparación suspensión,204110,175051,5,Taller Sur,No reparado
+800502,30027,20250215,Emergencia,Falla transmisión,688365,119080,7,Taller SmartMotor,Reparado
+800503,30010,20251206,Emergencia,Falla de motor,478389,55372,6,Taller SmartMotor,Reparado
+800504,30005,20261123,Emergencia,Sobrecalentamiento del motor,418431,85745,5,Taller Mecánica Centro,Requiere seguimiento
+800505,30023,20260128,Correctiva,Reparación de frenos,261086,131971,5,Taller Mecánica Centro,Requiere seguimiento
+800506,30004,20250709,Preventiva,Cambio de aceite y filtros,144388,52601,2,Taller Sur,Reparado
+800507,30027,20260321,Preventiva,Revisión general,84532,158727,2,Taller Norte,Reparado
+800508,30023,20250209,Preventiva,Revisión general,87413,111050,1,Taller Sur,Reparado
+800509,30008,20261201,Correctiva,Reparación sistema eléctrico,218323,53816,3,Taller Ruta 5,Reparado
+800510,30012,20250923,Emergencia,Falla sistema de frenos,457096,122764,4,Taller Sur,Requiere seguimiento
+800511,30030,20251111,Correctiva,Reparación suspensión,153696,156310,4,Taller SmartMotor,Reparado
+800512,30013,20261205,Correctiva,Reparación de frenos,398922,96641,5,Taller SmartMotor,Requiere seguimiento
+800513,30024,20260910,Preventiva,Revisión de neumáticos,90099,173674,1,Taller Mecánica Centro,Reparado
+800514,30013,20250717,Preventiva,Cambio de aceite y filtros,124789,73361,2,Taller Mecánica Centro,Reparado
+800515,30016,20251223,Preventiva,Revisión general,62871,76002,1,Taller Norte,Reparado
+800516,30017,20261102,Correctiva,Cambio de batería,249003,72998,4,Taller Mecánica Centro,Requiere seguimiento
+800517,30023,20250609,Preventiva,Cambio de filtros,103798,104601,2,Taller Sur,Reparado
+800518,30021,20260818,Preventiva,Cambio de aceite y filtros,102351,123330,2,Taller Sur,Reparado
+800519,30001,20251125,Correctiva,Reparación suspensión,312627,93353,4,Taller SmartMotor,Requiere seguimiento
+800520,30021,20250209,Preventiva,Revisión general,105095,175342,1,Taller Mecánica Centro,Reparado
+800521,30008,20260123,Correctiva,Reparación sistema eléctrico,497139,177745,2,Taller Mecánica Centro,Reparado
+800522,30026,20260324,Preventiva,Revisión de neumáticos,76964,67044,2,Taller Mecánica Centro,Reparado
+800523,30025,20260927,Preventiva,Revisión de neumáticos,121240,142230,2,Taller Sur,Reparado
+800524,30002,20251017,Preventiva,Revisión general,150453,105715,2,Taller Ruta 5,Reparado
+800525,30019,20260802,Correctiva,Cambio de neumáticos,307636,123526,3,Taller Mecánica Centro,Reparado
+800526,30014,20251007,Correctiva,Reparación suspensión,477602,177661,2,Taller Ruta 5,Reparado
+800527,30007,20260831,Emergencia,Problema eléctrico grave,476479,166213,8,Taller SmartMotor,Reparado
+800528,30019,20250504,Preventiva,Revisión de frenos,63273,132842,2,Taller SmartMotor,Reparado
+800529,30019,20250215,Preventiva,Revisión de frenos,169269,57128,1,Taller Sur,Reparado
+800530,30023,20250921,Correctiva,Reparación suspensión,292180,163872,2,Taller Ruta 5,Reparado
+800531,30027,20261218,Preventiva,Cambio de aceite y filtros,155102,152049,2,Taller Ruta 5,Reparado
+800532,30025,20260307,Correctiva,Reparación sistema eléctrico,183276,131968,3,Taller Mecánica Centro,Requiere seguimiento
+800533,30002,20261114,Preventiva,Cambio de filtros,102291,162610,1,Taller Sur,Reparado
+800534,30019,20250307,Correctiva,Cambio de batería,447142,173184,4,Taller Sur,Reparado
+800535,30022,20250612,Correctiva,Reparación de frenos,483713,71328,4,Taller Ruta 5,Requiere seguimiento
+800536,30017,20261019,Preventiva,Revisión de frenos,86400,100305,1,Taller Ruta 5,Reparado
+800537,30004,20261009,Preventiva,Cambio de aceite y filtros,142912,133591,1,Taller Mecánica Centro,Reparado
+800538,30028,20251110,Correctiva,Cambio de batería,479535,174866,4,Taller Ruta 5,Reparado
+800539,30009,20251030,Correctiva,Cambio de neumáticos,350339,151950,5,Taller Norte,Reparado
+800540,30024,20250322,Correctiva,Reparación suspensión,367400,157815,4,Taller Ruta 5,Reparado
+800541,30008,20250818,Correctiva,Reparación suspensión,423586,76289,5,Taller Sur,Reparado
+800542,30024,20250604,Preventiva,Cambio de filtros,79581,89722,1,Taller SmartMotor,Reparado
+800543,30028,20251122,Emergencia,Sobrecalentamiento del motor,491880,30887,6,Taller Norte,Reparado
+800544,30025,20250604,Preventiva,Revisión general,146741,152746,2,Taller Sur,Reparado
+800545,30012,20260704,Emergencia,Problema eléctrico grave,746981,147126,9,Taller Mecánica Centro,Requiere seguimiento
+800546,30026,20260109,Preventiva,Revisión de neumáticos,115633,81913,1,Taller Norte,Requiere seguimiento
+800547,30024,20260402,Preventiva,Revisión de frenos,115312,171633,2,Taller Sur,Reparado
+800548,30009,20260508,Preventiva,Revisión de neumáticos,173745,140041,2,Taller Ruta 5,Reparado
+800549,30005,20260411,Preventiva,Revisión general,119778,75833,2,Taller Norte,Reparado
+800550,30016,20261020,Preventiva,Revisión de frenos,148229,165189,2,Taller Ruta 5,Reparado
+800551,30008,20251124,Preventiva,Cambio de filtros,141882,98136,2,Taller Ruta 5,Reparado
+800552,30015,20250326,Correctiva,Reparación sistema eléctrico,442253,160356,3,Taller Ruta 5,Reparado
+800553,30002,20261006,Correctiva,Cambio de neumáticos,403279,124767,3,Taller Sur,Reparado
+800554,30026,20260306,Preventiva,Revisión de frenos,89084,70387,1,Taller SmartMotor,Reparado
+800555,30028,20260907,Preventiva,Revisión general,163061,164066,2,Taller Sur,Reparado
+800556,30011,20260526,Correctiva,Cambio de neumáticos,467420,71243,2,Taller Sur,Reparado
+800557,30018,20260219,Emergencia,Falla sistema de frenos,603091,95618,4,Taller SmartMotor,Reparado
+800558,30013,20251026,Correctiva,Reparación sistema eléctrico,271759,60981,5,Taller Norte,Reparado
+800559,30008,20251027,Preventiva,Revisión de frenos,79874,168746,1,Taller Sur,Requiere seguimiento
+800560,30021,20260307,Correctiva,Reparación de frenos,481356,163498,2,Taller Ruta 5,Reparado
+800561,30016,20250304,Preventiva,Cambio de aceite y filtros,64138,121176,2,Taller Mecánica Centro,Reparado
+800562,30028,20250406,Preventiva,Cambio de aceite y filtros,103764,153030,1,Taller SmartMotor,Reparado
+800563,30022,20250602,Preventiva,Revisión de neumáticos,177034,35039,2,Taller Mecánica Centro,Reparado
+800564,30030,20250730,Preventiva,Revisión de frenos,143104,116346,2,Taller Norte,Reparado
+800565,30018,20260416,Correctiva,Reparación suspensión,427068,143143,3,Taller SmartMotor,Reparado
+800566,30025,20261002,Preventiva,Revisión general,170317,112409,1,Taller Ruta 5,Requiere seguimiento
+800567,30016,20260915,Preventiva,Cambio de aceite y filtros,145947,121829,1,Taller Ruta 5,Reparado
+800568,30009,20250403,Preventiva,Revisión de neumáticos,80025,165530,1,Taller Norte,Reparado
+800569,30001,20251205,Preventiva,Revisión de frenos,98506,35668,1,Taller Norte,Reparado
+800570,30012,20250924,Preventiva,Revisión general,67352,118835,2,Taller Mecánica Centro,Reparado
+800571,30028,20251013,Preventiva,Cambio de filtros,91707,168368,1,Taller Norte,Reparado
+800572,30029,20260630,Preventiva,Revisión de neumáticos,65103,55500,1,Taller Sur,Reparado
+800573,30026,20260129,Correctiva,Reparación suspensión,316508,77406,5,Taller Sur,Reparado
+800574,30020,20260103,Preventiva,Cambio de filtros,62187,107243,1,Taller SmartMotor,Reparado
+800575,30016,20250624,Preventiva,Revisión de frenos,74387,99463,1,Taller Mecánica Centro,Reparado
+800576,30030,20261018,Preventiva,Revisión de frenos,126736,111257,2,Taller SmartMotor,Requiere seguimiento
+800577,30030,20260328,Preventiva,Revisión de neumáticos,60136,47413,1,Taller SmartMotor,Reparado
+800578,30021,20261121,Correctiva,Reparación sistema eléctrico,226240,46322,3,Taller SmartMotor,Reparado
+800579,30006,20260110,Preventiva,Revisión de neumáticos,153782,53199,2,Taller Mecánica Centro,Reparado
+800580,30014,20260311,Preventiva,Revisión de neumáticos,146465,153364,2,Taller SmartMotor,Reparado
+800581,30005,20250724,Preventiva,Revisión general,156671,71458,2,Taller Sur,Reparado
+800582,30005,20250417,Preventiva,Revisión de frenos,106313,140107,1,Taller Ruta 5,Reparado
+800583,30027,20250705,Preventiva,Cambio de filtros,114935,152439,1,Taller SmartMotor,Reparado
+800584,30023,20260404,Preventiva,Revisión general,160546,110201,2,Taller SmartMotor,Reparado
+800585,30008,20260821,Preventiva,Revisión de frenos,65618,162992,2,Taller Mecánica Centro,Reparado
+800586,30022,20251205,Correctiva,Cambio de batería,220463,123500,2,Taller Norte,Reparado
+800587,30011,20250817,Preventiva,Revisión de neumáticos,118692,160841,1,Taller Norte,Reparado
+800588,30005,20260313,Preventiva,Revisión de neumáticos,60192,66413,1,Taller Ruta 5,Reparado
+800589,30021,20250321,Preventiva,Revisión de neumáticos,96468,171727,2,Taller SmartMotor,Reparado
+800590,30022,20250310,Correctiva,Cambio de neumáticos,201831,89191,2,Taller SmartMotor,Reparado
+800591,30016,20261010,Preventiva,Revisión general,132309,125430,2,Taller Ruta 5,Reparado
+800592,30006,20261015,Correctiva,Cambio de batería,154994,34234,2,Taller SmartMotor,Reparado
+800593,30007,20260129,Correctiva,Reparación suspensión,453297,107535,5,Taller Sur,Requiere seguimiento
+800594,30012,20261126,Preventiva,Cambio de filtros,178094,41064,1,Taller Norte,Reparado
+800595,30021,20261222,Preventiva,Cambio de filtros,147999,109698,1,Taller Ruta 5,Reparado
+800596,30005,20250720,Correctiva,Reparación de frenos,172010,117923,4,Taller Ruta 5,Reparado
+800597,30029,20260731,Emergencia,Falla transmisión,645809,39277,4,Taller Sur,Reparado
+800598,30023,20251118,Preventiva,Cambio de aceite y filtros,152067,177705,2,Taller Mecánica Centro,Reparado
+800599,30013,20260429,Preventiva,Revisión de frenos,137299,50176,1,Taller Sur,Reparado
+800600,30006,20250430,Correctiva,Reparación de frenos,274168,153099,3,Taller SmartMotor,Reparado
+800601,30002,20260526,Preventiva,Revisión general,176500,111471,2,Taller Mecánica Centro,Reparado
+800602,30028,20261128,Preventiva,Revisión de frenos,144811,148028,1,Taller Ruta 5,Reparado
+800603,30016,20260716,Preventiva,Revisión de neumáticos,93722,40625,2,Taller Norte,Reparado
+800604,30008,20250512,Preventiva,Cambio de aceite y filtros,112953,79522,2,Taller SmartMotor,Reparado
+800605,30025,20250515,Preventiva,Cambio de aceite y filtros,162638,42226,2,Taller Mecánica Centro,Reparado
+800606,30009,20261216,Correctiva,Cambio de batería,411497,95133,2,Taller Norte,Reparado
+800607,30023,20260716,Correctiva,Reparación de frenos,275814,142599,5,Taller Sur,Requiere seguimiento
+800608,30011,20260304,Preventiva,Cambio de filtros,89063,120880,1,Taller Mecánica Centro,Reparado
+800609,30007,20250326,Correctiva,Reparación suspensión,300331,146525,3,Taller SmartMotor,Requiere seguimiento
+800610,30018,20260926,Correctiva,Reparación suspensión,325607,177175,4,Taller Mecánica Centro,Requiere seguimiento
+800611,30003,20260324,Correctiva,Reparación sistema eléctrico,493303,161040,3,Taller Ruta 5,Reparado
+800612,30028,20260125,Emergencia,Falla transmisión,938574,104842,8,Taller Mecánica Centro,Requiere seguimiento
+800613,30001,20250812,Preventiva,Revisión de neumáticos,144748,93344,1,Taller Ruta 5,Reparado
+800614,30021,20260331,Correctiva,Reparación suspensión,264589,175406,5,Taller Ruta 5,Reparado
+800615,30011,20260427,Preventiva,Revisión de frenos,112656,178447,2,Taller Ruta 5,Reparado
+800616,30009,20250726,Preventiva,Revisión general,106287,116724,1,Taller Ruta 5,Reparado
+800617,30021,20250829,Preventiva,Revisión de neumáticos,131196,100014,1,Taller Norte,Reparado
+800618,30011,20250712,Preventiva,Cambio de aceite y filtros,163699,143711,1,Taller Ruta 5,Reparado
+800619,30029,20250330,Emergencia,Problema eléctrico grave,734708,98798,6,Taller Mecánica Centro,Reparado
+800620,30019,20260412,Emergencia,Problema eléctrico grave,402691,109768,9,Taller Ruta 5,Reparado
+800621,30027,20250716,Correctiva,Reparación suspensión,327718,93185,5,Taller Mecánica Centro,Requiere seguimiento
+800622,30021,20260426,Correctiva,Cambio de neumáticos,169288,108824,3,Taller Ruta 5,Reparado
+800623,30002,20250531,Correctiva,Reparación de frenos,189104,179134,5,Taller Norte,Reparado
+800624,30014,20250813,Correctiva,Cambio de batería,209821,165601,5,Taller Ruta 5,Reparado
+800625,30014,20260129,Correctiva,Reparación de frenos,315159,96677,5,Taller Ruta 5,No reparado
+800626,30012,20260627,Correctiva,Reparación sistema eléctrico,286285,132412,2,Taller SmartMotor,Reparado
+800627,30026,20251210,Preventiva,Cambio de filtros,83989,138106,2,Taller Ruta 5,Reparado
+800628,30028,20261231,Preventiva,Revisión de neumáticos,170887,119049,2,Taller Sur,Requiere seguimiento
+800629,30007,20260221,Correctiva,Reparación suspensión,365558,119132,4,Taller Ruta 5,Requiere seguimiento
+800630,30027,20261029,Correctiva,Cambio de neumáticos,345490,145945,2,Taller SmartMotor,Reparado
+800631,30006,20250305,Preventiva,Revisión de neumáticos,129341,61085,2,Taller Mecánica Centro,Reparado
+800632,30018,20260511,Emergencia,Falla sistema de frenos,861760,65903,5,Taller Ruta 5,No reparado
+800633,30010,20250216,Preventiva,Revisión de frenos,147985,113014,2,Taller Ruta 5,Reparado
+800634,30002,20260927,Preventiva,Revisión de frenos,157183,75619,1,Taller Ruta 5,Reparado
+800635,30002,20260805,Emergencia,Falla sistema de frenos,535639,91799,6,Taller Mecánica Centro,Reparado
+800636,30016,20260405,Preventiva,Cambio de filtros,142569,176480,2,Taller Sur,Reparado
+800637,30005,20250801,Preventiva,Cambio de filtros,104254,68225,2,Taller Norte,Reparado
+800638,30023,20260731,Correctiva,Reparación suspensión,381387,164445,5,Taller Norte,Reparado
+800639,30009,20260511,Preventiva,Revisión general,145103,55566,2,Taller Norte,Reparado
+800640,30012,20260111,Preventiva,Revisión de frenos,175464,160956,1,Taller Ruta 5,Reparado
+800641,30022,20260403,Emergencia,Falla sistema de frenos,961726,146841,8,Taller SmartMotor,No reparado
+800642,30002,20250503,Emergencia,Falla de motor,771594,84353,8,Taller Sur,Requiere seguimiento
+800643,30008,20250928,Preventiva,Revisión general,66587,92790,1,Taller Norte,Reparado
+800644,30024,20251105,Preventiva,Cambio de filtros,92954,139373,2,Taller SmartMotor,Reparado
+800645,30002,20260116,Correctiva,Reparación suspensión,294972,157992,5,Taller Sur,Reparado
+800646,30017,20251013,Emergencia,Falla sistema de frenos,983676,33262,9,Taller Mecánica Centro,Requiere seguimiento
+800647,30006,20260506,Preventiva,Cambio de filtros,110818,36901,2,Taller Mecánica Centro,Requiere seguimiento
+800648,30002,20260512,Preventiva,Cambio de aceite y filtros,85805,41874,2,Taller Ruta 5,Reparado
+800649,30004,20260624,Preventiva,Revisión general,109500,150062,1,Taller SmartMotor,Reparado
+800650,30026,20260531,Preventiva,Revisión de neumáticos,136537,50862,2,Taller Mecánica Centro,Reparado
+800651,30014,20250106,Correctiva,Reparación sistema eléctrico,354720,71235,5,Taller Sur,Requiere seguimiento
+800652,30010,20261109,Preventiva,Revisión de neumáticos,173936,46279,2,Taller Ruta 5,Reparado
+800653,30001,20260802,Preventiva,Revisión general,137273,143892,1,Taller Mecánica Centro,Reparado
+800654,30004,20250510,Preventiva,Revisión de frenos,136533,79649,1,Taller Norte,Reparado
+800655,30010,20251202,Preventiva,Revisión de neumáticos,124093,109414,1,Taller Sur,Reparado
+800656,30026,20250525,Correctiva,Reparación de frenos,385998,77574,5,Taller SmartMotor,Reparado
+800657,30015,20260923,Correctiva,Cambio de neumáticos,446629,65554,4,Taller SmartMotor,Reparado
+800658,30027,20261112,Preventiva,Cambio de filtros,143424,49692,2,Taller Ruta 5,Requiere seguimiento
+800659,30005,20260507,Preventiva,Cambio de aceite y filtros,156362,82265,2,Taller Ruta 5,Reparado
+800660,30030,20250607,Correctiva,Cambio de neumáticos,406505,137228,2,Taller Norte,Reparado
+800661,30018,20260209,Preventiva,Revisión de neumáticos,125727,120610,2,Taller SmartMotor,Reparado
+800662,30028,20250514,Preventiva,Revisión general,83383,88160,1,Taller Ruta 5,Requiere seguimiento
+800663,30007,20250112,Correctiva,Reparación suspensión,207616,39221,4,Taller Sur,Reparado
+800664,30005,20251217,Correctiva,Cambio de batería,378931,74757,3,Taller Sur,Requiere seguimiento
+800665,30013,20261218,Emergencia,Problema eléctrico grave,931177,65944,7,Taller Ruta 5,Requiere seguimiento
+800666,30003,20261108,Preventiva,Revisión general,115021,119959,2,Taller SmartMotor,Reparado
+800667,30007,20260908,Preventiva,Cambio de aceite y filtros,115755,43255,2,Taller Sur,Reparado
+800668,30009,20251221,Preventiva,Revisión general,121576,73919,2,Taller Mecánica Centro,Reparado
+800669,30022,20250622,Preventiva,Revisión de frenos,65698,96809,2,Taller Norte,Reparado
+800670,30030,20260316,Emergencia,Problema eléctrico grave,742551,74041,6,Taller Mecánica Centro,No reparado
+800671,30015,20260607,Preventiva,Revisión general,70703,143776,1,Taller SmartMotor,Reparado
+800672,30020,20250309,Correctiva,Reparación sistema eléctrico,491678,36305,4,Taller Sur,Requiere seguimiento
+800673,30013,20250424,Correctiva,Reparación de frenos,301638,154591,4,Taller SmartMotor,Reparado
+800674,30005,20251206,Correctiva,Reparación suspensión,436073,141576,5,Taller Mecánica Centro,Requiere seguimiento
+800675,30007,20250713,Correctiva,Cambio de neumáticos,254188,123326,3,Taller Sur,Reparado
+800676,30004,20260507,Correctiva,Cambio de neumáticos,175464,46260,3,Taller Sur,Requiere seguimiento
+800677,30020,20250925,Correctiva,Reparación de frenos,306177,108484,5,Taller Ruta 5,Requiere seguimiento
+800678,30015,20251227,Preventiva,Revisión de frenos,113592,168419,1,Taller Ruta 5,Reparado
+800679,30012,20250605,Correctiva,Cambio de batería,472796,159572,5,Taller Mecánica Centro,Reparado
+800680,30020,20260810,Preventiva,Revisión general,155745,175083,1,Taller Sur,Reparado
+800681,30004,20260107,Preventiva,Revisión de frenos,70956,167150,2,Taller Sur,Requiere seguimiento
+800682,30008,20250718,Emergencia,Falla sistema de frenos,522646,61417,8,Taller Norte,Reparado
+800683,30012,20250912,Preventiva,Cambio de filtros,168107,145584,1,Taller Mecánica Centro,Reparado
+800684,30008,20250708,Correctiva,Cambio de neumáticos,441576,102373,3,Taller SmartMotor,Requiere seguimiento
+800685,30003,20250616,Preventiva,Revisión general,143948,77111,2,Taller SmartMotor,Reparado
+800686,30014,20250828,Preventiva,Revisión de neumáticos,68848,108672,2,Taller Ruta 5,Reparado
+800687,30023,20250928,Preventiva,Revisión de neumáticos,171246,95333,1,Taller SmartMotor,Reparado
+800688,30003,20260315,Preventiva,Revisión general,69275,174341,2,Taller SmartMotor,Reparado
+800689,30016,20260113,Correctiva,Cambio de batería,298441,172867,3,Taller Norte,Reparado
+800690,30019,20250908,Emergencia,Falla sistema de frenos,879656,165693,9,Taller Sur,Reparado
+800691,30007,20250618,Preventiva,Revisión general,113822,54042,1,Taller SmartMotor,Reparado
+800692,30025,20260803,Correctiva,Reparación de frenos,168019,105426,5,Taller Sur,Requiere seguimiento
+800693,30019,20261208,Correctiva,Cambio de batería,435052,156278,4,Taller Ruta 5,No reparado
+800694,30025,20260226,Preventiva,Revisión de neumáticos,121381,39343,2,Taller Sur,Reparado
+800695,30021,20260419,Preventiva,Cambio de filtros,156143,174771,1,Taller Mecánica Centro,Reparado
+800696,30021,20260429,Correctiva,Reparación suspensión,396517,58807,5,Taller SmartMotor,No reparado
+800697,30008,20251116,Preventiva,Revisión de frenos,112999,88219,1,Taller Mecánica Centro,Reparado
+800698,30005,20261209,Correctiva,Reparación suspensión,431373,105209,3,Taller Mecánica Centro,Reparado
+800699,30018,20260622,Correctiva,Reparación de frenos,391249,67034,3,Taller Mecánica Centro,Reparado
+800700,30020,20261007,Preventiva,Revisión de frenos,158300,147229,2,Taller Norte,Reparado
+800701,30002,20260306,Correctiva,Reparación sistema eléctrico,396367,165624,2,Taller Ruta 5,Requiere seguimiento
+800702,30023,20261029,Preventiva,Revisión de frenos,63722,100442,1,Taller Sur,Reparado
+800703,30002,20260615,Preventiva,Revisión general,109028,89807,2,Taller Ruta 5,Reparado
+800704,30007,20250506,Emergencia,Problema eléctrico grave,757407,114726,6,Taller Norte,Reparado
+800705,30013,20260414,Preventiva,Cambio de filtros,62123,120710,2,Taller SmartMotor,Reparado
+800706,30012,20250115,Preventiva,Cambio de aceite y filtros,61814,108537,1,Taller Mecánica Centro,Reparado
+800707,30018,20250712,Preventiva,Cambio de aceite y filtros,95739,64785,1,Taller SmartMotor,Reparado
+800708,30009,20261224,Correctiva,Reparación sistema eléctrico,241128,157581,4,Taller SmartMotor,Requiere seguimiento
+800709,30001,20260729,Correctiva,Reparación de frenos,373279,138297,4,Taller Mecánica Centro,Reparado
+800710,30011,20250127,Correctiva,Cambio de batería,308598,126758,2,Taller Norte,Reparado
+800711,30027,20260528,Emergencia,Falla de motor,716645,90410,6,Taller Ruta 5,Reparado
+800712,30019,20250831,Preventiva,Revisión de neumáticos,133914,31881,2,Taller Sur,Reparado
+800713,30022,20260717,Preventiva,Revisión de frenos,76459,166949,2,Taller Ruta 5,Reparado
+800714,30030,20250401,Correctiva,Reparación de frenos,178202,91692,2,Taller Mecánica Centro,Reparado
+800715,30029,20260215,Preventiva,Revisión de frenos,163119,82003,2,Taller Sur,Reparado
+800716,30021,20250120,Preventiva,Revisión de frenos,126630,134428,2,Taller Mecánica Centro,Reparado
+800717,30004,20250430,Correctiva,Reparación de frenos,493470,173277,5,Taller Norte,Reparado
+800718,30019,20250319,Preventiva,Revisión de neumáticos,83862,160035,1,Taller Sur,Reparado
+800719,30022,20250722,Preventiva,Revisión de frenos,99876,137445,2,Taller Ruta 5,Reparado
+800720,30009,20260921,Correctiva,Cambio de batería,407450,137325,3,Taller Sur,Reparado
+800721,30010,20261112,Correctiva,Reparación de frenos,326968,87062,4,Taller Sur,Reparado
+800722,30014,20260613,Correctiva,Cambio de neumáticos,364303,71347,3,Taller Sur,Reparado
+800723,30008,20260523,Correctiva,Reparación suspensión,153748,56553,5,Taller Norte,Reparado
+800724,30002,20261112,Preventiva,Cambio de aceite y filtros,113865,105910,2,Taller Ruta 5,Requiere seguimiento
+800725,30028,20251009,Preventiva,Revisión de neumáticos,160766,76418,1,Taller Norte,Reparado
+800726,30005,20260412,Preventiva,Revisión de frenos,174817,130667,2,Taller Mecánica Centro,Reparado
+800727,30008,20260213,Preventiva,Cambio de aceite y filtros,163306,142025,1,Taller SmartMotor,Reparado
+800728,30030,20251101,Correctiva,Reparación de frenos,419279,30320,4,Taller Norte,Reparado
+800729,30024,20250217,Correctiva,Reparación sistema eléctrico,329971,171842,3,Taller Norte,Reparado
+800730,30009,20260705,Correctiva,Cambio de batería,452274,163609,4,Taller Norte,Reparado
+800731,30013,20260224,Correctiva,Reparación sistema eléctrico,329515,45029,3,Taller Sur,Reparado
+800732,30023,20251217,Correctiva,Cambio de batería,482553,169707,3,Taller Mecánica Centro,Reparado
+800733,30002,20260708,Correctiva,Reparación sistema eléctrico,179092,178725,5,Taller SmartMotor,Reparado
+800734,30016,20250124,Correctiva,Reparación suspensión,311050,117592,5,Taller Norte,Reparado
+800735,30006,20250805,Preventiva,Cambio de filtros,65543,51067,2,Taller SmartMotor,Reparado
+800736,30008,20260216,Preventiva,Cambio de filtros,132742,148843,2,Taller Sur,Reparado
+800737,30022,20250509,Correctiva,Reparación suspensión,176270,166269,3,Taller Sur,Reparado
+800738,30013,20250621,Preventiva,Cambio de filtros,127708,141462,2,Taller Mecánica Centro,Reparado
+800739,30001,20250307,Correctiva,Reparación sistema eléctrico,286319,171625,5,Taller Sur,Reparado
+800740,30016,20250530,Emergencia,Sobrecalentamiento del motor,855187,83687,4,Taller Mecánica Centro,Reparado
+800741,30015,20260220,Correctiva,Reparación sistema eléctrico,230165,178118,5,Taller Ruta 5,Requiere seguimiento
+800742,30013,20260204,Emergencia,Sobrecalentamiento del motor,732706,101117,9,Taller SmartMotor,Requiere seguimiento
+800743,30013,20250414,Correctiva,Cambio de batería,491702,111422,5,Taller Sur,Requiere seguimiento
+800744,30017,20251114,Correctiva,Cambio de batería,363363,53382,5,Taller Ruta 5,Reparado
+800745,30019,20250513,Preventiva,Revisión general,80955,140674,2,Taller Mecánica Centro,Reparado
+800746,30023,20260528,Emergencia,Falla transmisión,806324,78924,9,Taller Norte,Requiere seguimiento
+800747,30023,20260301,Correctiva,Reparación de frenos,234698,45960,5,Taller Sur,Reparado
+800748,30011,20250808,Preventiva,Revisión general,107014,165150,2,Taller Mecánica Centro,Reparado
+800749,30013,20251024,Preventiva,Revisión general,153715,80733,1,Taller Norte,Reparado
+800750,30028,20260220,Preventiva,Cambio de aceite y filtros,164272,124913,1,Taller Mecánica Centro,Reparado
+800751,30011,20250109,Correctiva,Cambio de neumáticos,459378,158674,2,Taller Sur,Reparado
+800752,30008,20250526,Preventiva,Cambio de filtros,161448,109526,2,Taller Ruta 5,Reparado
+800753,30023,20260605,Correctiva,Cambio de batería,469658,178955,5,Taller Mecánica Centro,Reparado
+800754,30014,20250318,Correctiva,Reparación suspensión,498103,32035,5,Taller Ruta 5,No reparado
+800755,30018,20250923,Preventiva,Revisión general,116396,148920,2,Taller Ruta 5,Reparado
+800756,30004,20260424,Preventiva,Revisión general,136441,76121,1,Taller Norte,Requiere seguimiento
+800757,30017,20250429,Preventiva,Cambio de filtros,64837,173687,1,Taller Ruta 5,Reparado
+800758,30008,20251102,Emergencia,Problema eléctrico grave,685513,31893,9,Taller Ruta 5,Reparado
+800759,30010,20260213,Emergencia,Sobrecalentamiento del motor,776583,121404,4,Taller SmartMotor,Requiere seguimiento
+800760,30003,20261010,Emergencia,Problema eléctrico grave,995424,109878,9,Taller Sur,Reparado
+800761,30029,20250320,Emergencia,Sobrecalentamiento del motor,719430,70475,6,Taller Norte,No reparado
+800762,30003,20251127,Correctiva,Cambio de batería,458690,37008,5,Taller Ruta 5,Reparado
+800763,30018,20251122,Correctiva,Cambio de neumáticos,210354,108543,3,Taller Mecánica Centro,Reparado
+800764,30006,20250208,Correctiva,Cambio de neumáticos,282018,44693,3,Taller Mecánica Centro,Reparado
+800765,30006,20260205,Preventiva,Cambio de filtros,85081,41350,1,Taller SmartMotor,Requiere seguimiento
+800766,30027,20260508,Emergencia,Falla sistema de frenos,772217,113384,8,Taller Ruta 5,Reparado
+800767,30028,20261008,Preventiva,Cambio de aceite y filtros,65867,110820,2,Taller SmartMotor,Reparado
+800768,30003,20261019,Correctiva,Reparación sistema eléctrico,462579,171382,3,Taller Mecánica Centro,Reparado
+800769,30010,20260524,Preventiva,Revisión de neumáticos,142839,173314,2,Taller Ruta 5,Reparado
+800770,30019,20260626,Correctiva,Cambio de neumáticos,460929,149963,5,Taller Ruta 5,Requiere seguimiento
+800771,30017,20260801,Preventiva,Revisión general,169598,116436,1,Taller Norte,Reparado
+800772,30004,20250211,Preventiva,Cambio de aceite y filtros,96483,143181,2,Taller Norte,Reparado
+800773,30020,20261108,Correctiva,Reparación de frenos,245761,143753,2,Taller Mecánica Centro,Reparado
+800774,30008,20250202,Preventiva,Revisión de frenos,135609,35209,1,Taller Sur,Reparado
+800775,30010,20260628,Preventiva,Revisión general,134852,106382,2,Taller SmartMotor,Requiere seguimiento
+800776,30024,20261114,Correctiva,Reparación sistema eléctrico,307195,168869,3,Taller SmartMotor,Reparado
+800777,30028,20260529,Correctiva,Reparación de frenos,389350,56140,2,Taller Mecánica Centro,Reparado
+800778,30028,20260704,Preventiva,Cambio de filtros,65606,165028,2,Taller Ruta 5,Reparado
+800779,30021,20250216,Preventiva,Revisión de frenos,86347,133844,2,Taller Ruta 5,Reparado
+800780,30020,20250301,Preventiva,Revisión general,130211,71850,2,Taller Norte,Reparado
+800781,30006,20250627,Correctiva,Reparación sistema eléctrico,169627,91822,3,Taller SmartMotor,Reparado
+800782,30030,20260226,Preventiva,Revisión general,147902,101334,2,Taller Ruta 5,Reparado
+800783,30007,20260525,Correctiva,Cambio de neumáticos,257449,132828,3,Taller Mecánica Centro,Reparado
+800784,30019,20250608,Correctiva,Reparación suspensión,276202,107606,3,Taller Mecánica Centro,Reparado
+800785,30025,20260515,Preventiva,Revisión general,106418,130699,1,Taller Sur,Reparado
+800786,30002,20251130,Preventiva,Revisión de neumáticos,157628,106946,1,Taller Norte,Reparado
+800787,30003,20250812,Preventiva,Cambio de filtros,102674,157572,1,Taller Mecánica Centro,Reparado
+800788,30021,20260419,Emergencia,Falla sistema de frenos,403051,86652,8,Taller Norte,Reparado
+800789,30014,20260123,Preventiva,Cambio de aceite y filtros,74308,121563,1,Taller SmartMotor,Reparado
+800790,30003,20250725,Preventiva,Cambio de filtros,157624,60063,2,Taller SmartMotor,Reparado
+800791,30005,20250224,Preventiva,Revisión de neumáticos,86026,82413,1,Taller Sur,Reparado
+800792,30015,20260828,Preventiva,Cambio de filtros,110494,133864,2,Taller Ruta 5,Reparado
+800793,30014,20260212,Correctiva,Cambio de neumáticos,312023,110863,5,Taller Sur,Reparado
+800794,30009,20250905,Preventiva,Revisión de frenos,127567,155849,2,Taller Mecánica Centro,Reparado
+800795,30025,20261228,Preventiva,Cambio de aceite y filtros,105203,96677,2,Taller Norte,Reparado
+800796,30001,20250208,Preventiva,Revisión de neumáticos,157649,99806,1,Taller Mecánica Centro,Reparado
+800797,30008,20260411,Preventiva,Cambio de aceite y filtros,178198,99322,1,Taller Mecánica Centro,No reparado
+800798,30003,20251221,Correctiva,Cambio de batería,356251,39943,2,Taller Ruta 5,Reparado
+800799,30018,20260502,Emergencia,Falla transmisión,732811,164034,7,Taller Mecánica Centro,Requiere seguimiento
+800800,30015,20260627,Preventiva,Revisión de neumáticos,74745,35730,2,Taller Mecánica Centro,Reparado
+800801,30016,20251123,Correctiva,Reparación de frenos,434981,176069,5,Taller Ruta 5,Reparado
+800802,30016,20250903,Preventiva,Cambio de filtros,102422,81413,1,Taller Mecánica Centro,Reparado
+800803,30002,20251113,Emergencia,Falla sistema de frenos,904629,165830,6,Taller Ruta 5,Requiere seguimiento
+800804,30020,20260424,Correctiva,Cambio de batería,281562,33729,4,Taller Mecánica Centro,Reparado
+800805,30006,20250807,Preventiva,Revisión general,81292,133889,2,Taller Ruta 5,Reparado
+800806,30003,20250110,Preventiva,Revisión de frenos,106511,59320,1,Taller Mecánica Centro,Reparado
+800807,30027,20251121,Correctiva,Cambio de batería,229436,44678,5,Taller Mecánica Centro,Reparado
+800808,30026,20250617,Preventiva,Cambio de filtros,83464,81137,1,Taller SmartMotor,Reparado
+800809,30020,20260716,Preventiva,Cambio de aceite y filtros,165468,30901,1,Taller Norte,Reparado
+800810,30002,20260421,Emergencia,Sobrecalentamiento del motor,826384,75201,4,Taller Mecánica Centro,Reparado
+800811,30027,20250526,Preventiva,Cambio de aceite y filtros,82499,132552,1,Taller Ruta 5,Reparado
+800812,30003,20261205,Preventiva,Revisión de frenos,125756,86344,2,Taller SmartMotor,Reparado
+800813,30007,20250519,Preventiva,Revisión general,97344,113791,2,Taller Norte,Reparado
+800814,30010,20251127,Preventiva,Revisión de neumáticos,166540,44175,1,Taller Norte,Reparado
+800815,30005,20260301,Correctiva,Cambio de neumáticos,173283,116971,5,Taller SmartMotor,Reparado
+800816,30013,20250531,Correctiva,Reparación de frenos,478871,139164,2,Taller SmartMotor,Reparado
+800817,30027,20251201,Preventiva,Revisión general,66008,37987,1,Taller Sur,Reparado
+800818,30014,20250117,Correctiva,Reparación sistema eléctrico,317516,135219,3,Taller Mecánica Centro,Reparado
+800819,30003,20261102,Preventiva,Revisión general,174159,37533,2,Taller Mecánica Centro,Reparado
+800820,30017,20261030,Preventiva,Revisión de neumáticos,71772,119385,1,Taller Mecánica Centro,Reparado
+800821,30013,20250906,Correctiva,Reparación sistema eléctrico,174648,62966,3,Taller Sur,Reparado
+800822,30018,20251116,Preventiva,Revisión de neumáticos,77558,91084,2,Taller Mecánica Centro,Reparado
+800823,30007,20261030,Correctiva,Cambio de neumáticos,281870,37601,5,Taller SmartMotor,Reparado
+800824,30023,20250627,Preventiva,Cambio de aceite y filtros,63084,125865,1,Taller Ruta 5,Reparado
+800825,30006,20251212,Preventiva,Revisión de frenos,92330,98469,2,Taller Ruta 5,Reparado
+800826,30017,20251220,Preventiva,Cambio de filtros,176178,161965,1,Taller SmartMotor,Requiere seguimiento
+800827,30001,20250925,Preventiva,Cambio de aceite y filtros,61515,127206,1,Taller SmartMotor,Reparado
+800828,30007,20250223,Correctiva,Reparación de frenos,395277,61186,2,Taller Ruta 5,Reparado
+800829,30019,20260918,Preventiva,Cambio de filtros,157871,31577,1,Taller Mecánica Centro,Reparado
+800830,30009,20250419,Correctiva,Reparación sistema eléctrico,160785,102227,2,Taller Norte,Requiere seguimiento
+800831,30011,20261103,Emergencia,Sobrecalentamiento del motor,500653,85192,4,Taller Ruta 5,Requiere seguimiento
+800832,30030,20250326,Preventiva,Revisión general,132573,137803,1,Taller Mecánica Centro,Reparado
+800833,30021,20250201,Preventiva,Revisión de frenos,175375,142660,2,Taller Ruta 5,Reparado
+800834,30010,20250416,Correctiva,Reparación de frenos,202335,82949,4,Taller Mecánica Centro,Requiere seguimiento
+800835,30015,20260220,Correctiva,Reparación de frenos,342898,101916,5,Taller SmartMotor,Requiere seguimiento
+800836,30007,20260728,Preventiva,Cambio de filtros,128694,50008,1,Taller Mecánica Centro,Reparado
+800837,30005,20260910,Correctiva,Reparación de frenos,447124,52504,4,Taller Ruta 5,Reparado
+800838,30025,20250414,Correctiva,Reparación suspensión,314211,150494,3,Taller Mecánica Centro,Reparado
+800839,30014,20250515,Emergencia,Falla sistema de frenos,533163,158023,7,Taller Norte,Reparado
+800840,30023,20251231,Preventiva,Revisión de frenos,130990,45386,1,Taller Ruta 5,Reparado
+800841,30012,20260315,Correctiva,Cambio de batería,384856,136337,5,Taller Mecánica Centro,No reparado
+800842,30027,20250209,Preventiva,Cambio de filtros,89424,118844,1,Taller Sur,Reparado
+800843,30008,20250717,Preventiva,Revisión de neumáticos,83649,64758,1,Taller Mecánica Centro,Reparado
+800844,30029,20260814,Preventiva,Revisión general,74645,61105,1,Taller SmartMotor,Reparado
+800845,30003,20250830,Preventiva,Revisión de neumáticos,162739,81796,1,Taller Ruta 5,Reparado
+800846,30006,20251208,Correctiva,Reparación sistema eléctrico,431209,131503,2,Taller Norte,Reparado
+800847,30006,20260307,Preventiva,Cambio de filtros,175284,167126,2,Taller SmartMotor,Reparado
+800848,30020,20260228,Emergencia,Sobrecalentamiento del motor,701300,77922,4,Taller SmartMotor,Reparado
+800849,30004,20250101,Preventiva,Cambio de aceite y filtros,117608,130963,2,Taller Norte,Reparado
+800850,30002,20260405,Preventiva,Revisión general,95693,170896,2,Taller SmartMotor,Reparado
+800851,30013,20250406,Correctiva,Reparación de frenos,423667,98689,4,Taller SmartMotor,Reparado
+800852,30023,20260718,Correctiva,Cambio de neumáticos,441043,58229,3,Taller Norte,Reparado
+800853,30015,20260816,Preventiva,Cambio de aceite y filtros,172652,174401,2,Taller Mecánica Centro,Reparado
+800854,30003,20260510,Correctiva,Cambio de batería,196032,63686,3,Taller Norte,Reparado
+800855,30009,20260914,Preventiva,Cambio de filtros,102818,130422,2,Taller Norte,Reparado
+800856,30002,20250430,Preventiva,Cambio de aceite y filtros,133779,61601,1,Taller Norte,Reparado
+800857,30002,20260529,Preventiva,Revisión general,122894,37465,1,Taller Sur,Reparado
+800858,30012,20250204,Correctiva,Cambio de neumáticos,477920,74462,4,Taller SmartMotor,Reparado
+800859,30018,20261010,Preventiva,Revisión general,154781,108282,2,Taller Ruta 5,Reparado
+800860,30027,20251213,Preventiva,Revisión de frenos,66080,174926,2,Taller Norte,Reparado
+800861,30010,20260926,Preventiva,Cambio de aceite y filtros,126766,113053,2,Taller Ruta 5,Reparado
+800862,30015,20250630,Preventiva,Revisión de frenos,84354,123297,1,Taller Mecánica Centro,Reparado
+800863,30007,20260715,Preventiva,Revisión de neumáticos,66464,46562,1,Taller Mecánica Centro,Reparado
+800864,30015,20250512,Preventiva,Revisión general,60060,39269,2,Taller Sur,Reparado
+800865,30029,20260731,Correctiva,Reparación sistema eléctrico,254127,126426,2,Taller Sur,Requiere seguimiento
+800866,30005,20260722,Correctiva,Reparación de frenos,270654,39196,5,Taller Ruta 5,Requiere seguimiento
+800867,30024,20260110,Correctiva,Reparación sistema eléctrico,174700,35269,5,Taller SmartMotor,Reparado
+800868,30005,20260305,Preventiva,Revisión de neumáticos,95897,44380,1,Taller Norte,Reparado
+800869,30016,20260907,Preventiva,Cambio de filtros,109178,168009,1,Taller Mecánica Centro,Reparado
+800870,30017,20251007,Correctiva,Reparación suspensión,260776,131444,2,Taller Norte,Reparado
+800871,30029,20260209,Preventiva,Revisión de neumáticos,63225,140114,1,Taller Mecánica Centro,Reparado
+800872,30005,20260912,Preventiva,Cambio de aceite y filtros,111880,106290,2,Taller Norte,Reparado
+800873,30027,20260811,Emergencia,Falla sistema de frenos,660272,113123,9,Taller Norte,Reparado
+800874,30027,20261228,Preventiva,Cambio de filtros,171508,102635,1,Taller Ruta 5,Reparado
+800875,30020,20260308,Preventiva,Revisión de frenos,74130,175343,2,Taller SmartMotor,Reparado
+800876,30004,20251231,Preventiva,Revisión general,142203,118177,1,Taller SmartMotor,Reparado
+800877,30026,20250420,Correctiva,Reparación sistema eléctrico,413136,102394,3,Taller Ruta 5,Reparado
+800878,30001,20251009,Preventiva,Cambio de aceite y filtros,121868,112263,2,Taller SmartMotor,Reparado
+800879,30010,20260504,Preventiva,Revisión de neumáticos,130456,49585,2,Taller SmartMotor,Reparado
+800880,30019,20250109,Preventiva,Cambio de aceite y filtros,113364,81567,2,Taller Ruta 5,Reparado
+800881,30016,20260423,Preventiva,Revisión de frenos,138518,112844,2,Taller SmartMotor,Reparado
+800882,30004,20260207,Preventiva,Cambio de filtros,127684,63324,2,Taller SmartMotor,Reparado
+800883,30030,20251023,Preventiva,Cambio de filtros,83889,84675,2,Taller Ruta 5,Reparado
+800884,30012,20260612,Preventiva,Revisión de neumáticos,116398,70718,2,Taller Ruta 5,Reparado
+800885,30006,20260519,Preventiva,Revisión de frenos,73016,72137,2,Taller SmartMotor,Reparado
+800886,30011,20250321,Preventiva,Revisión de neumáticos,173089,41049,1,Taller SmartMotor,Reparado
+800887,30001,20260825,Preventiva,Revisión general,98762,124774,2,Taller Sur,Reparado
+800888,30027,20260531,Correctiva,Reparación de frenos,337279,63980,3,Taller SmartMotor,Reparado
+800889,30021,20251024,Preventiva,Revisión de frenos,132903,33228,1,Taller Sur,Reparado
+800890,30012,20250511,Preventiva,Cambio de aceite y filtros,102317,132489,2,Taller Norte,Reparado
+800891,30027,20251114,Preventiva,Cambio de filtros,128546,140489,1,Taller Sur,Reparado
+800892,30021,20260828,Preventiva,Cambio de filtros,81209,137051,1,Taller Norte,Reparado
+800893,30012,20251001,Correctiva,Cambio de batería,353675,149779,5,Taller SmartMotor,Reparado
+800894,30006,20260624,Preventiva,Revisión de neumáticos,107894,36447,2,Taller Sur,Reparado
+800895,30004,20260323,Correctiva,Reparación suspensión,376486,168561,5,Taller Ruta 5,No reparado
+800896,30027,20260113,Preventiva,Revisión de neumáticos,150349,117173,1,Taller Norte,Reparado
+800897,30023,20250509,Preventiva,Revisión general,155965,111268,1,Taller Ruta 5,Reparado
+800898,30022,20250224,Preventiva,Revisión general,173204,47199,1,Taller Ruta 5,Reparado
+800899,30001,20261002,Preventiva,Revisión general,72665,30534,1,Taller Ruta 5,Reparado
+800900,30023,20261217,Preventiva,Cambio de aceite y filtros,106233,159863,1,Taller Norte,Reparado
+800901,30015,20250521,Correctiva,Reparación suspensión,436198,59709,3,Taller Sur,Requiere seguimiento
+800902,30004,20260330,Preventiva,Revisión de frenos,63240,75689,1,Taller Ruta 5,Reparado
+800903,30019,20251016,Preventiva,Cambio de filtros,172012,153745,2,Taller SmartMotor,Reparado
+800904,30011,20260609,Emergencia,Sobrecalentamiento del motor,710466,98619,4,Taller Mecánica Centro,Requiere seguimiento
+800905,30022,20251027,Correctiva,Cambio de neumáticos,374126,163639,3,Taller Mecánica Centro,Reparado
+800906,30020,20251008,Correctiva,Cambio de batería,290399,53331,2,Taller Mecánica Centro,Reparado
+800907,30013,20250324,Correctiva,Reparación sistema eléctrico,239044,39045,2,Taller Sur,Reparado
+800908,30008,20260102,Emergencia,Falla sistema de frenos,363440,141001,9,Taller Mecánica Centro,Requiere seguimiento
+800909,30017,20260326,Preventiva,Cambio de filtros,98729,45734,2,Taller SmartMotor,Reparado
+800910,30003,20260726,Correctiva,Reparación suspensión,475897,143783,5,Taller Mecánica Centro,Reparado
+800911,30027,20251117,Preventiva,Cambio de aceite y filtros,108570,54503,2,Taller Sur,Reparado
+800912,30002,20250423,Preventiva,Revisión general,114857,152989,1,Taller Norte,Reparado
+800913,30024,20250321,Preventiva,Revisión general,79222,129041,1,Taller Mecánica Centro,Reparado
+800914,30018,20261122,Correctiva,Cambio de neumáticos,303857,108353,4,Taller Norte,Reparado
+800915,30014,20260928,Correctiva,Reparación suspensión,173548,155549,3,Taller Mecánica Centro,Reparado
+800916,30011,20250302,Correctiva,Cambio de batería,181625,54918,5,Taller Norte,No reparado
+800917,30010,20261215,Emergencia,Problema eléctrico grave,461776,129246,8,Taller Sur,Requiere seguimiento
+800918,30026,20250329,Correctiva,Reparación sistema eléctrico,171341,127554,3,Taller SmartMotor,Requiere seguimiento
+800919,30007,20250816,Preventiva,Revisión de frenos,106900,108840,2,Taller Mecánica Centro,Reparado
+800920,30029,20260708,Preventiva,Revisión de neumáticos,85938,89164,1,Taller Ruta 5,Reparado
+800921,30020,20260616,Preventiva,Cambio de filtros,120289,145819,2,Taller Mecánica Centro,Reparado
+800922,30021,20251004,Correctiva,Reparación sistema eléctrico,377966,67860,4,Taller Sur,Requiere seguimiento
+800923,30015,20261120,Preventiva,Cambio de filtros,84904,73790,1,Taller Ruta 5,Reparado
+800924,30024,20261018,Correctiva,Cambio de batería,433816,35812,3,Taller Norte,Reparado
+800925,30014,20251121,Preventiva,Cambio de filtros,89087,172690,1,Taller Sur,Reparado
+800926,30023,20260403,Correctiva,Cambio de neumáticos,376179,118074,5,Taller Mecánica Centro,Reparado
+800927,30017,20260428,Emergencia,Sobrecalentamiento del motor,569631,150044,8,Taller Mecánica Centro,Reparado
+800928,30023,20250905,Preventiva,Revisión de neumáticos,166750,157043,2,Taller Mecánica Centro,Reparado
+800929,30009,20260118,Preventiva,Cambio de filtros,166379,50836,2,Taller Sur,Reparado
+800930,30027,20261126,Preventiva,Revisión de neumáticos,153109,173029,2,Taller Mecánica Centro,Reparado
+800931,30012,20251022,Emergencia,Falla de motor,695452,87913,9,Taller Sur,Reparado
+800932,30020,20260502,Correctiva,Cambio de neumáticos,396983,115092,5,Taller Ruta 5,No reparado
+800933,30004,20250315,Correctiva,Cambio de batería,486092,99202,3,Taller Sur,Reparado
+800934,30023,20260823,Emergencia,Falla de motor,854655,136471,7,Taller Sur,No reparado
+800935,30006,20250621,Preventiva,Revisión de neumáticos,153122,145260,1,Taller Ruta 5,Reparado
+800936,30006,20250503,Preventiva,Cambio de aceite y filtros,137814,38417,1,Taller Mecánica Centro,Reparado
+800937,30015,20251220,Correctiva,Cambio de batería,409278,57675,3,Taller Sur,Requiere seguimiento
+800938,30014,20250718,Preventiva,Revisión de frenos,149254,87104,2,Taller Ruta 5,Requiere seguimiento
+800939,30014,20261129,Preventiva,Revisión de frenos,131101,52821,1,Taller SmartMotor,Reparado
+800940,30027,20260312,Preventiva,Cambio de filtros,78646,153777,1,Taller Ruta 5,Reparado
+800941,30030,20261204,Preventiva,Cambio de aceite y filtros,91099,126952,1,Taller Ruta 5,Reparado
+800942,30015,20251209,Preventiva,Cambio de filtros,63491,161778,2,Taller Norte,Reparado
+800943,30023,20250121,Correctiva,Reparación de frenos,271648,55163,4,Taller Sur,Reparado
+800944,30008,20250104,Correctiva,Reparación sistema eléctrico,358726,33317,2,Taller Sur,Reparado
+800945,30022,20250812,Preventiva,Revisión de neumáticos,119342,45504,2,Taller Ruta 5,Reparado
+800946,30013,20250803,Preventiva,Revisión de frenos,115501,57043,2,Taller Ruta 5,Reparado
+800947,30016,20250502,Preventiva,Cambio de aceite y filtros,132107,145267,1,Taller Mecánica Centro,Requiere seguimiento
+800948,30019,20250128,Preventiva,Revisión de frenos,89992,140540,1,Taller Norte,Reparado
+800949,30011,20260617,Preventiva,Revisión general,94235,49122,1,Taller Sur,Reparado
+800950,30016,20260917,Emergencia,Sobrecalentamiento del motor,587268,31168,8,Taller Sur,Reparado
+800951,30005,20250209,Correctiva,Reparación suspensión,180270,171458,5,Taller Mecánica Centro,Reparado
+800952,30006,20251112,Correctiva,Cambio de neumáticos,461741,33626,2,Taller Sur,No reparado
+800953,30008,20260601,Preventiva,Cambio de aceite y filtros,114144,174454,2,Taller Sur,Reparado
+800954,30019,20260318,Emergencia,Problema eléctrico grave,907749,71115,8,Taller Norte,Reparado
+800955,30001,20250417,Preventiva,Cambio de aceite y filtros,131260,31407,1,Taller Ruta 5,No reparado
+800956,30004,20250820,Correctiva,Reparación suspensión,376024,121288,4,Taller Mecánica Centro,Reparado
+800957,30017,20260616,Preventiva,Cambio de filtros,87307,54502,2,Taller Ruta 5,Requiere seguimiento
+800958,30006,20250924,Preventiva,Cambio de aceite y filtros,141494,112768,1,Taller Ruta 5,Reparado
+800959,30029,20250619,Correctiva,Reparación sistema eléctrico,377369,45123,2,Taller Norte,Reparado
+800960,30023,20250621,Preventiva,Cambio de filtros,106098,56128,1,Taller Mecánica Centro,No reparado
+800961,30030,20260227,Emergencia,Falla sistema de frenos,552278,54099,8,Taller SmartMotor,Reparado
+800962,30025,20260520,Correctiva,Reparación de frenos,328371,155212,2,Taller Mecánica Centro,Reparado
+800963,30027,20260109,Preventiva,Cambio de aceite y filtros,77106,88123,2,Taller Ruta 5,Reparado
+800964,30026,20250118,Preventiva,Cambio de aceite y filtros,81120,88655,2,Taller Sur,Reparado
+800965,30021,20260327,Preventiva,Revisión de neumáticos,109570,80901,1,Taller Sur,Reparado
+800966,30025,20250405,Correctiva,Cambio de batería,226208,179001,4,Taller Sur,Reparado
+800967,30025,20260616,Preventiva,Revisión general,131387,151361,1,Taller Mecánica Centro,Reparado
+800968,30002,20250830,Preventiva,Revisión de frenos,76198,45867,2,Taller SmartMotor,Reparado
+800969,30010,20250522,Correctiva,Reparación suspensión,185362,81588,3,Taller Sur,Reparado
+800970,30003,20261216,Correctiva,Cambio de neumáticos,468667,167450,3,Taller Sur,Reparado
+800971,30026,20261031,Preventiva,Cambio de filtros,84014,109872,1,Taller Sur,Reparado
+800972,30013,20260410,Emergencia,Problema eléctrico grave,862177,122969,9,Taller Norte,Requiere seguimiento
+800973,30023,20250130,Correctiva,Reparación de frenos,426601,97600,5,Taller SmartMotor,Reparado
+800974,30005,20250703,Correctiva,Reparación de frenos,283114,100134,4,Taller Norte,Reparado
+800975,30016,20261019,Preventiva,Revisión de frenos,96018,169133,2,Taller Norte,Reparado
+800976,30015,20250930,Preventiva,Revisión general,148578,119941,2,Taller Mecánica Centro,Reparado
+800977,30015,20250813,Preventiva,Cambio de aceite y filtros,172134,105020,2,Taller Norte,Reparado
+800978,30017,20250421,Preventiva,Cambio de aceite y filtros,163475,87042,1,Taller SmartMotor,Reparado
+800979,30008,20261007,Preventiva,Revisión general,88948,99093,2,Taller Ruta 5,Reparado
+800980,30010,20250113,Correctiva,Cambio de neumáticos,408916,71269,4,Taller Sur,Reparado
+800981,30003,20250712,Preventiva,Revisión de neumáticos,128931,120925,2,Taller SmartMotor,Reparado
+800982,30017,20260607,Preventiva,Cambio de aceite y filtros,158658,81024,1,Taller Mecánica Centro,No reparado
+800983,30019,20260227,Preventiva,Cambio de filtros,137994,124202,2,Taller Ruta 5,Reparado
+800984,30016,20250228,Correctiva,Reparación suspensión,374699,114363,5,Taller Mecánica Centro,Requiere seguimiento
+800985,30013,20260219,Preventiva,Revisión de neumáticos,117836,37435,1,Taller SmartMotor,Requiere seguimiento
+800986,30015,20250731,Preventiva,Revisión de neumáticos,65666,67122,2,Taller Ruta 5,Reparado
+800987,30026,20261125,Correctiva,Cambio de batería,176505,66713,5,Taller Ruta 5,Reparado
+800988,30016,20260715,Preventiva,Revisión de neumáticos,163489,129397,1,Taller Sur,Reparado
+800989,30025,20250926,Preventiva,Revisión de frenos,74799,134843,1,Taller Mecánica Centro,Reparado
+800990,30018,20250124,Correctiva,Cambio de batería,350598,84362,3,Taller Norte,Requiere seguimiento
+800991,30012,20261220,Correctiva,Reparación de frenos,469064,123860,2,Taller Norte,Reparado
+800992,30029,20250309,Preventiva,Revisión de frenos,130821,39589,1,Taller Ruta 5,Reparado
+800993,30030,20261216,Preventiva,Revisión de frenos,90286,45994,2,Taller SmartMotor,No reparado
+800994,30028,20250115,Preventiva,Revisión general,133313,143153,2,Taller Ruta 5,Reparado
+800995,30010,20260610,Emergencia,Problema eléctrico grave,692196,103495,8,Taller Norte,Reparado
+800996,30008,20251014,Correctiva,Reparación sistema eléctrico,291439,95030,3,Taller Ruta 5,Requiere seguimiento
+800997,30019,20261011,Preventiva,Cambio de filtros,165185,66404,1,Taller Ruta 5,Reparado
+800998,30023,20260522,Correctiva,Cambio de batería,375461,67500,3,Taller Sur,Reparado
+800999,30028,20260315,Preventiva,Revisión de neumáticos,95187,162965,2,Taller SmartMotor,Reparado
+801000,30014,20260416,Correctiva,Reparación sistema eléctrico,416186,67201,4,Taller Ruta 5,Reparado

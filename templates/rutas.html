@@ -1,0 +1,614 @@
+{% extends "base.html" %}
+
+{% block title %}Rutas - SMARTLOGI{% endblock %}
+
+{% block content %}
+
+<style>
+    .info-rutas {
+        margin-top: 15px;
+        margin-bottom: 10px;
+        color: #555;
+        font-size: 14px;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        padding: 10px 0;
+    }
+
+    .pagination a,
+    .pagination span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 38px;
+        height: 36px;
+        padding: 0 10px;
+        border-radius: 7px;
+        text-decoration: none;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    .pagination a {
+        background: #063b2e;
+        color: white;
+    }
+
+    .pagination a:hover {
+        background: #085844;
+    }
+
+    .pagination .pagina-actual {
+        background: #e5eee9;
+        color: #063b2e;
+        font-weight: bold;
+    }
+
+    .pagination .puntos {
+        background: transparent;
+        color: #777;
+    }
+
+    /* Tarjetas */
+    .card-filtro {
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .card-filtro:hover {
+        transform: translateY(-2px);
+    }
+
+    .card-filtro.activa {
+        border: 2px solid #063b2e;
+    }
+
+    /* Tabla */
+    #tablaRutas {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    #tablaRutas th,
+    #tablaRutas td {
+        padding: 9px 7px;
+        font-size: 13px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #tablaRutas th {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    #tablaRutas th:nth-child(1) {
+        width: 9%;
+    }
+
+    #tablaRutas th:nth-child(2) {
+        width: 16%;
+    }
+
+    #tablaRutas th:nth-child(3) {
+        width: 11%;
+    }
+
+    #tablaRutas th:nth-child(4) {
+        width: 11%;
+    }
+
+    #tablaRutas th:nth-child(5) {
+        width: 9%;
+    }
+
+    #tablaRutas th:nth-child(6) {
+        width: 11%;
+    }
+
+    #tablaRutas th:nth-child(7) {
+        width: 11%;
+    }
+
+    #tablaRutas th:nth-child(8) {
+        width: 9%;
+    }
+
+    #tablaRutas th:nth-child(9) {
+        width: 6%;
+    }
+
+    #tablaRutas th:nth-child(10) {
+        width: 7%;
+    }
+
+    .orden {
+        font-size: 12px;
+        margin-left: 3px;
+    }
+</style>
+
+
+<h1>🗺️ Rutas</h1>
+
+
+<!-- =========================
+     TARJETAS
+     ========================= -->
+
+<div class="cards">
+
+    <div class="card card-filtro activa" data-estado="">
+        <h3>🗺️ Total rutas</h3>
+        <p>{{ total_registros|miles }}</p>
+    </div>
+
+    <div class="card card-filtro" data-estado="Activa">
+        <h3>🟢 Activas</h3>
+        <p>{{ estados_rutas.get("Activa", 0)|miles }}</p>
+    </div>
+
+    <div class="card card-filtro" data-estado="Restringida">
+        <h3>🟡 Restringidas</h3>
+        <p>{{ estados_rutas.get("Restringida", 0)|miles }}</p>
+    </div>
+
+    <div class="card card-filtro" data-estado="Suspendida">
+        <h3>🔴 Suspendidas</h3>
+        <p>{{ estados_rutas.get("Suspendida", 0)|miles }}</p>
+    </div>
+
+</div>
+
+<!-- =========================
+     BUSCADOR
+     ========================= -->
+
+<input
+    type="text"
+    id="buscadorRutas"
+    class="buscador"
+    placeholder="🔎 Buscar por ID, ruta, origen, destino, tráfico o estado..."
+>
+
+
+<!-- =========================
+     INFORMACIÓN
+     ========================= -->
+
+<div class="info-rutas">
+
+    Mostrando
+    <strong>{{ ((pagina - 1) * 50) + 1 }}</strong>
+    –
+    <strong>{{ ((pagina - 1) * 50) + rutas|length }}</strong>
+    de
+    <strong>{{ total_registros }}</strong>
+    rutas
+
+</div>
+
+
+<!-- =========================
+     TABLA
+     ========================= -->
+
+<div style="overflow-x: auto;">
+
+    <table id="tablaRutas">
+
+        <thead>
+
+            <tr>
+
+                <th data-columna="0">
+                    ID Ruta <span class="orden">↕</span>
+                </th>
+
+                <th data-columna="1">
+                    Nombre ruta <span class="orden">↕</span>
+                </th>
+
+                <th data-columna="2">
+                    Origen <span class="orden">↕</span>
+                </th>
+
+                <th data-columna="3">
+                    Destino <span class="orden">↕</span>
+                </th>
+
+                <th data-columna="4">
+                    Distancia (km) <span class="orden">↕</span>
+                </th>
+
+                <th data-columna="5">
+                    Tiempo estimado (min) <span class="orden">↕</span>
+                </th>
+
+                <th data-columna="6">
+                    Tráfico habitual <span class="orden">↕</span>
+                </th>
+
+                <th data-columna="7">
+                    Tipo de ruta <span class="orden">↕</span>
+                </th>
+
+                <th data-columna="8">
+                    Peajes <span class="orden">↕</span>
+                </th>
+
+                <th data-columna="9">
+                    Estado <span class="orden">↕</span>
+                </th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody>
+
+            {% for ruta in rutas %}
+
+            <tr>
+
+                <td>{{ ruta.ruta_id }}</td>
+
+                <td>{{ ruta.nombre_ruta }}</td>
+
+                <td>{{ ruta.comuna_origen }}</td>
+
+                <td>{{ ruta.comuna_destino }}</td>
+
+                <td>{{ ruta.distancia_km }}</td>
+
+                <td>{{ ruta.tiempo_estimado_min }}</td>
+
+                <td>{{ ruta.nivel_trafico_habitual }}</td>
+
+                <td>{{ ruta.tipo_ruta }}</td>
+
+                <td>{{ ruta.peajes }}</td>
+
+                <td>{{ ruta.estado }}</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<!-- =========================
+     PAGINACIÓN
+     ========================= -->
+
+<div class="pagination">
+
+    {% if pagina > 1 %}
+
+        <a href="{{ url_for('rutas', pagina=pagina-1) }}">
+            ←
+        </a>
+
+    {% endif %}
+
+
+    {% if pagina > 3 %}
+
+        <a href="{{ url_for('rutas', pagina=1) }}">
+            1
+        </a>
+
+        <span class="puntos">
+            ...
+        </span>
+
+    {% endif %}
+
+
+    {% for numero in range(
+        [1, pagina-2]|max,
+        [total_paginas+1, pagina+3]|min
+    ) %}
+
+        {% if numero == pagina %}
+
+            <span class="pagina-actual">
+                {{ numero }}
+            </span>
+
+        {% else %}
+
+            <a href="{{ url_for('rutas', pagina=numero) }}">
+                {{ numero }}
+            </a>
+
+        {% endif %}
+
+    {% endfor %}
+
+
+    {% if pagina < total_paginas - 2 %}
+
+        <span class="puntos">
+            ...
+        </span>
+
+        <a href="{{ url_for('rutas', pagina=total_paginas) }}">
+            {{ total_paginas }}
+        </a>
+
+    {% endif %}
+
+
+    {% if pagina < total_paginas %}
+
+        <a href="{{ url_for('rutas', pagina=pagina+1) }}">
+            →
+        </a>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+     ========================= -->
+
+<script>
+
+const buscador = document.getElementById("buscadorRutas");
+
+const filas = document.querySelectorAll(
+    "#tablaRutas tbody tr"
+);
+
+const tarjetas = document.querySelectorAll(
+    ".card-filtro"
+);
+
+let estadoSeleccionado = "";
+
+
+/* =========================
+   FILTRO + BUSCADOR
+   ========================= */
+
+function actualizarTabla() {
+
+    const texto =
+        buscador.value.toLowerCase().trim();
+
+    filas.forEach(function(fila) {
+
+        const contenido =
+            fila.textContent.toLowerCase();
+
+        const estado =
+            fila.cells[9].textContent.trim();
+
+        const coincideTexto =
+            contenido.includes(texto);
+
+        const coincideEstado =
+            estadoSeleccionado === "" ||
+            estado === estadoSeleccionado;
+
+        if (coincideTexto && coincideEstado) {
+
+            fila.style.display = "";
+
+        } else {
+
+            fila.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+/* =========================
+   BUSCADOR
+   ========================= */
+
+buscador.addEventListener("input", function() {
+
+    actualizarTabla();
+
+});
+
+
+/* =========================
+   FILTRO POR TARJETAS
+   ========================= */
+
+tarjetas.forEach(function(tarjeta) {
+
+    tarjeta.addEventListener("click", function() {
+
+        tarjetas.forEach(function(t) {
+
+            t.classList.remove("activa");
+
+        });
+
+        this.classList.add("activa");
+
+        estadoSeleccionado =
+            this.dataset.estado;
+
+        actualizarTabla();
+
+    });
+
+});
+
+
+/* =========================
+   ORDENAMIENTO
+   ========================= */
+
+const encabezados = document.querySelectorAll(
+    "#tablaRutas th"
+);
+
+encabezados.forEach(function(encabezado) {
+
+    encabezado.addEventListener("click", function() {
+
+        const columna =
+            parseInt(this.dataset.columna);
+
+        const tabla =
+            document.getElementById("tablaRutas");
+
+        const tbody =
+            tabla.querySelector("tbody");
+
+        const filasArray =
+            Array.from(
+                tbody.querySelectorAll("tr")
+            );
+
+        const ordenActual =
+            this.dataset.orden === "asc"
+                ? "desc"
+                : "asc";
+
+
+        /* Reiniciar indicadores */
+
+        encabezados.forEach(function(th) {
+
+            th.dataset.orden = "";
+
+            const indicador =
+                th.querySelector(".orden");
+
+            if (indicador) {
+                indicador.textContent = "↕";
+            }
+
+        });
+
+
+        this.dataset.orden =
+            ordenActual;
+
+
+        const indicador =
+            this.querySelector(".orden");
+
+        if (indicador) {
+
+            indicador.textContent =
+                ordenActual === "asc"
+                    ? "↑"
+                    : "↓";
+
+        }
+
+
+        /* Ordenar filas */
+
+        filasArray.sort(function(a, b) {
+
+            let valorA =
+                a.cells[columna]
+                .textContent
+                .trim();
+
+            let valorB =
+                b.cells[columna]
+                .textContent
+                .trim();
+
+
+            /* Columnas numéricas */
+
+            if (
+                columna === 0 ||
+                columna === 4 ||
+                columna === 5 ||
+                columna === 8
+            ) {
+
+                valorA =
+                    parseFloat(
+                        valorA.replace(",", ".")
+                    ) || 0;
+
+                valorB =
+                    parseFloat(
+                        valorB.replace(",", ".")
+                    ) || 0;
+
+                return ordenActual === "asc"
+                    ? valorA - valorB
+                    : valorB - valorA;
+
+            }
+
+
+            /* Columnas de texto */
+
+            valorA =
+                valorA.toLowerCase();
+
+            valorB =
+                valorB.toLowerCase();
+
+
+            if (valorA < valorB) {
+
+                return ordenActual === "asc"
+                    ? -1
+                    : 1;
+
+            }
+
+
+            if (valorA > valorB) {
+
+                return ordenActual === "asc"
+                    ? 1
+                    : -1;
+
+            }
+
+
+            return 0;
+
+        });
+
+
+        filasArray.forEach(function(fila) {
+
+            tbody.appendChild(fila);
+
+        });
+
+    });
+
+});
+
+</script>
+
+
+{% endblock %}

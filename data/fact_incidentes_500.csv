@@ -1,0 +1,501 @@
+﻿incidente_id,entrega_id,fecha_incidente_id,vehiculo_id,conductor_id,tipo_incidente,gravedad,descripcion,tiempo_perdido_min,costo_estimado,resuelto
+900001,607884,20250414,30006,20026,Retraso por tráfico,Alta,Congestión vehicular en ruta principal,72,0,En seguimiento
+900002,605055,20250318,30026,20047,Falla mecánica,Baja,Sobrecalentamiento del motor,15,237498,Sí
+900003,607793,20260412,30005,20005,Accidente,Alta,Daño menor durante maniobra,73,427069,Sí
+900004,606355,20260814,30029,20028,Otro,Media,Desvío temporal por obras,40,28693,Sí
+900005,601670,20260504,30001,20011,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,24,0,Sí
+900006,604509,20260520,30002,20005,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,29,0,Sí
+900007,602139,20260706,30020,20012,Retraso por tráfico,Media,Congestión extraordinaria,17,0,En seguimiento
+900008,607358,20250919,30026,20047,Falla mecánica,Baja,Problema en sistema de frenos,8,420936,No
+900009,607226,20250824,30005,20002,Accidente,Baja,Impacto con otro vehículo,16,0,Sí
+900010,606986,20250822,30017,20007,Falla mecánica,Baja,Falla de motor,6,350551,Sí
+900011,607765,20251128,30027,20007,Retraso por tráfico,Baja,Congestión durante horario punta,6,0,En seguimiento
+900012,606823,20250429,30015,20046,Otro,Media,Desvío temporal por obras,29,40397,Sí
+900013,604321,20251226,30003,20007,Otro,Alta,Situación operacional no prevista,74,74065,Sí
+900014,601594,20260205,30012,20042,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,16,0,Sí
+900015,600504,20261009,30005,20045,Accidente,Crítica,Daño menor durante maniobra,147,555808,Sí
+900016,603962,20260917,30011,20031,Accidente,Baja,Accidente vehicular durante la ruta,12,113986,Sí
+900017,605501,20260723,30021,20028,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,11,0,Sí
+900018,605689,20260305,30013,20002,Accidente,Baja,Impacto con otro vehículo,12,747972,Sí
+900019,606651,20251124,30017,20022,Retraso por tráfico,Baja,Congestión durante horario punta,19,0,Sí
+900020,603979,20250416,30024,20016,Falla mecánica,Baja,Problema en neumáticos,15,269176,Sí
+900021,605317,20250212,30027,20049,Falla mecánica,Baja,Falla del sistema eléctrico,11,0,Sí
+900022,601298,20250317,30023,20018,Falla mecánica,Baja,Sobrecalentamiento del motor,15,0,Sí
+900023,607292,20260916,30013,20029,Problema de dirección,Alta,Cliente no se encontraba disponible,71,64044,Sí
+900024,603383,20251218,30014,20002,Problema con cliente,Alta,Cliente solicitó cambio de horario,73,0,Sí
+900025,600774,20261024,30012,20032,Retraso por tráfico,Alta,Congestión durante horario punta,57,0,Sí
+900026,601516,20250919,30002,20003,Falla mecánica,Baja,Sobrecalentamiento del motor,18,287848,En seguimiento
+900027,604521,20260814,30001,20005,Retraso por tráfico,Baja,Congestión extraordinaria,7,0,Sí
+900028,603928,20261026,30007,20029,Retraso por tráfico,Media,Congestión durante horario punta,23,0,Sí
+900029,602523,20260605,30026,20032,Otro,Alta,Situación operacional no prevista,68,23664,Sí
+900030,603506,20250309,30002,20018,Accidente,Media,Colisión menor durante el trayecto,16,737147,Sí
+900031,606007,20260208,30003,20026,Retraso por tráfico,Media,Congestión durante horario punta,16,0,Sí
+900032,602403,20260606,30012,20008,Otro,Baja,Corte de calle,8,52662,Sí
+900033,607009,20250816,30011,20048,Problema con cliente,Media,Problema con recepción del pedido,16,0,Sí
+900034,605629,20250720,30011,20043,Problema con cliente,Media,Cliente solicitó cambio de horario,23,0,Sí
+900035,603721,20250407,30001,20002,Problema de dirección,Alta,Problema para encontrar domicilio,65,72082,En seguimiento
+900036,600587,20251101,30001,20048,Falla mecánica,Media,Falla de motor,34,551896,Sí
+900037,602302,20260806,30013,20032,Problema con cliente,Media,Problema con recepción del pedido,39,0,Sí
+900038,607894,20250703,30012,20045,Retraso por tráfico,Media,Congestión durante horario punta,21,0,Sí
+900039,605352,20250721,30012,20042,Otro,Media,Restricción vial temporal,31,2049,En seguimiento
+900040,607120,20260628,30023,20048,Problema con cliente,Alta,Problema con recepción del pedido,38,0,Sí
+900041,603949,20261228,30019,20022,Problema con cliente,Alta,Cliente no se encontraba disponible,53,0,Sí
+900042,606636,20260225,30006,20029,Problema de dirección,Baja,Problema para encontrar domicilio,12,5539,Sí
+900043,605785,20251112,30010,20047,Retraso por tráfico,Alta,Tráfico lento por accidente en la vía,54,0,Sí
+900044,602115,20261127,30026,20029,Retraso por tráfico,Media,Congestión vehicular en ruta principal,17,0,Sí
+900045,602318,20250915,30010,20048,Falla mecánica,Baja,Sobrecalentamiento del motor,18,0,Sí
+900046,604813,20250914,30001,20022,Problema de dirección,Media,Dirección incorrecta,26,40818,Sí
+900047,605754,20250609,30009,20048,Falla mecánica,Crítica,Sobrecalentamiento del motor,110,488357,En seguimiento
+900048,607693,20260904,30007,20048,Problema con cliente,Media,Cliente no se encontraba disponible,29,0,Sí
+900049,607821,20260223,30002,20033,Falla mecánica,Media,Problema en sistema de frenos,18,252946,Sí
+900050,600240,20260912,30023,20008,Otro,Media,Situación operacional no prevista,28,36212,En seguimiento
+900051,603479,20260102,30002,20033,Accidente,Alta,Daño menor durante maniobra,75,538452,No
+900052,606444,20250328,30007,20017,Problema con cliente,Baja,Problema con recepción del pedido,9,0,Sí
+900053,604960,20260123,30027,20042,Falla mecánica,Media,Falla de motor,36,515890,Sí
+900054,605186,20251215,30030,20045,Problema de dirección,Crítica,Dirección incorrecta,125,56958,En seguimiento
+900055,603800,20251108,30015,20007,Retraso por tráfico,Alta,Tráfico lento por accidente en la vía,38,0,En seguimiento
+900056,607805,20260707,30003,20011,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,14,0,En seguimiento
+900057,607130,20260131,30006,20001,Falla mecánica,Baja,Problema en neumáticos,8,0,Sí
+900058,602599,20260913,30006,20043,Problema con cliente,Baja,Cliente solicitó cambio de horario,6,0,Sí
+900059,600857,20250620,30017,20032,Retraso por tráfico,Baja,Congestión durante horario punta,18,0,Sí
+900060,601787,20251129,30009,20031,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,19,0,Sí
+900061,601323,20261209,30013,20008,Problema con cliente,Baja,Cliente no se encontraba disponible,16,0,Sí
+900062,605717,20250423,30011,20031,Falla mecánica,Baja,Falla de motor,7,0,Sí
+900063,600534,20261102,30002,20012,Retraso por tráfico,Baja,Congestión durante horario punta,5,0,Sí
+900064,604120,20250817,30024,20001,Accidente,Baja,Colisión menor durante el trayecto,9,368093,Sí
+900065,601314,20250503,30027,20028,Accidente,Alta,Daño menor durante maniobra,63,277247,Sí
+900066,605517,20260917,30001,20031,Falla mecánica,Alta,Falla del sistema eléctrico,30,284415,Sí
+900067,602307,20260820,30010,20049,Problema de dirección,Baja,Cliente no se encontraba disponible,16,0,Sí
+900068,603290,20260402,30002,20047,Falla mecánica,Baja,Problema en neumáticos,5,201293,Sí
+900069,601619,20261001,30021,20042,Accidente,Media,Accidente vehicular durante la ruta,35,456902,Sí
+900070,602485,20260601,30009,20026,Retraso por tráfico,Baja,Tráfico lento por accidente en la vía,14,0,En seguimiento
+900071,602089,20250729,30011,20001,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,40,0,Sí
+900072,604450,20250325,30001,20049,Problema de dirección,Baja,Cambio de dirección solicitado por cliente,12,57679,Sí
+900073,602645,20260404,30030,20047,Problema de dirección,Alta,Cliente no se encontraba disponible,41,72369,No
+900074,604976,20260707,30011,20048,Retraso por tráfico,Media,Congestión vehicular en ruta principal,19,0,Sí
+900075,600320,20260207,30007,20016,Otro,Alta,Corte de calle,73,20764,Sí
+900076,603986,20260103,30030,20003,Retraso por tráfico,Baja,Tráfico lento por accidente en la vía,6,0,Sí
+900077,600264,20261216,30005,20002,Retraso por tráfico,Media,Congestión extraordinaria,16,0,Sí
+900078,606181,20250422,30021,20008,Falla mecánica,Media,Problema en neumáticos,27,161338,En seguimiento
+900079,600626,20260710,30021,20041,Retraso por tráfico,Alta,Congestión vehicular en ruta principal,65,0,Sí
+900080,600997,20260222,30003,20026,Retraso por tráfico,Media,Congestión durante horario punta,17,0,Sí
+900081,602424,20260611,30014,20018,Retraso por tráfico,Media,Congestión vehicular en ruta principal,37,0,En seguimiento
+900082,604901,20260501,30030,20028,Falla mecánica,Media,Problema en sistema de frenos,37,262856,Sí
+900083,603464,20250103,30003,20049,Retraso por tráfico,Media,Congestión extraordinaria,39,0,Sí
+900084,605081,20261213,30006,20046,Falla mecánica,Baja,Problema en neumáticos,17,0,Sí
+900085,605157,20260522,30012,20022,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,35,0,Sí
+900086,603498,20250711,30011,20028,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,18,0,En seguimiento
+900087,607095,20260404,30006,20033,Problema con cliente,Baja,Cliente solicitó cambio de horario,14,0,En seguimiento
+900088,603444,20261020,30002,20029,Retraso por tráfico,Alta,Congestión extraordinaria,72,0,En seguimiento
+900089,603488,20260917,30014,20008,Falla mecánica,Media,Falla del sistema eléctrico,26,353664,Sí
+900090,605559,20260316,30024,20016,Falla mecánica,Baja,Sobrecalentamiento del motor,15,0,Sí
+900091,601887,20260127,30027,20016,Retraso por tráfico,Alta,Congestión extraordinaria,51,0,En seguimiento
+900092,604417,20251204,30014,20001,Otro,Media,Corte de calle,18,35909,Sí
+900093,601617,20260414,30019,20001,Problema con cliente,Media,Problema con recepción del pedido,24,0,En seguimiento
+900094,603316,20251009,30024,20041,Retraso por tráfico,Baja,Tráfico lento por accidente en la vía,6,0,Sí
+900095,605014,20251211,30012,20026,Problema con cliente,Alta,Cliente no se encontraba disponible,68,0,En seguimiento
+900096,600744,20260125,30001,20049,Falla mecánica,Baja,Falla del sistema eléctrico,16,0,Sí
+900097,600764,20250613,30013,20032,Otro,Baja,Restricción vial temporal,20,0,En seguimiento
+900098,604991,20261017,30030,20048,Otro,Alta,Restricción vial temporal,65,30354,En seguimiento
+900099,604825,20250831,30029,20041,Falla mecánica,Baja,Sobrecalentamiento del motor,19,464782,Sí
+900100,604503,20260901,30023,20037,Otro,Baja,Situación operacional no prevista,16,0,Sí
+900101,605877,20250601,30011,20026,Problema de dirección,Baja,Cambio de dirección solicitado por cliente,16,0,Sí
+900102,605556,20260616,30023,20018,Accidente,Crítica,Colisión menor durante el trayecto,123,597562,En seguimiento
+900103,601296,20260422,30012,20048,Retraso por tráfico,Baja,Congestión durante horario punta,17,0,Sí
+900104,605231,20260417,30003,20001,Accidente,Alta,Accidente vehicular durante la ruta,34,675278,En seguimiento
+900105,603729,20250920,30002,20011,Otro,Alta,Desvío temporal por obras,74,37892,Sí
+900106,602895,20261221,30015,20033,Problema con cliente,Media,Cliente no se encontraba disponible,29,0,Sí
+900107,600541,20251130,30024,20047,Problema con cliente,Baja,Cliente solicitó cambio de horario,15,0,No
+900108,603439,20250422,30014,20016,Accidente,Baja,Accidente vehicular durante la ruta,9,374907,En seguimiento
+900109,604081,20260305,30014,20003,Otro,Media,Corte de calle,35,10916,Sí
+900110,603255,20250907,30006,20037,Falla mecánica,Media,Falla del sistema eléctrico,28,578032,En seguimiento
+900111,607327,20260601,30015,20024,Falla mecánica,Alta,Falla de motor,69,520463,Sí
+900112,606944,20260916,30021,20035,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,17,0,Sí
+900113,601413,20260612,30002,20037,Problema con cliente,Alta,Cliente no se encontraba disponible,59,0,En seguimiento
+900114,602182,20260807,30017,20024,Retraso por tráfico,Media,Congestión vehicular en ruta principal,37,0,Sí
+900115,605881,20260603,30002,20005,Problema de dirección,Alta,Dirección incorrecta,68,81317,No
+900116,606176,20251204,30014,20031,Retraso por tráfico,Media,Congestión extraordinaria,29,0,Sí
+900117,600024,20250119,30009,20026,Problema con cliente,Media,Cliente rechazó temporalmente la entrega,15,0,Sí
+900118,601278,20250529,30016,20042,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,31,0,En seguimiento
+900119,604898,20260220,30014,20008,Retraso por tráfico,Alta,Tráfico lento por accidente en la vía,46,0,Sí
+900120,602926,20260627,30011,20007,Accidente,Media,Impacto con otro vehículo,16,694124,Sí
+900121,604197,20261117,30003,20049,Falla mecánica,Baja,Problema en neumáticos,13,0,Sí
+900122,603818,20260910,30006,20016,Falla mecánica,Baja,Falla de motor,7,0,Sí
+900123,601430,20250903,30017,20022,Problema de dirección,Baja,Dirección incorrecta,9,0,Sí
+900124,602651,20260716,30001,20026,Falla mecánica,Baja,Falla de motor,13,0,Sí
+900125,606740,20260515,30027,20028,Problema de dirección,Baja,Dirección incorrecta,13,22574,Sí
+900126,606569,20250412,30009,20042,Falla mecánica,Baja,Sobrecalentamiento del motor,5,245257,Sí
+900127,602355,20251025,30019,20017,Falla mecánica,Baja,Falla de motor,19,0,Sí
+900128,601088,20250929,30011,20002,Problema con cliente,Baja,Problema con recepción del pedido,12,0,Sí
+900129,601609,20250223,30016,20049,Retraso por tráfico,Media,Congestión durante horario punta,27,0,En seguimiento
+900130,607723,20250829,30016,20037,Retraso por tráfico,Baja,Congestión extraordinaria,13,0,Sí
+900131,602500,20250113,30029,20043,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,14,0,Sí
+900132,600066,20260715,30009,20041,Retraso por tráfico,Media,Congestión durante horario punta,17,0,Sí
+900133,605553,20250624,30021,20005,Falla mecánica,Media,Problema en sistema de frenos,16,162910,Sí
+900134,604387,20260208,30027,20002,Retraso por tráfico,Baja,Congestión durante horario punta,9,0,Sí
+900135,606557,20251030,30017,20016,Falla mecánica,Media,Falla del sistema eléctrico,20,415956,En seguimiento
+900136,607673,20251110,30019,20028,Falla mecánica,Baja,Problema en sistema de frenos,11,0,Sí
+900137,600454,20260712,30009,20002,Falla mecánica,Media,Falla de motor,22,416468,En seguimiento
+900138,601427,20251209,30015,20033,Retraso por tráfico,Alta,Congestión vehicular en ruta principal,44,0,En seguimiento
+900139,604059,20260514,30015,20022,Retraso por tráfico,Media,Congestión extraordinaria,39,0,Sí
+900140,600510,20250917,30029,20002,Retraso por tráfico,Baja,Tráfico lento por accidente en la vía,16,0,En seguimiento
+900141,601200,20250302,30010,20046,Retraso por tráfico,Media,Congestión vehicular en ruta principal,31,0,Sí
+900142,603019,20261008,30015,20024,Problema de dirección,Baja,Problema para encontrar domicilio,9,0,Sí
+900143,605242,20261210,30027,20028,Retraso por tráfico,Baja,Tráfico lento por accidente en la vía,12,0,Sí
+900144,604271,20250713,30002,20017,Falla mecánica,Media,Problema en sistema de frenos,34,158512,Sí
+900145,603943,20250118,30027,20012,Problema con cliente,Media,Problema con recepción del pedido,38,0,Sí
+900146,604751,20250513,30023,20022,Retraso por tráfico,Alta,Congestión vehicular en ruta principal,73,0,Sí
+900147,606019,20251020,30024,20029,Problema con cliente,Alta,Cliente no se encontraba disponible,41,0,Sí
+900148,606334,20260101,30005,20012,Problema con cliente,Media,Cliente no se encontraba disponible,22,0,No
+900149,600335,20250211,30021,20011,Falla mecánica,Baja,Falla de motor,9,165524,Sí
+900150,603786,20260921,30030,20042,Otro,Baja,Situación operacional no prevista,14,0,Sí
+900151,607561,20260111,30007,20018,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,11,0,Sí
+900152,605724,20250829,30003,20045,Problema con cliente,Baja,Problema con recepción del pedido,18,0,Sí
+900153,601054,20250729,30001,20033,Falla mecánica,Alta,Problema en neumáticos,36,495266,Sí
+900154,600316,20251021,30027,20002,Problema con cliente,Media,Problema con recepción del pedido,34,0,Sí
+900155,606936,20260123,30005,20048,Problema con cliente,Baja,Cliente no se encontraba disponible,5,0,Sí
+900156,604099,20250225,30013,20031,Accidente,Media,Colisión menor durante el trayecto,24,465060,En seguimiento
+900157,605839,20260520,30026,20032,Falla mecánica,Media,Problema en neumáticos,29,221907,Sí
+900158,603579,20260115,30030,20005,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,19,0,Sí
+900159,600394,20251229,30013,20016,Problema con cliente,Media,Cliente rechazó temporalmente la entrega,33,0,Sí
+900160,600223,20260703,30006,20047,Problema de dirección,Media,Cambio de dirección solicitado por cliente,34,77834,En seguimiento
+900161,602639,20260205,30014,20028,Retraso por tráfico,Baja,Congestión durante horario punta,19,0,Sí
+900162,601863,20250623,30015,20035,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,39,0,Sí
+900163,600102,20250402,30030,20008,Problema con cliente,Alta,Cliente no se encontraba disponible,65,0,En seguimiento
+900164,602604,20260826,30009,20048,Otro,Media,Restricción vial temporal,24,27632,Sí
+900165,600319,20250516,30023,20045,Accidente,Baja,Colisión menor durante el trayecto,18,275399,En seguimiento
+900166,603099,20250115,30016,20037,Falla mecánica,Crítica,Problema en sistema de frenos,95,274085,En seguimiento
+900167,605417,20250211,30029,20011,Problema con cliente,Media,Problema con recepción del pedido,22,0,Sí
+900168,600933,20250218,30012,20033,Accidente,Baja,Accidente vehicular durante la ruta,8,0,Sí
+900169,601979,20250331,30017,20029,Otro,Baja,Corte de calle,6,8666,Sí
+900170,603298,20250313,30030,20017,Accidente,Alta,Colisión menor durante el trayecto,53,429670,Sí
+900171,605235,20261116,30019,20001,Otro,Baja,Desvío temporal por obras,19,0,Sí
+900172,606324,20251224,30021,20016,Falla mecánica,Alta,Falla del sistema eléctrico,49,464997,En seguimiento
+900173,606303,20260210,30009,20028,Falla mecánica,Baja,Sobrecalentamiento del motor,20,0,Sí
+900174,600966,20260404,30012,20035,Retraso por tráfico,Media,Congestión durante horario punta,31,0,Sí
+900175,607458,20260710,30020,20047,Problema con cliente,Media,Problema con recepción del pedido,15,0,Sí
+900176,601028,20260308,30021,20047,Retraso por tráfico,Media,Congestión durante horario punta,31,0,Sí
+900177,602252,20250901,30023,20048,Problema con cliente,Baja,Cliente rechazó temporalmente la entrega,12,0,En seguimiento
+900178,604794,20260331,30024,20031,Retraso por tráfico,Alta,Congestión extraordinaria,63,0,Sí
+900179,601079,20250422,30013,20028,Otro,Alta,Corte de calle,36,76534,Sí
+900180,603998,20251110,30002,20002,Problema de dirección,Baja,Cliente no se encontraba disponible,10,31480,Sí
+900181,607068,20250907,30014,20003,Retraso por tráfico,Media,Congestión durante horario punta,17,0,Sí
+900182,600971,20250608,30001,20008,Problema de dirección,Alta,Cliente no se encontraba disponible,45,54771,En seguimiento
+900183,607626,20261220,30019,20031,Retraso por tráfico,Baja,Congestión extraordinaria,6,0,Sí
+900184,601035,20250103,30015,20035,Problema con cliente,Baja,Cliente solicitó cambio de horario,7,0,Sí
+900185,607807,20260703,30013,20048,Otro,Media,Corte de calle,25,15358,Sí
+900186,607359,20260719,30020,20046,Accidente,Alta,Accidente vehicular durante la ruta,66,756639,No
+900187,604546,20250823,30027,20008,Problema con cliente,Baja,Cliente solicitó cambio de horario,14,0,Sí
+900188,600133,20250704,30016,20042,Retraso por tráfico,Crítica,Congestión vehicular en ruta principal,146,0,En seguimiento
+900189,603485,20260329,30013,20042,Retraso por tráfico,Media,Congestión vehicular en ruta principal,23,0,Sí
+900190,604454,20251006,30027,20017,Retraso por tráfico,Baja,Congestión durante horario punta,10,0,En seguimiento
+900191,600430,20250506,30013,20008,Otro,Media,Desvío temporal por obras,19,56133,En seguimiento
+900192,605662,20260918,30026,20046,Problema con cliente,Media,Cliente no se encontraba disponible,16,0,Sí
+900193,606410,20260417,30002,20049,Retraso por tráfico,Media,Congestión vehicular en ruta principal,35,0,Sí
+900194,600038,20251120,30026,20037,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,15,0,Sí
+900195,603299,20250901,30013,20007,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,31,0,Sí
+900196,607487,20260208,30010,20003,Problema con cliente,Baja,Problema con recepción del pedido,6,0,Sí
+900197,602496,20260217,30003,20016,Falla mecánica,Media,Problema en neumáticos,35,334074,Sí
+900198,605461,20260722,30026,20035,Problema de dirección,Baja,Dirección incorrecta,7,0,En seguimiento
+900199,601919,20260206,30014,20033,Problema con cliente,Baja,Cliente rechazó temporalmente la entrega,8,0,Sí
+900200,601929,20250814,30012,20008,Accidente,Media,Accidente vehicular durante la ruta,27,663178,Sí
+900201,601181,20250410,30011,20048,Retraso por tráfico,Baja,Congestión extraordinaria,12,0,Sí
+900202,600867,20260311,30005,20042,Retraso por tráfico,Media,Congestión vehicular en ruta principal,17,0,No
+900203,605661,20250724,30002,20031,Accidente,Alta,Colisión menor durante el trayecto,67,713217,Sí
+900204,606269,20250826,30019,20026,Falla mecánica,Alta,Problema en sistema de frenos,46,330553,En seguimiento
+900205,604210,20250929,30015,20047,Falla mecánica,Media,Falla del sistema eléctrico,38,543554,Sí
+900206,601883,20260426,30023,20048,Problema con cliente,Media,Cliente no se encontraba disponible,30,0,No
+900207,604214,20251012,30017,20018,Otro,Media,Corte de calle,40,27935,Sí
+900208,600458,20250723,30015,20035,Otro,Media,Corte de calle,36,44813,Sí
+900209,607456,20250821,30026,20016,Retraso por tráfico,Alta,Congestión extraordinaria,52,0,En seguimiento
+900210,600252,20260902,30012,20024,Problema con cliente,Alta,Problema con recepción del pedido,47,0,Sí
+900211,606611,20250525,30015,20028,Accidente,Media,Accidente vehicular durante la ruta,17,659723,Sí
+900212,607918,20250514,30002,20033,Problema con cliente,Media,Cliente rechazó temporalmente la entrega,40,0,Sí
+900213,606229,20251112,30019,20047,Retraso por tráfico,Alta,Congestión vehicular en ruta principal,33,0,En seguimiento
+900214,603856,20250417,30027,20031,Problema con cliente,Media,Cliente solicitó cambio de horario,27,0,Sí
+900215,600096,20260202,30007,20035,Retraso por tráfico,Media,Congestión extraordinaria,16,0,Sí
+900216,602571,20260705,30012,20049,Falla mecánica,Baja,Falla del sistema eléctrico,20,0,Sí
+900217,600737,20250127,30010,20037,Problema con cliente,Baja,Cliente rechazó temporalmente la entrega,9,0,Sí
+900218,606203,20260624,30015,20022,Otro,Media,Desvío temporal por obras,39,24574,Sí
+900219,602319,20261006,30026,20012,Problema con cliente,Baja,Cliente rechazó temporalmente la entrega,17,0,Sí
+900220,606426,20261226,30010,20043,Problema de dirección,Media,Problema para encontrar domicilio,30,90816,En seguimiento
+900221,604336,20260916,30011,20026,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,12,0,En seguimiento
+900222,605203,20260313,30011,20003,Problema con cliente,Baja,Cliente rechazó temporalmente la entrega,10,0,En seguimiento
+900223,601023,20260630,30019,20042,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,39,0,Sí
+900224,601043,20260524,30010,20012,Falla mecánica,Alta,Falla de motor,74,577373,Sí
+900225,604691,20250907,30030,20048,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,14,0,Sí
+900226,607224,20260512,30017,20043,Problema de dirección,Baja,Problema para encontrar domicilio,13,0,Sí
+900227,606271,20260328,30003,20008,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,31,0,Sí
+900228,602413,20250202,30015,20016,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,29,0,Sí
+900229,604950,20250225,30020,20002,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,13,0,Sí
+900230,604246,20260506,30020,20037,Problema con cliente,Alta,Problema con recepción del pedido,41,0,Sí
+900231,603618,20260810,30009,20008,Problema de dirección,Media,Dirección incorrecta,16,25559,Sí
+900232,604926,20260418,30013,20049,Retraso por tráfico,Media,Congestión vehicular en ruta principal,40,0,Sí
+900233,603310,20250607,30020,20026,Falla mecánica,Media,Falla del sistema eléctrico,19,236988,En seguimiento
+900234,607470,20251201,30003,20035,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,40,0,Sí
+900235,604568,20250217,30026,20008,Problema de dirección,Media,Problema para encontrar domicilio,27,99616,En seguimiento
+900236,603774,20260411,30016,20022,Problema con cliente,Baja,Problema con recepción del pedido,15,0,Sí
+900237,606180,20251110,30020,20016,Falla mecánica,Alta,Problema en neumáticos,65,498350,En seguimiento
+900238,602754,20250416,30015,20032,Falla mecánica,Alta,Sobrecalentamiento del motor,60,197638,Sí
+900239,601733,20251221,30001,20046,Falla mecánica,Alta,Falla del sistema eléctrico,47,562003,No
+900240,602541,20260520,30015,20029,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,20,0,Sí
+900241,605005,20261214,30030,20024,Problema de dirección,Baja,Dirección incorrecta,16,0,Sí
+900242,606659,20250311,30026,20032,Retraso por tráfico,Baja,Tráfico lento por accidente en la vía,13,0,Sí
+900243,605479,20260830,30019,20026,Falla mecánica,Media,Problema en neumáticos,36,556723,Sí
+900244,600555,20250801,30026,20031,Accidente,Baja,Accidente vehicular durante la ruta,5,0,Sí
+900245,603784,20250425,30003,20005,Accidente,Alta,Daño menor durante maniobra,43,530783,En seguimiento
+900246,602346,20260327,30016,20002,Problema con cliente,Baja,Cliente no se encontraba disponible,17,0,Sí
+900247,605577,20251003,30002,20035,Retraso por tráfico,Media,Congestión extraordinaria,33,0,Sí
+900248,604123,20250525,30019,20033,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,17,0,Sí
+900249,600577,20250527,30010,20046,Falla mecánica,Media,Problema en neumáticos,25,435555,No
+900250,606887,20250916,30007,20041,Problema de dirección,Baja,Cliente no se encontraba disponible,5,0,Sí
+900251,601194,20250326,30015,20011,Otro,Alta,Desvío temporal por obras,49,48901,En seguimiento
+900252,600545,20250618,30001,20029,Otro,Baja,Desvío temporal por obras,16,19982,Sí
+900253,601145,20261226,30005,20043,Problema de dirección,Baja,Dirección incorrecta,19,0,En seguimiento
+900254,604695,20250106,30023,20026,Falla mecánica,Baja,Sobrecalentamiento del motor,12,0,Sí
+900255,602442,20250602,30009,20012,Problema con cliente,Baja,Cliente solicitó cambio de horario,12,0,Sí
+900256,601868,20260701,30009,20008,Retraso por tráfico,Baja,Tráfico lento por accidente en la vía,11,0,Sí
+900257,601407,20260627,30017,20018,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,16,0,Sí
+900258,607565,20260817,30014,20033,Retraso por tráfico,Baja,Congestión durante horario punta,20,0,Sí
+900259,607529,20251030,30017,20028,Problema de dirección,Baja,Cliente no se encontraba disponible,19,62046,Sí
+900260,601920,20260331,30003,20032,Problema con cliente,Media,Problema con recepción del pedido,22,0,Sí
+900261,600158,20260602,30007,20022,Falla mecánica,Baja,Problema en neumáticos,13,0,Sí
+900262,606987,20260904,30030,20033,Problema de dirección,Media,Cliente no se encontraba disponible,32,63483,Sí
+900263,602019,20250329,30009,20032,Falla mecánica,Baja,Falla de motor,5,0,Sí
+900264,606473,20250213,30014,20033,Otro,Baja,Situación operacional no prevista,14,0,Sí
+900265,605101,20260811,30019,20008,Problema de dirección,Media,Problema para encontrar domicilio,20,83976,En seguimiento
+900266,602985,20250623,30015,20028,Problema de dirección,Baja,Problema para encontrar domicilio,16,26289,Sí
+900267,605927,20250407,30027,20005,Problema con cliente,Baja,Cliente solicitó cambio de horario,8,0,Sí
+900268,603353,20260221,30027,20007,Retraso por tráfico,Media,Congestión durante horario punta,23,0,Sí
+900269,600519,20261110,30015,20032,Falla mecánica,Baja,Falla de motor,11,0,En seguimiento
+900270,603429,20250728,30021,20035,Retraso por tráfico,Media,Congestión extraordinaria,27,0,Sí
+900271,607027,20261205,30029,20031,Retraso por tráfico,Baja,Congestión durante horario punta,16,0,Sí
+900272,605325,20260201,30017,20012,Retraso por tráfico,Media,Congestión extraordinaria,17,0,Sí
+900273,604933,20260419,30006,20029,Problema de dirección,Baja,Cliente no se encontraba disponible,19,98656,Sí
+900274,605558,20260206,30019,20035,Problema con cliente,Media,Cliente rechazó temporalmente la entrega,34,0,Sí
+900275,602303,20260511,30017,20037,Retraso por tráfico,Crítica,Congestión extraordinaria,83,0,En seguimiento
+900276,604052,20260519,30011,20002,Retraso por tráfico,Baja,Congestión extraordinaria,9,0,Sí
+900277,605939,20261005,30012,20028,Otro,Baja,Situación operacional no prevista,14,0,En seguimiento
+900278,602269,20250903,30014,20042,Retraso por tráfico,Media,Congestión extraordinaria,35,0,Sí
+900279,603817,20260426,30017,20024,Problema con cliente,Baja,Cliente solicitó cambio de horario,18,0,Sí
+900280,601651,20250320,30012,20029,Retraso por tráfico,Baja,Tráfico lento por accidente en la vía,10,0,Sí
+900281,602058,20250921,30007,20041,Retraso por tráfico,Media,Congestión durante horario punta,21,0,Sí
+900282,607639,20260802,30011,20005,Falla mecánica,Media,Sobrecalentamiento del motor,39,373224,Sí
+900283,605908,20250226,30009,20017,Problema de dirección,Baja,Problema para encontrar domicilio,12,0,En seguimiento
+900284,602489,20251119,30020,20045,Falla mecánica,Alta,Falla de motor,43,488511,Sí
+900285,601415,20250709,30024,20007,Problema de dirección,Baja,Dirección incorrecta,9,79530,Sí
+900286,601729,20260812,30024,20037,Falla mecánica,Baja,Problema en sistema de frenos,9,332958,Sí
+900287,602997,20260617,30023,20037,Problema de dirección,Baja,Cambio de dirección solicitado por cliente,19,0,Sí
+900288,603640,20260601,30017,20017,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,19,0,Sí
+900289,601375,20260104,30015,20003,Falla mecánica,Media,Problema en sistema de frenos,35,384554,Sí
+900290,605199,20260606,30003,20032,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,34,0,En seguimiento
+900291,600539,20260925,30015,20026,Problema de dirección,Baja,Cambio de dirección solicitado por cliente,13,89393,Sí
+900292,607654,20260315,30029,20001,Retraso por tráfico,Media,Congestión extraordinaria,26,0,Sí
+900293,602532,20250706,30015,20012,Accidente,Baja,Accidente vehicular durante la ruta,20,0,Sí
+900294,603323,20250608,30015,20047,Falla mecánica,Media,Falla de motor,20,580596,En seguimiento
+900295,601374,20250909,30016,20032,Problema de dirección,Crítica,Dirección incorrecta,102,88009,Sí
+900296,606554,20250319,30007,20011,Problema de dirección,Alta,Cliente no se encontraba disponible,69,94795,Sí
+900297,603035,20261229,30027,20008,Problema de dirección,Media,Cliente no se encontraba disponible,33,79134,Sí
+900298,602274,20250716,30026,20008,Problema de dirección,Media,Cliente no se encontraba disponible,16,17087,Sí
+900299,602837,20260522,30013,20043,Problema con cliente,Crítica,Cliente no se encontraba disponible,72,0,En seguimiento
+900300,601567,20251217,30030,20032,Retraso por tráfico,Baja,Congestión durante horario punta,6,0,Sí
+900301,601785,20250629,30021,20026,Retraso por tráfico,Alta,Congestión extraordinaria,42,0,En seguimiento
+900302,605056,20260813,30014,20002,Problema con cliente,Baja,Problema con recepción del pedido,18,0,Sí
+900303,604300,20261018,30001,20032,Problema de dirección,Media,Cliente no se encontraba disponible,29,9108,Sí
+900304,601058,20260108,30009,20003,Retraso por tráfico,Baja,Congestión extraordinaria,5,0,Sí
+900305,606520,20250517,30019,20002,Problema de dirección,Media,Problema para encontrar domicilio,24,25537,Sí
+900306,604408,20250803,30026,20049,Retraso por tráfico,Alta,Congestión vehicular en ruta principal,31,0,Sí
+900307,600648,20260808,30021,20045,Problema con cliente,Baja,Cliente rechazó temporalmente la entrega,9,0,Sí
+900308,607106,20260712,30015,20002,Retraso por tráfico,Baja,Congestión extraordinaria,11,0,Sí
+900309,604289,20250714,30019,20032,Retraso por tráfico,Alta,Congestión extraordinaria,72,0,Sí
+900310,602998,20260602,30016,20046,Accidente,Alta,Daño menor durante maniobra,65,239978,Sí
+900311,604372,20261012,30003,20001,Otro,Baja,Situación operacional no prevista,6,0,Sí
+900312,603762,20260614,30007,20005,Problema de dirección,Alta,Dirección incorrecta,57,31010,No
+900313,604624,20250818,30017,20041,Problema de dirección,Media,Cliente no se encontraba disponible,31,43596,Sí
+900314,600928,20250206,30029,20032,Retraso por tráfico,Baja,Congestión extraordinaria,16,0,Sí
+900315,607475,20250204,30020,20017,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,24,0,En seguimiento
+900316,603615,20250331,30009,20042,Retraso por tráfico,Alta,Congestión vehicular en ruta principal,30,0,Sí
+900317,605247,20261108,30003,20043,Problema de dirección,Alta,Cambio de dirección solicitado por cliente,51,23669,Sí
+900318,605767,20250829,30023,20008,Falla mecánica,Baja,Problema en sistema de frenos,14,0,No
+900319,603126,20261130,30021,20048,Falla mecánica,Media,Problema en neumáticos,32,255111,No
+900320,607363,20260208,30017,20043,Problema de dirección,Alta,Problema para encontrar domicilio,48,81571,Sí
+900321,603247,20261108,30021,20049,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,7,0,Sí
+900322,606072,20261227,30017,20045,Falla mecánica,Baja,Falla de motor,19,242578,Sí
+900323,605895,20260913,30016,20007,Retraso por tráfico,Media,Congestión durante horario punta,39,0,Sí
+900324,607744,20261123,30013,20033,Retraso por tráfico,Media,Congestión durante horario punta,32,0,Sí
+900325,601783,20260320,30016,20042,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,25,0,En seguimiento
+900326,603519,20251010,30023,20003,Problema con cliente,Media,Problema con recepción del pedido,20,0,Sí
+900327,604392,20250626,30011,20016,Problema con cliente,Baja,Cliente rechazó temporalmente la entrega,9,0,Sí
+900328,607103,20250824,30001,20005,Retraso por tráfico,Baja,Congestión durante horario punta,11,0,Sí
+900329,606917,20260804,30014,20042,Problema de dirección,Baja,Problema para encontrar domicilio,20,0,Sí
+900330,602472,20250401,30001,20018,Retraso por tráfico,Baja,Tráfico lento por accidente en la vía,7,0,Sí
+900331,602267,20260315,30009,20042,Problema de dirección,Media,Cambio de dirección solicitado por cliente,16,9686,Sí
+900332,600713,20260530,30014,20008,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,9,0,Sí
+900333,607296,20261101,30013,20005,Falla mecánica,Baja,Problema en neumáticos,18,380008,Sí
+900334,603197,20250728,30026,20011,Otro,Media,Situación operacional no prevista,27,72982,Sí
+900335,601173,20260620,30020,20046,Accidente,Media,Accidente vehicular durante la ruta,38,796683,Sí
+900336,601859,20261107,30006,20017,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,32,0,Sí
+900337,603711,20260408,30019,20048,Falla mecánica,Alta,Problema en neumáticos,67,159715,En seguimiento
+900338,605996,20250402,30014,20049,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,6,0,Sí
+900339,607168,20250522,30006,20032,Retraso por tráfico,Baja,Congestión durante horario punta,8,0,En seguimiento
+900340,600602,20260710,30017,20024,Retraso por tráfico,Alta,Tráfico lento por accidente en la vía,72,0,No
+900341,602830,20260816,30002,20046,Problema con cliente,Baja,Cliente no se encontraba disponible,19,0,Sí
+900342,606827,20250813,30001,20028,Retraso por tráfico,Alta,Congestión extraordinaria,59,0,En seguimiento
+900343,601019,20260601,30007,20032,Problema con cliente,Baja,Problema con recepción del pedido,13,0,Sí
+900344,600350,20261119,30027,20046,Problema de dirección,Baja,Cliente no se encontraba disponible,8,55249,No
+900345,602227,20250122,30013,20024,Retraso por tráfico,Baja,Congestión durante horario punta,19,0,Sí
+900346,601503,20250120,30015,20002,Problema con cliente,Baja,Cliente no se encontraba disponible,7,0,Sí
+900347,602518,20261009,30001,20016,Falla mecánica,Media,Falla del sistema eléctrico,18,297992,Sí
+900348,603955,20251106,30023,20018,Retraso por tráfico,Alta,Congestión extraordinaria,61,0,No
+900349,605835,20251230,30030,20011,Retraso por tráfico,Baja,Congestión extraordinaria,16,0,Sí
+900350,600231,20260501,30020,20002,Problema de dirección,Media,Problema para encontrar domicilio,33,71966,Sí
+900351,601403,20261220,30010,20048,Falla mecánica,Baja,Problema en sistema de frenos,18,0,Sí
+900352,601243,20250615,30009,20016,Retraso por tráfico,Baja,Congestión extraordinaria,9,0,Sí
+900353,604320,20260422,30006,20002,Falla mecánica,Media,Problema en sistema de frenos,15,247539,Sí
+900354,606653,20260730,30027,20033,Falla mecánica,Baja,Falla del sistema eléctrico,17,0,Sí
+900355,604814,20261215,30001,20002,Problema con cliente,Baja,Cliente solicitó cambio de horario,17,0,Sí
+900356,602289,20250223,30027,20048,Problema con cliente,Media,Problema con recepción del pedido,36,0,En seguimiento
+900357,600034,20260319,30003,20002,Retraso por tráfico,Media,Congestión vehicular en ruta principal,36,0,Sí
+900358,607079,20261221,30012,20012,Problema con cliente,Baja,Cliente solicitó cambio de horario,11,0,Sí
+900359,605811,20260823,30009,20001,Falla mecánica,Crítica,Problema en neumáticos,141,328148,En seguimiento
+900360,605447,20251115,30027,20042,Retraso por tráfico,Baja,Congestión extraordinaria,15,0,No
+900361,603910,20260803,30002,20026,Falla mecánica,Baja,Sobrecalentamiento del motor,6,0,Sí
+900362,607284,20260708,30005,20022,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,10,0,En seguimiento
+900363,600677,20260302,30024,20042,Otro,Media,Desvío temporal por obras,23,64641,Sí
+900364,606943,20260309,30009,20012,Retraso por tráfico,Alta,Congestión extraordinaria,69,0,Sí
+900365,603195,20260916,30016,20029,Retraso por tráfico,Baja,Tráfico lento por accidente en la vía,10,0,Sí
+900366,600062,20251128,30010,20016,Retraso por tráfico,Alta,Congestión vehicular en ruta principal,34,0,En seguimiento
+900367,607837,20260916,30010,20008,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,12,0,Sí
+900368,602209,20260822,30019,20017,Problema con cliente,Baja,Cliente solicitó cambio de horario,5,0,Sí
+900369,601766,20250317,30002,20011,Retraso por tráfico,Crítica,Congestión extraordinaria,111,0,En seguimiento
+900370,606024,20260823,30011,20031,Problema con cliente,Baja,Cliente rechazó temporalmente la entrega,14,0,Sí
+900371,604880,20251207,30002,20012,Accidente,Baja,Daño menor durante maniobra,19,0,En seguimiento
+900372,603287,20250816,30005,20029,Problema con cliente,Media,Problema con recepción del pedido,16,0,Sí
+900373,601946,20260820,30002,20043,Falla mecánica,Media,Falla de motor,28,323672,Sí
+900374,603899,20251222,30020,20008,Retraso por tráfico,Alta,Tráfico lento por accidente en la vía,39,0,En seguimiento
+900375,603572,20260315,30015,20042,Retraso por tráfico,Baja,Tráfico lento por accidente en la vía,17,0,Sí
+900376,603054,20260606,30014,20037,Problema de dirección,Baja,Cliente no se encontraba disponible,14,0,Sí
+900377,601056,20260515,30030,20007,Retraso por tráfico,Baja,Tráfico lento por accidente en la vía,16,0,Sí
+900378,605563,20250302,30011,20035,Falla mecánica,Baja,Sobrecalentamiento del motor,20,477090,Sí
+900379,606844,20250921,30021,20037,Problema de dirección,Baja,Cliente no se encontraba disponible,11,0,Sí
+900380,606227,20261102,30027,20046,Problema con cliente,Media,Cliente solicitó cambio de horario,22,0,Sí
+900381,606528,20250315,30020,20037,Problema con cliente,Media,Cliente solicitó cambio de horario,25,0,Sí
+900382,600473,20250713,30010,20032,Otro,Alta,Desvío temporal por obras,58,48908,Sí
+900383,604442,20251019,30011,20046,Problema de dirección,Baja,Cambio de dirección solicitado por cliente,6,0,Sí
+900384,605584,20260326,30029,20026,Problema con cliente,Media,Problema con recepción del pedido,15,0,Sí
+900385,604082,20261229,30007,20045,Falla mecánica,Baja,Falla del sistema eléctrico,18,0,En seguimiento
+900386,602084,20250927,30009,20017,Falla mecánica,Media,Sobrecalentamiento del motor,30,565872,Sí
+900387,605738,20260623,30027,20043,Otro,Baja,Corte de calle,20,0,Sí
+900388,604393,20251010,30015,20033,Problema de dirección,Media,Cambio de dirección solicitado por cliente,30,37900,Sí
+900389,605310,20250527,30026,20042,Accidente,Media,Accidente vehicular durante la ruta,36,791211,Sí
+900390,602454,20250905,30010,20001,Problema con cliente,Media,Problema con recepción del pedido,34,0,Sí
+900391,606907,20251027,30029,20032,Problema con cliente,Media,Cliente rechazó temporalmente la entrega,33,0,En seguimiento
+900392,605050,20260809,30020,20011,Retraso por tráfico,Media,Congestión extraordinaria,24,0,En seguimiento
+900393,602692,20250409,30021,20042,Falla mecánica,Media,Falla de motor,36,414167,Sí
+900394,606981,20251008,30023,20043,Problema de dirección,Baja,Cambio de dirección solicitado por cliente,13,0,Sí
+900395,606755,20250126,30030,20002,Retraso por tráfico,Media,Congestión extraordinaria,19,0,Sí
+900396,602184,20251101,30029,20032,Problema de dirección,Baja,Cambio de dirección solicitado por cliente,12,0,Sí
+900397,600995,20250529,30017,20048,Problema con cliente,Media,Cliente rechazó temporalmente la entrega,28,0,Sí
+900398,600080,20250115,30019,20016,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,20,0,Sí
+900399,603096,20260704,30017,20026,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,8,0,Sí
+900400,602158,20260829,30026,20003,Falla mecánica,Baja,Problema en neumáticos,15,568267,En seguimiento
+900401,606035,20250409,30009,20032,Retraso por tráfico,Baja,Congestión extraordinaria,10,0,Sí
+900402,600466,20251027,30026,20003,Problema de dirección,Crítica,Cliente no se encontraba disponible,134,14472,En seguimiento
+900403,604305,20260806,30013,20022,Falla mecánica,Baja,Falla del sistema eléctrico,6,0,Sí
+900404,604861,20250315,30015,20045,Problema de dirección,Alta,Dirección incorrecta,48,83369,En seguimiento
+900405,602723,20250726,30014,20048,Problema con cliente,Alta,Cliente no se encontraba disponible,66,0,Sí
+900406,600880,20261227,30020,20003,Retraso por tráfico,Media,Congestión durante horario punta,20,0,Sí
+900407,602996,20260108,30006,20043,Problema con cliente,Media,Cliente rechazó temporalmente la entrega,15,0,Sí
+900408,607542,20261219,30015,20046,Problema con cliente,Baja,Cliente rechazó temporalmente la entrega,16,0,Sí
+900409,603232,20250614,30014,20037,Problema de dirección,Alta,Dirección incorrecta,59,1431,Sí
+900410,606648,20260329,30007,20026,Accidente,Baja,Daño menor durante maniobra,11,119675,En seguimiento
+900411,606533,20250903,30024,20042,Problema con cliente,Baja,Cliente rechazó temporalmente la entrega,17,0,Sí
+900412,602174,20261223,30023,20008,Accidente,Baja,Impacto con otro vehículo,14,0,Sí
+900413,601980,20260701,30003,20031,Retraso por tráfico,Alta,Congestión extraordinaria,47,0,En seguimiento
+900414,603521,20250907,30029,20048,Otro,Media,Situación operacional no prevista,21,65428,Sí
+900415,600795,20260326,30015,20007,Problema con cliente,Media,Cliente solicitó cambio de horario,19,0,En seguimiento
+900416,600497,20261119,30014,20003,Falla mecánica,Media,Sobrecalentamiento del motor,19,247239,Sí
+900417,601288,20250319,30029,20012,Otro,Media,Restricción vial temporal,39,6588,Sí
+900418,602685,20261026,30019,20043,Problema con cliente,Baja,Cliente no se encontraba disponible,13,0,Sí
+900419,600150,20260406,30021,20028,Otro,Baja,Desvío temporal por obras,16,0,Sí
+900420,604553,20251109,30030,20008,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,10,0,Sí
+900421,603880,20260128,30020,20026,Otro,Alta,Corte de calle,31,65633,En seguimiento
+900422,603539,20250825,30009,20026,Problema de dirección,Media,Cambio de dirección solicitado por cliente,38,57326,Sí
+900423,605364,20250917,30019,20043,Retraso por tráfico,Crítica,Tráfico lento por accidente en la vía,122,0,En seguimiento
+900424,602288,20251118,30015,20041,Retraso por tráfico,Baja,Congestión extraordinaria,19,0,Sí
+900425,602796,20260628,30005,20032,Falla mecánica,Alta,Falla del sistema eléctrico,51,558155,Sí
+900426,607336,20250418,30016,20024,Retraso por tráfico,Crítica,Congestión durante horario punta,85,0,En seguimiento
+900427,604508,20250129,30021,20011,Accidente,Media,Impacto con otro vehículo,22,647936,Sí
+900428,606014,20260907,30030,20007,Falla mecánica,Media,Sobrecalentamiento del motor,39,332650,Sí
+900429,604170,20260304,30020,20024,Retraso por tráfico,Baja,Tráfico lento por accidente en la vía,16,0,Sí
+900430,603003,20260605,30026,20041,Problema con cliente,Baja,Cliente rechazó temporalmente la entrega,12,0,Sí
+900431,601512,20251211,30003,20035,Problema con cliente,Media,Cliente solicitó cambio de horario,34,0,Sí
+900432,603574,20260612,30010,20048,Retraso por tráfico,Alta,Congestión extraordinaria,32,0,En seguimiento
+900433,607076,20251016,30014,20026,Otro,Baja,Corte de calle,5,65031,Sí
+900434,603976,20250330,30024,20017,Retraso por tráfico,Media,Tráfico lento por accidente en la vía,28,0,Sí
+900435,606366,20260905,30024,20037,Falla mecánica,Media,Falla del sistema eléctrico,37,517631,En seguimiento
+900436,603626,20260905,30006,20017,Otro,Media,Restricción vial temporal,27,56481,Sí
+900437,605219,20260503,30009,20033,Otro,Media,Situación operacional no prevista,19,9752,Sí
+900438,600234,20251111,30019,20028,Problema de dirección,Alta,Cliente no se encontraba disponible,34,32994,Sí
+900439,600354,20250411,30014,20008,Retraso por tráfico,Alta,Tráfico lento por accidente en la vía,35,0,En seguimiento
+900440,606814,20250809,30024,20045,Otro,Alta,Situación operacional no prevista,73,26475,Sí
+900441,606610,20261003,30023,20003,Retraso por tráfico,Alta,Tráfico lento por accidente en la vía,57,0,Sí
+900442,603423,20250628,30027,20011,Problema de dirección,Alta,Dirección incorrecta,62,25556,Sí
+900443,607734,20250407,30003,20028,Retraso por tráfico,Media,Congestión extraordinaria,40,0,Sí
+900444,600170,20250731,30002,20002,Problema de dirección,Baja,Problema para encontrar domicilio,9,0,En seguimiento
+900445,601406,20250729,30011,20011,Accidente,Media,Daño menor durante maniobra,16,756449,Sí
+900446,607291,20250806,30023,20022,Accidente,Baja,Impacto con otro vehículo,13,0,No
+900447,604605,20250616,30005,20001,Accidente,Baja,Colisión menor durante el trayecto,14,0,Sí
+900448,601264,20260328,30030,20007,Retraso por tráfico,Media,Congestión vehicular en ruta principal,28,0,En seguimiento
+900449,605077,20260812,30020,20022,Problema con cliente,Media,Problema con recepción del pedido,27,0,En seguimiento
+900450,606738,20250322,30012,20018,Otro,Media,Situación operacional no prevista,37,58810,Sí
+900451,602624,20260405,30021,20002,Retraso por tráfico,Baja,Congestión durante horario punta,9,0,Sí
+900452,601704,20250509,30001,20016,Problema con cliente,Media,Cliente rechazó temporalmente la entrega,31,0,Sí
+900453,601198,20250723,30001,20043,Accidente,Alta,Accidente vehicular durante la ruta,51,615693,En seguimiento
+900454,601941,20250604,30027,20022,Problema de dirección,Alta,Cliente no se encontraba disponible,74,48454,No
+900455,601426,20260628,30013,20024,Retraso por tráfico,Alta,Congestión durante horario punta,48,0,En seguimiento
+900456,603283,20260823,30021,20001,Falla mecánica,Baja,Problema en sistema de frenos,8,0,Sí
+900457,601453,20260118,30014,20011,Retraso por tráfico,Baja,Congestión durante horario punta,15,0,Sí
+900458,602749,20251210,30021,20026,Problema con cliente,Baja,Cliente no se encontraba disponible,8,0,En seguimiento
+900459,601143,20260913,30001,20028,Retraso por tráfico,Alta,Congestión vehicular en ruta principal,45,0,Sí
+900460,603551,20260515,30020,20002,Retraso por tráfico,Baja,Congestión extraordinaria,15,0,En seguimiento
+900461,601047,20260531,30003,20031,Problema de dirección,Baja,Cliente no se encontraba disponible,9,0,Sí
+900462,600711,20261107,30029,20026,Otro,Media,Situación operacional no prevista,31,49879,En seguimiento
+900463,605642,20260920,30011,20033,Retraso por tráfico,Baja,Congestión extraordinaria,16,0,Sí
+900464,606005,20250403,30014,20011,Problema de dirección,Alta,Problema para encontrar domicilio,58,82325,No
+900465,601545,20250506,30012,20028,Retraso por tráfico,Media,Congestión extraordinaria,33,0,Sí
+900466,607016,20261105,30009,20012,Falla mecánica,Baja,Falla de motor,16,420914,En seguimiento
+900467,602822,20261229,30001,20033,Retraso por tráfico,Crítica,Congestión durante horario punta,131,0,En seguimiento
+900468,606608,20260219,30013,20001,Problema con cliente,Baja,Cliente rechazó temporalmente la entrega,17,0,Sí
+900469,604642,20260315,30027,20024,Falla mecánica,Media,Sobrecalentamiento del motor,39,356940,Sí
+900470,605405,20260708,30029,20035,Falla mecánica,Media,Falla del sistema eléctrico,27,344387,Sí
+900471,604937,20260320,30002,20012,Retraso por tráfico,Alta,Tráfico lento por accidente en la vía,37,0,Sí
+900472,601262,20261009,30017,20029,Retraso por tráfico,Media,Congestión durante horario punta,35,0,Sí
+900473,607902,20251011,30009,20045,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,13,0,Sí
+900474,606780,20261022,30020,20005,Problema con cliente,Media,Problema con recepción del pedido,21,0,Sí
+900475,606947,20260206,30017,20017,Retraso por tráfico,Media,Congestión extraordinaria,33,0,Sí
+900476,605664,20260120,30029,20041,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,16,0,En seguimiento
+900477,600488,20251109,30006,20037,Problema de dirección,Media,Problema para encontrar domicilio,30,22432,No
+900478,602273,20250617,30007,20047,Otro,Media,Restricción vial temporal,39,78682,Sí
+900479,604595,20260418,30017,20018,Retraso por tráfico,Baja,Tráfico lento por accidente en la vía,19,0,Sí
+900480,601006,20260412,30013,20016,Retraso por tráfico,Media,Congestión extraordinaria,32,0,Sí
+900481,606696,20250728,30029,20048,Retraso por tráfico,Media,Congestión extraordinaria,15,0,Sí
+900482,605547,20260910,30001,20011,Retraso por tráfico,Alta,Congestión durante horario punta,58,0,En seguimiento
+900483,605018,20250227,30019,20018,Problema con cliente,Media,Cliente solicitó cambio de horario,28,0,Sí
+900484,603782,20250506,30007,20037,Falla mecánica,Baja,Falla del sistema eléctrico,7,562755,Sí
+900485,606722,20261024,30014,20047,Accidente,Media,Impacto con otro vehículo,22,349768,Sí
+900486,605936,20250221,30027,20047,Retraso por tráfico,Baja,Congestión vehicular en ruta principal,19,0,Sí
+900487,604248,20250908,30014,20001,Falla mecánica,Media,Falla del sistema eléctrico,38,450536,Sí
+900488,602689,20260412,30013,20048,Problema de dirección,Baja,Dirección incorrecta,7,0,Sí
+900489,602132,20260626,30005,20045,Retraso por tráfico,Baja,Congestión extraordinaria,20,0,En seguimiento
+900490,603690,20260126,30014,20001,Problema con cliente,Baja,Cliente no se encontraba disponible,15,0,Sí
+900491,606382,20261122,30024,20028,Accidente,Baja,Impacto con otro vehículo,12,0,Sí
+900492,602474,20260122,30030,20031,Falla mecánica,Alta,Falla de motor,30,325251,Sí
+900493,603613,20250422,30026,20029,Problema de dirección,Media,Dirección incorrecta,25,44014,Sí
+900494,606048,20250205,30001,20026,Retraso por tráfico,Baja,Tráfico lento por accidente en la vía,20,0,Sí
+900495,602642,20250309,30021,20029,Retraso por tráfico,Media,Congestión durante horario punta,18,0,Sí
+900496,605232,20260129,30014,20032,Retraso por tráfico,Baja,Congestión durante horario punta,15,0,Sí
+900497,604302,20250303,30012,20024,Accidente,Baja,Impacto con otro vehículo,20,0,Sí
+900498,607230,20250322,30013,20017,Falla mecánica,Media,Falla del sistema eléctrico,24,402388,No
+900499,603264,20250826,30005,20002,Otro,Baja,Desvío temporal por obras,11,23173,No
+900500,604906,20260623,30002,20045,Falla mecánica,Media,Problema en neumáticos,34,381312,Sí

@@ -1,0 +1,775 @@
+{% extends "base.html" %}
+
+{% block title %}Incidentes - SMARTLOGI{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .info-incidentes {
+        margin-top: 15px;
+        margin-bottom: 10px;
+        color: #555;
+        font-size: 14px;
+    }
+
+    /* =========================
+       TARJETAS INTERACTIVAS
+       ========================= */
+
+    .card-filtro {
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .card-filtro:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+    }
+
+    .card-filtro.seleccionada {
+        border: 2px solid #063b2e;
+    }
+
+    /* =========================
+       PAGINACIÓN
+       ========================= */
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        padding: 10px 0;
+    }
+
+    .pagination a,
+    .pagination span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 38px;
+        height: 36px;
+        padding: 0 10px;
+        border-radius: 7px;
+        text-decoration: none;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    .pagination a {
+        background: #063b2e;
+        color: white;
+    }
+
+    .pagination a:hover {
+        background: #085844;
+    }
+
+    .pagination .pagina-actual {
+        background: #e5eee9;
+        color: #063b2e;
+        font-weight: bold;
+    }
+
+    .pagination .puntos {
+        background: transparent;
+        color: #777;
+    }
+
+    /* =========================
+       TABLA
+       ========================= */
+
+    #tablaIncidentes {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    #tablaIncidentes th {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    #tablaIncidentes th:hover {
+        background: #085844;
+    }
+
+    /* Anchos de columnas */
+
+    #tablaIncidentes th:nth-child(1),
+    #tablaIncidentes td:nth-child(1) {
+        width: 8%;
+    }
+
+    #tablaIncidentes th:nth-child(2),
+    #tablaIncidentes td:nth-child(2) {
+        width: 7%;
+    }
+
+    #tablaIncidentes th:nth-child(3),
+    #tablaIncidentes td:nth-child(3) {
+        width: 9%;
+    }
+
+    #tablaIncidentes th:nth-child(4),
+    #tablaIncidentes td:nth-child(4) {
+        width: 7%;
+    }
+
+    #tablaIncidentes th:nth-child(5),
+    #tablaIncidentes td:nth-child(5) {
+        width: 8%;
+    }
+
+    #tablaIncidentes th:nth-child(6),
+    #tablaIncidentes td:nth-child(6) {
+        width: 10%;
+    }
+
+    #tablaIncidentes th:nth-child(7),
+    #tablaIncidentes td:nth-child(7) {
+        width: 8%;
+    }
+
+    #tablaIncidentes th:nth-child(8),
+    #tablaIncidentes td:nth-child(8) {
+        width: 15%;
+    }
+
+    #tablaIncidentes th:nth-child(9),
+    #tablaIncidentes td:nth-child(9) {
+        width: 10%;
+    }
+
+    #tablaIncidentes th:nth-child(10),
+    #tablaIncidentes td:nth-child(10) {
+        width: 10%;
+    }
+
+    #tablaIncidentes th:nth-child(11),
+    #tablaIncidentes td:nth-child(11) {
+        width: 8%;
+    }
+
+    #tablaIncidentes th,
+    #tablaIncidentes td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+</style>
+
+
+<h1>🚨 Incidentes</h1>
+
+
+<!-- =========================
+     TARJETAS INTERACTIVAS
+     ========================= -->
+
+<div class="cards">
+
+    <!-- TOTAL -->
+
+    <div
+        class="card card-filtro seleccionada"
+        id="cardTotal"
+        data-filtro="Todos"
+    >
+
+        <h3>🚨 Total incidentes</h3>
+
+        <p>
+            {{ total_registros|miles }}
+        </p>
+
+    </div>
+
+
+    <!-- ABIERTOS -->
+
+    <div
+        class="card card-filtro"
+        id="cardAbiertos"
+        data-filtro="Abierto"
+    >
+
+        <h3>⚠️ Incidentes abiertos</h3>
+
+        <p>
+            {{ incidentes_abiertos|miles }}
+        </p>
+
+    </div>
+
+
+    <!-- RESUELTOS -->
+
+    <div
+        class="card card-filtro"
+        id="cardResueltos"
+        data-filtro="Resuelto"
+    >
+
+        <h3>✅ Incidentes resueltos</h3>
+
+        <p>
+            {{ incidentes_resueltos|miles }}
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     BUSCADOR
+     ========================= -->
+
+<input
+    type="text"
+    id="buscadorIncidentes"
+    class="buscador"
+    placeholder="🔎 Buscar por ID, entrega, vehículo, conductor, tipo, gravedad o estado..."
+>
+
+
+<!-- =========================
+     INFORMACIÓN
+     ========================= -->
+
+<div class="info-incidentes">
+
+    Mostrando
+
+    <strong>
+        {{ ((pagina - 1) * 50) + 1 }}
+    </strong>
+
+    –
+
+    <strong>
+        {{ ((pagina - 1) * 50) + incidentes|length }}
+    </strong>
+
+    de
+
+    <strong>
+        {{ total_registros|miles }}
+    </strong>
+
+    incidentes
+
+</div>
+
+
+<!-- =========================
+     TABLA
+     ========================= -->
+
+<div style="overflow-x: auto;">
+
+    <table id="tablaIncidentes">
+
+        <thead>
+
+            <tr>
+
+                <th data-columna="0">
+                    ID Incidente ↕
+                </th>
+
+                <th data-columna="1">
+                    Entrega ↕
+                </th>
+
+                <th data-columna="2">
+                    Fecha ↕
+                </th>
+
+                <th data-columna="3">
+                    Vehículo ↕
+                </th>
+
+                <th data-columna="4">
+                    Conductor ↕
+                </th>
+
+                <th data-columna="5">
+                    Tipo ↕
+                </th>
+
+                <th data-columna="6">
+                    Gravedad ↕
+                </th>
+
+                <th data-columna="7">
+                    Descripción ↕
+                </th>
+
+                <th data-columna="8">
+                    Tiempo perdido ↕
+                </th>
+
+                <th data-columna="9">
+                    Costo estimado ↕
+                </th>
+
+                <th data-columna="10">
+                    Estado ↕
+                </th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody>
+
+            {% for incidente in incidentes %}
+
+            <tr>
+
+                <td>
+                    {{ incidente.incidente_id }}
+                </td>
+
+                <td>
+                    {{ incidente.entrega_id }}
+                </td>
+
+                <td>
+                    {{ incidente.fecha_incidente_id }}
+                </td>
+
+                <td>
+                    {{ incidente.vehiculo_id }}
+                </td>
+
+                <td>
+                    {{ incidente.conductor_id }}
+                </td>
+
+                <td>
+                    {{ incidente.tipo_incidente }}
+                </td>
+
+                <td>
+                    {{ incidente.gravedad }}
+                </td>
+
+                <td>
+                    {{ incidente.descripcion }}
+                </td>
+
+                <td>
+                    {{ incidente.tiempo_perdido_min }}
+                </td>
+
+                <td>
+
+                    ${{ "{:,.0f}".format(
+                        incidente.costo_estimado
+                    ).replace(",", ".") }}
+
+                </td>
+
+                <td>
+                    {{ incidente.estado_incidente }}
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<!-- =========================
+     PAGINACIÓN
+     ========================= -->
+
+<div class="pagination">
+
+    {% if pagina > 1 %}
+
+        <a href="{{ url_for('incidentes', pagina=pagina-1) }}">
+            ←
+        </a>
+
+    {% endif %}
+
+
+    {% if pagina > 3 %}
+
+        <a href="{{ url_for('incidentes', pagina=1) }}">
+            1
+        </a>
+
+        <span class="puntos">
+            ...
+        </span>
+
+    {% endif %}
+
+
+    {% for numero in range(
+        [1, pagina-2]|max,
+        [total_paginas+1, pagina+3]|min
+    ) %}
+
+        {% if numero == pagina %}
+
+            <span class="pagina-actual">
+                {{ numero }}
+            </span>
+
+        {% else %}
+
+            <a href="{{ url_for('incidentes', pagina=numero) }}">
+                {{ numero }}
+            </a>
+
+        {% endif %}
+
+    {% endfor %}
+
+
+    {% if pagina < total_paginas - 2 %}
+
+        <span class="puntos">
+            ...
+        </span>
+
+        <a href="{{ url_for('incidentes', pagina=total_paginas) }}">
+            {{ total_paginas }}
+        </a>
+
+    {% endif %}
+
+
+    {% if pagina < total_paginas %}
+
+        <a href="{{ url_for('incidentes', pagina=pagina+1) }}">
+            →
+        </a>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+     ========================= -->
+
+<script>
+
+    const buscador =
+        document.getElementById("buscadorIncidentes");
+
+    const filas =
+        document.querySelectorAll(
+            "#tablaIncidentes tbody tr"
+        );
+
+    const tarjetas =
+        document.querySelectorAll(".card-filtro");
+
+
+    /* =========================
+       FILTRO ACTUAL
+       ========================= */
+
+    let filtroEstado = "Todos";
+
+
+    /* =========================
+       FUNCIÓN PARA FILTRAR
+       ========================= */
+
+    function aplicarFiltros() {
+
+        const texto =
+            buscador.value.toLowerCase().trim();
+
+
+        filas.forEach(function (fila) {
+
+            const contenido =
+                fila.textContent.toLowerCase();
+
+            const estado =
+                fila.cells[10].textContent.trim();
+
+
+            const coincideTexto =
+                contenido.includes(texto);
+
+
+            const coincideEstado =
+                filtroEstado === "Todos" ||
+                estado === filtroEstado;
+
+
+            if (
+                coincideTexto &&
+                coincideEstado
+            ) {
+
+                fila.style.display = "";
+
+            } else {
+
+                fila.style.display = "none";
+
+            }
+
+        });
+
+    }
+
+
+    /* =========================
+       BUSCADOR
+       ========================= */
+
+    buscador.addEventListener(
+        "keyup",
+        aplicarFiltros
+    );
+
+
+    /* =========================
+       TARJETAS
+       ========================= */
+
+    tarjetas.forEach(function (tarjeta) {
+
+        tarjeta.addEventListener(
+            "click",
+            function () {
+
+                filtroEstado =
+                    this.dataset.filtro;
+
+
+                /* Quitar selección */
+
+                tarjetas.forEach(function (card) {
+
+                    card.classList.remove(
+                        "seleccionada"
+                    );
+
+                });
+
+
+                /* Marcar tarjeta seleccionada */
+
+                this.classList.add(
+                    "seleccionada"
+                );
+
+
+                /* Aplicar filtro */
+
+                aplicarFiltros();
+
+            }
+        );
+
+    });
+
+
+    /* =========================
+       ORDENAR TABLA
+       ========================= */
+
+    const encabezados =
+        document.querySelectorAll(
+            "#tablaIncidentes th"
+        );
+
+
+    encabezados.forEach(function (encabezado) {
+
+        encabezado.addEventListener(
+            "click",
+            function () {
+
+                const columna =
+                    parseInt(
+                        this.dataset.columna
+                    );
+
+
+                const tbody =
+                    document.querySelector(
+                        "#tablaIncidentes tbody"
+                    );
+
+
+                const filasArray =
+                    Array.from(
+                        tbody.querySelectorAll("tr")
+                    );
+
+
+                const direccionActual =
+                    this.dataset.direccion || "asc";
+
+
+                const nuevaDireccion =
+                    direccionActual === "asc"
+                        ? "desc"
+                        : "asc";
+
+
+                encabezados.forEach(function (th) {
+
+                    th.dataset.direccion = "";
+
+                    th.textContent =
+                        th.textContent
+                            .replace(" ↑", "")
+                            .replace(" ↓", "")
+                            .replace(" ↕", "");
+
+                    th.textContent += " ↕";
+
+                });
+
+
+                this.dataset.direccion =
+                    nuevaDireccion;
+
+
+                this.textContent =
+                    this.textContent
+                        .replace(" ↕", "")
+                        .replace(" ↑", "")
+                        .replace(" ↓", "")
+                    +
+                    (
+                        nuevaDireccion === "asc"
+                            ? " ↑"
+                            : " ↓"
+                    );
+
+
+                filasArray.sort(
+                    function (a, b) {
+
+                        let valorA =
+                            a.cells[columna]
+                                .textContent
+                                .trim();
+
+                        let valorB =
+                            b.cells[columna]
+                                .textContent
+                                .trim();
+
+
+                        /*
+                         * Intentar ordenar números
+                         */
+
+                        const numeroA =
+                            parseFloat(
+                                valorA
+                                    .replace(/\./g, "")
+                                    .replace(",", ".")
+                                    .replace("$", "")
+                            );
+
+                        const numeroB =
+                            parseFloat(
+                                valorB
+                                    .replace(/\./g, "")
+                                    .replace(",", ".")
+                                    .replace("$", "")
+                            );
+
+
+                        if (
+                            !isNaN(numeroA) &&
+                            !isNaN(numeroB)
+                        ) {
+
+                            return nuevaDireccion === "asc"
+                                ? numeroA - numeroB
+                                : numeroB - numeroA;
+
+                        }
+
+
+                        /*
+                         * Ordenar texto
+                         */
+
+                        valorA =
+                            valorA.toLowerCase();
+
+                        valorB =
+                            valorB.toLowerCase();
+
+
+                        if (valorA < valorB) {
+
+                            return nuevaDireccion === "asc"
+                                ? -1
+                                : 1;
+
+                        }
+
+
+                        if (valorA > valorB) {
+
+                            return nuevaDireccion === "asc"
+                                ? 1
+                                : -1;
+
+                        }
+
+
+                        return 0;
+
+                    }
+                );
+
+
+                filasArray.forEach(
+                    function (fila) {
+
+                        tbody.appendChild(fila);
+
+                    }
+                );
+
+
+                /*
+                 * Volver a aplicar
+                 * los filtros
+                 */
+
+                aplicarFiltros();
+
+            }
+        );
+
+    });
+
+</script>
+
+
+{% endblock %}

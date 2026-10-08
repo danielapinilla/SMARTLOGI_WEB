@@ -1,0 +1,802 @@
+{% extends "base.html" %}
+
+{% block title %}Pedidos - SMARTLOGI{% endblock %}
+
+{% block content %}
+
+<style>
+
+    /* =========================
+       TARJETAS
+       ========================= */
+
+    .tarjetas-pedidos {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-bottom: 25px;
+    }
+
+    .tarjeta-pedido {
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: 2px solid transparent;
+    }
+
+    .tarjeta-pedido:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+
+    .tarjeta-pedido.activa {
+        border-color: #063b2e;
+    }
+
+    .tarjeta-pedido h3 {
+        margin-bottom: 10px;
+    }
+
+    .tarjeta-pedido p {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0;
+        color: #063b2e;
+    }
+
+
+    /* =========================
+       INFORMACIÓN
+       ========================= */
+
+    .info-pedidos {
+        margin-top: 15px;
+        margin-bottom: 10px;
+        color: #555;
+        font-size: 14px;
+    }
+
+
+    /* =========================
+       TABLA
+       ========================= */
+
+    #tablaPedidos {
+        width: 100%;
+        table-layout: fixed;
+        font-size: 13px;
+    }
+
+    #tablaPedidos th {
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+    }
+
+    #tablaPedidos th:hover {
+        background: #085844;
+    }
+
+    #tablaPedidos th .flecha {
+        font-size: 10px;
+        margin-left: 4px;
+        color: #d9eee7;
+    }
+
+    #tablaPedidos td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Anchos de columnas */
+
+    #tablaPedidos th:nth-child(1),
+    #tablaPedidos td:nth-child(1) {
+        width: 8%;
+    }
+
+    #tablaPedidos th:nth-child(2),
+    #tablaPedidos td:nth-child(2) {
+        width: 9%;
+    }
+
+    #tablaPedidos th:nth-child(3),
+    #tablaPedidos td:nth-child(3) {
+        width: 10%;
+    }
+
+    #tablaPedidos th:nth-child(4),
+    #tablaPedidos td:nth-child(4) {
+        width: 9%;
+    }
+
+    #tablaPedidos th:nth-child(5),
+    #tablaPedidos td:nth-child(5) {
+        width: 7%;
+    }
+
+    #tablaPedidos th:nth-child(6),
+    #tablaPedidos td:nth-child(6) {
+        width: 8%;
+    }
+
+    #tablaPedidos th:nth-child(7),
+    #tablaPedidos td:nth-child(7) {
+        width: 9%;
+    }
+
+    #tablaPedidos th:nth-child(8),
+    #tablaPedidos td:nth-child(8) {
+        width: 10%;
+    }
+
+    #tablaPedidos th:nth-child(9),
+    #tablaPedidos td:nth-child(9) {
+        width: 16%;
+    }
+
+    #tablaPedidos th:nth-child(10),
+    #tablaPedidos td:nth-child(10) {
+        width: 14%;
+    }
+
+
+    /* =========================
+       PAGINACIÓN
+       ========================= */
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        padding: 10px 0;
+    }
+
+    .pagination a,
+    .pagination span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 38px;
+        height: 36px;
+        padding: 0 10px;
+        border-radius: 7px;
+        text-decoration: none;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    .pagination a {
+        background: #063b2e;
+        color: white;
+    }
+
+    .pagination a:hover {
+        background: #085844;
+    }
+
+    .pagination .pagina-actual {
+        background: #e5eee9;
+        color: #063b2e;
+        font-weight: bold;
+    }
+
+    .pagination .puntos {
+        background: transparent;
+        color: #777;
+    }
+
+
+    /* =========================
+       RESPONSIVE
+       ========================= */
+
+    @media (max-width: 900px) {
+
+        .tarjetas-pedidos {
+            grid-template-columns: 1fr;
+        }
+
+        #tablaPedidos {
+            table-layout: auto;
+        }
+
+    }
+
+</style>
+
+
+<h1>📦 Pedidos</h1>
+
+
+<!-- =========================
+     TARJETAS INTERACTIVAS
+     ========================= -->
+
+<div class="tarjetas-pedidos">
+
+    <!-- TOTAL -->
+
+    <div
+        class="card tarjeta-pedido activa"
+        data-estado="Todos"
+        onclick="filtrarPorEstado('Todos', this)"
+    >
+        <h3>📦 Total pedidos</h3>
+
+        <p>
+            {{ total_registros|miles }}
+        </p>
+    </div>
+
+
+    <!-- ENTREGADOS -->
+
+    <div
+        class="card tarjeta-pedido"
+        data-estado="Entregado"
+        onclick="filtrarPorEstado('Entregado', this)"
+    >
+        <h3>✅ Entregados</h3>
+
+        <p>
+            {{ estados_pedidos.get("Entregado", 0)|miles }}
+        </p>
+    </div>
+
+
+    <!-- EN RUTA -->
+
+    <div
+        class="card tarjeta-pedido"
+        data-estado="En ruta"
+        onclick="filtrarPorEstado('En ruta', this)"
+    >
+        <h3>🚚 En ruta</h3>
+
+        <p>
+            {{ estados_pedidos.get("En ruta", 0)|miles }}
+        </p>
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h3>Listado de pedidos</h3>
+
+
+    <!-- =========================
+         BUSCADOR
+         ========================= -->
+
+    <input
+        type="text"
+        id="buscador"
+        placeholder="🔎 Buscar pedido, cliente, comuna o estado..."
+        style="
+            width: 100%;
+            padding: 10px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        "
+    >
+
+
+    <!-- =========================
+         INFORMACIÓN
+         ========================= -->
+
+    <div class="info-pedidos">
+
+        Mostrando
+
+        <strong>
+            {{ ((pagina - 1) * 50) + 1 }}
+        </strong>
+
+        –
+
+        <strong>
+            {{ ((pagina - 1) * 50) + pedidos|length }}
+        </strong>
+
+        de
+
+        <strong>
+            {{ total_registros|miles }}
+        </strong>
+
+        pedidos
+
+    </div>
+
+
+    <!-- =========================
+         TABLA
+         ========================= -->
+
+    <div style="overflow-x: auto;">
+
+        <table id="tablaPedidos">
+
+            <thead>
+
+                <tr>
+
+                    <th data-columna="0">
+                        ID Pedido
+                        <span class="flecha">↕</span>
+                    </th>
+
+                    <th data-columna="1">
+                        ID Cliente
+                        <span class="flecha">↕</span>
+                    </th>
+
+                    <th data-columna="2">
+                        Fecha
+                        <span class="flecha">↕</span>
+                    </th>
+
+                    <th data-columna="3">
+                        Servicio
+                        <span class="flecha">↕</span>
+                    </th>
+
+                    <th data-columna="4">
+                        Paquetes
+                        <span class="flecha">↕</span>
+                    </th>
+
+                    <th data-columna="5">
+                        Peso (kg)
+                        <span class="flecha">↕</span>
+                    </th>
+
+                    <th data-columna="6">
+                        Prioridad
+                        <span class="flecha">↕</span>
+                    </th>
+
+                    <th data-columna="7">
+                        Valor
+                        <span class="flecha">↕</span>
+                    </th>
+
+                    <th data-columna="8">
+                        Comuna entrega
+                        <span class="flecha">↕</span>
+                    </th>
+
+                    <th data-columna="9">
+                        Estado
+                        <span class="flecha">↕</span>
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for pedido in pedidos %}
+
+                <tr>
+
+                    <td>
+                        {{ pedido.pedido_id }}
+                    </td>
+
+                    <td>
+                        {{ pedido.cliente_id }}
+                    </td>
+
+                    <td>
+                        {{ pedido.fecha_pedido_id }}
+                    </td>
+
+                    <td>
+                        {{ pedido.tipo_servicio }}
+                    </td>
+
+                    <td>
+                        {{ pedido.cantidad_paquetes }}
+                    </td>
+
+                    <td>
+                        {{ pedido.peso_total_kg }}
+                    </td>
+
+                    <td>
+                        {{ pedido.prioridad }}
+                    </td>
+
+                    <td>
+                        ${{ "{:,.0f}".format(
+                            pedido.valor_pedido
+                        ).replace(",", ".") }}
+                    </td>
+
+                    <td>
+                        {{ pedido.comuna_entrega }}
+                    </td>
+
+                    <td>
+                        {{ pedido.estado_pedido }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- =========================
+         PAGINACIÓN
+         ========================= -->
+
+    <div class="pagination">
+
+
+        <!-- ANTERIOR -->
+
+        {% if pagina > 1 %}
+
+            <a href="{{ url_for('pedidos', pagina=pagina-1) }}">
+                ←
+            </a>
+
+        {% endif %}
+
+
+        <!-- PRIMERA PÁGINA -->
+
+        {% if pagina > 3 %}
+
+            <a href="{{ url_for('pedidos', pagina=1) }}">
+                1
+            </a>
+
+            <span class="puntos">
+                ...
+            </span>
+
+        {% endif %}
+
+
+        <!-- PÁGINAS CERCANAS -->
+
+        {% for numero in range(
+            [1, pagina-2]|max,
+            [total_paginas+1, pagina+3]|min
+        ) %}
+
+            {% if numero == pagina %}
+
+                <span class="pagina-actual">
+                    {{ numero }}
+                </span>
+
+            {% else %}
+
+                <a href="{{ url_for('pedidos', pagina=numero) }}">
+                    {{ numero }}
+                </a>
+
+            {% endif %}
+
+        {% endfor %}
+
+
+        <!-- ÚLTIMA PÁGINA -->
+
+        {% if pagina < total_paginas - 2 %}
+
+            <span class="puntos">
+                ...
+            </span>
+
+            <a href="{{ url_for('pedidos', pagina=total_paginas) }}">
+                {{ total_paginas }}
+            </a>
+
+        {% endif %}
+
+
+        <!-- SIGUIENTE -->
+
+        {% if pagina < total_paginas %}
+
+            <a href="{{ url_for('pedidos', pagina=pagina+1) }}">
+                →
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   VARIABLES
+   ===================================================== */
+
+const buscador = document.getElementById("buscador");
+
+const tabla = document.getElementById("tablaPedidos");
+
+const cuerpoTabla = tabla.querySelector("tbody");
+
+const filas = Array.from(
+    cuerpoTabla.querySelectorAll("tr")
+);
+
+let estadoSeleccionado = "Todos";
+
+let columnaOrdenada = -1;
+
+let ordenAscendente = true;
+
+
+/* =====================================================
+   BUSCADOR
+   ===================================================== */
+
+buscador.addEventListener("input", aplicarFiltros);
+
+
+/* =====================================================
+   FILTRO POR TARJETAS
+   ===================================================== */
+
+function filtrarPorEstado(estado, tarjeta) {
+
+    estadoSeleccionado = estado;
+
+
+    /* Quitar selección de todas las tarjetas */
+
+    document
+        .querySelectorAll(".tarjeta-pedido")
+        .forEach(function(elemento) {
+
+            elemento.classList.remove("activa");
+
+        });
+
+
+    /* Activar tarjeta seleccionada */
+
+    tarjeta.classList.add("activa");
+
+
+    aplicarFiltros();
+}
+
+
+/* =====================================================
+   APLICAR FILTROS
+   ===================================================== */
+
+function aplicarFiltros() {
+
+    const texto =
+        buscador.value.toLowerCase().trim();
+
+
+    filas.forEach(function(fila) {
+
+        const contenido =
+            fila.textContent.toLowerCase();
+
+
+        const estado =
+            fila.cells[9].textContent.trim();
+
+
+        const coincideTexto =
+            contenido.includes(texto);
+
+
+        const coincideEstado =
+            estadoSeleccionado === "Todos" ||
+            estado === estadoSeleccionado;
+
+
+        if (coincideTexto && coincideEstado) {
+
+            fila.style.display = "";
+
+        } else {
+
+            fila.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+/* =====================================================
+   ORDENAR COLUMNAS
+   ===================================================== */
+
+document
+    .querySelectorAll("#tablaPedidos th")
+    .forEach(function(encabezado) {
+
+        encabezado.addEventListener(
+            "click",
+            function() {
+
+                const columna =
+                    parseInt(
+                        encabezado.dataset.columna
+                    );
+
+
+                if (columnaOrdenada === columna) {
+
+                    ordenAscendente =
+                        !ordenAscendente;
+
+                } else {
+
+                    columnaOrdenada = columna;
+
+                    ordenAscendente = true;
+
+                }
+
+
+                ordenarTabla(
+                    columna,
+                    ordenAscendente
+                );
+
+
+                actualizarFlechas(
+                    encabezado
+                );
+
+            }
+        );
+
+    });
+
+
+/* =====================================================
+   ORDENAR TABLA
+   ===================================================== */
+
+function ordenarTabla(columna, ascendente) {
+
+    filas.sort(function(a, b) {
+
+        let valorA =
+            a.cells[columna]
+            .textContent
+            .trim();
+
+        let valorB =
+            b.cells[columna]
+            .textContent
+            .trim();
+
+
+        /* Intentar ordenar números */
+
+        const numeroA =
+            parseFloat(
+                valorA
+                .replace(/\./g, "")
+                .replace("$", "")
+                .replace(",", ".")
+            );
+
+        const numeroB =
+            parseFloat(
+                valorB
+                .replace(/\./g, "")
+                .replace("$", "")
+                .replace(",", ".")
+            );
+
+
+        if (
+            !isNaN(numeroA) &&
+            !isNaN(numeroB)
+        ) {
+
+            return ascendente
+                ? numeroA - numeroB
+                : numeroB - numeroA;
+
+        }
+
+
+        /* Ordenar texto */
+
+        return ascendente
+            ? valorA.localeCompare(
+                valorB,
+                "es",
+                { sensitivity: "base" }
+            )
+            : valorB.localeCompare(
+                valorA,
+                "es",
+                { sensitivity: "base" }
+            );
+
+    });
+
+
+    /* Volver a colocar las filas */
+
+    filas.forEach(function(fila) {
+
+        cuerpoTabla.appendChild(fila);
+
+    });
+
+
+    aplicarFiltros();
+
+}
+
+
+/* =====================================================
+   ACTUALIZAR FLECHAS
+   ===================================================== */
+
+function actualizarFlechas(encabezado) {
+
+    document
+        .querySelectorAll(
+            "#tablaPedidos th .flecha"
+        )
+        .forEach(function(flecha) {
+
+            flecha.textContent = "↕";
+
+        });
+
+
+    const flecha =
+        encabezado.querySelector(".flecha");
+
+
+    if (ordenAscendente) {
+
+        flecha.textContent = "↑";
+
+    } else {
+
+        flecha.textContent = "↓";
+
+    }
+
+}
+
+</script>
+
+
+{% endblock %}

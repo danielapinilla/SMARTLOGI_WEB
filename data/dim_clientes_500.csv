@@ -1,0 +1,501 @@
+﻿cliente_id,nombre_cliente,tipo_cliente,comuna,ciudad,fecha_registro,segmento
+10001,María González,Persona,Santiago,Santiago,15/01/2025,Minorista
+10002,Comercial Los Andes Ltda.,Empresa,Maipú,Santiago,20/01/2025,Pyme
+10003,Juan Pérez,Persona,Ñuñoa,Santiago,02/02/2025,Minorista
+10004,Distribuidora Central SpA,Empresa,Quilicura,Santiago,10/02/2025,Corporativo
+10005,Camila Rojas,Persona,La Florida,Santiago,18/02/2025,Minorista
+10006,Importadora Andes SpA,Empresa,Pudahuel,Santiago,25/02/2025,Corporativo
+10007,Felipe Muñoz,Persona,Puente Alto,Santiago,03/03/2025,Minorista
+10008,Comercial Providencia Ltda.,Empresa,Providencia,Santiago,08/03/2025,Pyme
+10009,Daniela Soto,Persona,La Reina,Santiago,15/03/2025,Minorista
+10010,Inversiones Norte SpA,Empresa,Huechuraba,Santiago,21/03/2025,Corporativo
+10011,Valentina Morales,Persona,San Miguel,Santiago,28/03/2025,Minorista
+10012,Comercial Maipú SpA,Empresa,Maipú,Santiago,04/04/2025,Pyme
+10013,Andrés Castillo,Persona,Cerrillos,Santiago,10/04/2025,Minorista
+10014,Logística Metropolitana Ltda.,Empresa,Estación Central,Santiago,17/04/2025,Corporativo
+10015,Sofía Herrera,Persona,Vitacura,Santiago,25/04/2025,Minorista
+10016,Distribuciones del Sur SpA,Empresa,San Bernardo,Santiago,02/05/2025,Corporativo
+10017,Nicolás Fuentes,Persona,Macul,Santiago,09/05/2025,Minorista
+10018,Comercial La Florida Ltda.,Empresa,La Florida,Santiago,16/05/2025,Pyme
+10019,Paula Ramírez,Persona,Peñalolén,Santiago,23/05/2025,Minorista
+10020,Abastecimiento Central SpA,Empresa,Independencia,Santiago,30/05/2025,Corporativo
+10021,Javiera Guerrero,Persona,Maipú,Santiago,09/10/2025,Minorista
+10022,Rodrigo Cortés,Persona,Puente Alto,Santiago,24/11/2026,Minorista
+10023,Carolina González,Persona,Ñuñoa,Santiago,31/01/2025,Minorista
+10024,Gabriela Torres,Persona,Maipú,Santiago,29/07/2026,Minorista
+10025,Comercializadora Los Alerces SpA,Empresa,La Granja,Santiago,14/08/2025,Corporativo
+10026,Logística Santiago SpA,Empresa,Santiago,Santiago,13/06/2025,Corporativo
+10027,Catalina Cortés,Persona,Vitacura,Santiago,11/12/2025,Minorista
+10028,Verónica Hernández,Persona,Lo Prado,Santiago,19/12/2025,Minorista
+10029,Distribuidora Santa María SpA,Empresa,Pedro Aguirre Cerda,Santiago,04/07/2026,Corporativo
+10030,Vicente Molina,Persona,Las Condes,Santiago,06/10/2026,Minorista
+10031,Isabel Lagos,Persona,La Florida,Santiago,16/02/2025,Minorista
+10032,Transportes Norte SpA,Empresa,San Bernardo,Santiago,14/04/2025,Corporativo
+10033,Marcela Mendoza,Persona,Quinta Normal,Santiago,16/06/2025,Minorista
+10034,Benjamín Sepúlveda,Persona,Independencia,Santiago,20/12/2026,Minorista
+10035,Fernanda Paredes,Persona,Buin,Santiago,08/09/2025,Minorista
+10036,Leonardo Castillo,Persona,San Bernardo,Santiago,03/12/2026,Minorista
+10037,Matías Jiménez,Persona,Ñuñoa,Santiago,20/11/2025,Minorista
+10038,Raúl Muñoz,Persona,Conchalí,Santiago,06/08/2025,Minorista
+10039,Servicios Metropolitana SpA,Empresa,Pedro Aguirre Cerda,Santiago,27/05/2025,Pyme
+10040,Logística Los Alerces SpA,Empresa,Buin,Santiago,27/09/2025,Corporativo
+10041,Inversiones Metropolitana SpA,Empresa,San Joaquín,Santiago,06/01/2026,Corporativo
+10042,Elena Soto,Persona,Quilicura,Santiago,23/04/2025,Minorista
+10043,Benjamín Morales,Persona,El Bosque,Santiago,03/09/2026,Minorista
+10044,Joaquín Salazar,Persona,Pedro Aguirre Cerda,Santiago,26/06/2026,Minorista
+10045,Logística Central SpA,Empresa,Santiago,Santiago,28/11/2026,Corporativo
+10046,Servicios Santiago SpA,Empresa,La Cisterna,Santiago,25/04/2025,Pyme
+10047,Francisco Reyes,Persona,Peñalolén,Santiago,28/05/2026,Minorista
+10048,Industrias Los Alerces SpA,Empresa,Recoleta,Santiago,17/10/2026,Pyme
+10049,Roberto Araya,Persona,San Miguel,Santiago,07/07/2026,Minorista
+10050,Cristóbal Molina,Persona,Lo Barnechea,Santiago,20/01/2025,Minorista
+10051,Comercial Del Sur SpA,Empresa,Recoleta,Santiago,03/09/2025,Pyme
+10052,Rodrigo Flores,Persona,Lo Barnechea,Santiago,12/03/2025,Minorista
+10053,Fernanda Hernández,Persona,San Ramón,Santiago,17/07/2026,Minorista
+10054,Rodrigo Vásquez,Persona,El Bosque,Santiago,05/08/2025,Minorista
+10055,Marcela Ortega,Persona,Recoleta,Santiago,13/02/2026,Minorista
+10056,Inversiones Del Sur SpA,Empresa,Lo Espejo,Santiago,04/05/2025,Pyme
+10057,Isabel Araya,Persona,San Bernardo,Santiago,26/08/2026,Minorista
+10058,Benjamín Campos,Persona,Quilicura,Santiago,23/08/2025,Minorista
+10059,Inversiones Norte SpA,Empresa,La Florida,Santiago,11/06/2026,Corporativo
+10060,Sergio Pérez,Persona,La Reina,Santiago,08/08/2026,Minorista
+10061,Gabriela Espinoza,Persona,San Ramón,Santiago,21/02/2026,Minorista
+10062,Natalia Navarro,Persona,El Bosque,Santiago,29/12/2025,Minorista
+10063,Catalina Castillo,Persona,Quilicura,Santiago,21/11/2026,Minorista
+10064,Javiera Gómez,Persona,La Cisterna,Santiago,22/04/2025,Minorista
+10065,Natalia Garrido,Persona,Lo Espejo,Santiago,24/05/2025,Minorista
+10066,Patricio Salazar,Persona,Macul,Santiago,19/03/2025,Minorista
+10067,Carolina Herrera,Persona,Buin,Santiago,16/01/2025,Minorista
+10068,Ignacio Muñoz,Persona,Lo Barnechea,Santiago,08/05/2026,Minorista
+10069,Comercial Santiago SpA,Empresa,San Miguel,Santiago,24/01/2026,Corporativo
+10070,Transportes Providencia SpA,Empresa,Pedro Aguirre Cerda,Santiago,20/10/2025,Corporativo
+10071,Bárbara Sandoval,Persona,Las Condes,Santiago,11/08/2025,Minorista
+10072,Comercial Andes SpA,Empresa,Quilicura,Santiago,18/11/2025,Corporativo
+10073,Bárbara Reyes,Persona,Lampa,Santiago,11/06/2025,Minorista
+10074,Verónica Contreras,Persona,Cerrillos,Santiago,12/03/2025,Minorista
+10075,Distribuidora Santa María SpA,Empresa,Macul,Santiago,18/02/2026,Pyme
+10076,Carolina Navarro,Persona,Ñuñoa,Santiago,27/09/2026,Minorista
+10077,Servicios Del Sur SpA,Empresa,Lampa,Santiago,20/11/2025,Corporativo
+10078,Laura Paredes,Persona,San Joaquín,Santiago,15/05/2025,Minorista
+10079,Pía Silva,Persona,La Florida,Santiago,10/01/2025,Minorista
+10080,Industrias Del Sur SpA,Empresa,Puente Alto,Santiago,17/03/2025,Corporativo
+10081,Javiera Molina,Persona,Lo Prado,Santiago,12/03/2025,Minorista
+10082,Laura Silva,Persona,Lo Espejo,Santiago,11/07/2026,Minorista
+10083,Productos La Reina SpA,Empresa,Lampa,Santiago,09/01/2025,Corporativo
+10084,Servicios Central SpA,Empresa,Puente Alto,Santiago,18/05/2025,Pyme
+10085,Servicios Los Alerces SpA,Empresa,Huechuraba,Santiago,06/10/2025,Pyme
+10086,Productos La Reina SpA,Empresa,Vitacura,Santiago,05/12/2026,Corporativo
+10087,Carolina Soto,Persona,Peñalolén,Santiago,22/02/2025,Minorista
+10088,Alejandro Martínez,Persona,Independencia,Santiago,15/02/2025,Minorista
+10089,Logística Cordillera SpA,Empresa,Peñalolén,Santiago,15/06/2025,Corporativo
+10090,Elena Romero,Persona,Providencia,Santiago,19/03/2025,Minorista
+10091,Sebastián Fuentes,Persona,Quinta Normal,Santiago,20/08/2026,Minorista
+10092,Marcela Campos,Persona,Ñuñoa,Santiago,12/11/2025,Minorista
+10093,Inversiones San Cristóbal SpA,Empresa,Vitacura,Santiago,30/11/2026,Pyme
+10094,Elena Herrera,Persona,La Granja,Santiago,28/09/2026,Minorista
+10095,Comercial Metropolitana SpA,Empresa,Cerrillos,Santiago,27/02/2026,Corporativo
+10096,Logística Maipú SpA,Empresa,La Granja,Santiago,17/11/2026,Pyme
+10097,Antonia Pérez,Persona,Puente Alto,Santiago,27/01/2026,Minorista
+10098,Laura Guerrero,Persona,Pedro Aguirre Cerda,Santiago,25/12/2025,Minorista
+10099,Lucía Jiménez,Persona,Estación Central,Santiago,13/02/2026,Minorista
+10100,Productos Chile SpA,Empresa,Independencia,Santiago,26/12/2025,Corporativo
+10101,Comercial Central SpA,Empresa,Buin,Santiago,06/12/2025,Corporativo
+10102,Catalina Sepúlveda,Persona,Peñalolén,Santiago,09/02/2025,Minorista
+10103,Verónica Reyes,Persona,Conchalí,Santiago,23/03/2026,Minorista
+10104,Antonia Núñez,Persona,Estación Central,Santiago,18/09/2025,Minorista
+10105,Gabriela Molina,Persona,Buin,Santiago,05/12/2026,Minorista
+10106,Leonardo Valdés,Persona,La Cisterna,Santiago,01/10/2026,Minorista
+10107,Servicios San Cristóbal SpA,Empresa,Recoleta,Santiago,04/06/2026,Corporativo
+10108,Diego Gómez,Persona,Las Condes,Santiago,22/07/2026,Minorista
+10109,Francisco Silva,Persona,Renca,Santiago,25/11/2026,Minorista
+10110,Alejandro Leiva,Persona,San Joaquín,Santiago,16/07/2026,Minorista
+10111,Verónica Torres,Persona,El Bosque,Santiago,17/08/2026,Minorista
+10112,Ignacio Reyes,Persona,Lo Espejo,Santiago,29/03/2026,Minorista
+10113,Carolina Lagos,Persona,San Miguel,Santiago,06/11/2026,Minorista
+10114,Javiera Vargas,Persona,La Cisterna,Santiago,06/04/2025,Minorista
+10115,Andrea Campos,Persona,Estación Central,Santiago,31/05/2025,Minorista
+10116,Benjamín Paredes,Persona,San Ramón,Santiago,18/09/2026,Minorista
+10117,Martín Ramírez,Persona,Estación Central,Santiago,15/12/2026,Minorista
+10118,Alejandro Espinoza,Persona,Huechuraba,Santiago,03/11/2026,Minorista
+10119,Logística Chile SpA,Empresa,San Bernardo,Santiago,30/06/2025,Corporativo
+10120,Pía Flores,Persona,Macul,Santiago,05/05/2025,Minorista
+10121,Soluciones Pacífico SpA,Empresa,Lampa,Santiago,27/07/2026,Corporativo
+10122,Sebastián Ortega,Persona,Colina,Santiago,13/03/2026,Minorista
+10123,Servicios Maipú SpA,Empresa,San Ramón,Santiago,06/04/2026,Pyme
+10124,Comercializadora San Cristóbal SpA,Empresa,Independencia,Santiago,18/06/2026,Pyme
+10125,Javiera Jiménez,Persona,La Florida,Santiago,20/10/2025,Minorista
+10126,Diego Fuentes,Persona,Buin,Santiago,24/03/2025,Minorista
+10127,Ignacio Contreras,Persona,Huechuraba,Santiago,25/12/2026,Minorista
+10128,Pía Navarro,Persona,La Cisterna,Santiago,10/07/2026,Minorista
+10129,Valentina Vásquez,Persona,La Granja,Santiago,03/02/2026,Minorista
+10130,Alejandro Mendoza,Persona,Renca,Santiago,04/05/2026,Minorista
+10131,Rodrigo Romero,Persona,Renca,Santiago,06/03/2026,Minorista
+10132,Inversiones Norte SpA,Empresa,San Bernardo,Santiago,15/05/2026,Corporativo
+10133,Matías García,Persona,Renca,Santiago,11/12/2025,Minorista
+10134,Industrias Andes SpA,Empresa,La Reina,Santiago,30/09/2026,Corporativo
+10135,Natalia Flores,Persona,Maipú,Santiago,27/03/2025,Minorista
+10136,Servicios Santiago SpA,Empresa,Cerrillos,Santiago,21/02/2025,Corporativo
+10137,Martín Jiménez,Persona,Conchalí,Santiago,12/12/2025,Minorista
+10138,Distribuidora Cordillera SpA,Empresa,La Granja,Santiago,16/09/2025,Pyme
+10139,Inversiones San Cristóbal SpA,Empresa,Quilicura,Santiago,25/12/2025,Pyme
+10140,Inversiones Del Sur SpA,Empresa,Ñuñoa,Santiago,01/02/2025,Pyme
+10141,Rafael Valdés,Persona,Macul,Santiago,10/05/2025,Minorista
+10142,Joaquín Molina,Persona,Vitacura,Santiago,22/04/2026,Minorista
+10143,Laura Espinoza,Persona,Providencia,Santiago,17/06/2025,Minorista
+10144,Martín Muñoz,Persona,Recoleta,Santiago,13/08/2026,Minorista
+10145,Soluciones Providencia SpA,Empresa,Estación Central,Santiago,19/03/2025,Pyme
+10146,Verónica Fernández,Persona,Recoleta,Santiago,02/12/2026,Minorista
+10147,Industrias Santiago SpA,Empresa,Ñuñoa,Santiago,22/12/2025,Corporativo
+10148,Mauricio Ramírez,Persona,La Cisterna,Santiago,13/01/2025,Minorista
+10149,Pía Fuentes,Persona,Quinta Normal,Santiago,13/10/2026,Minorista
+10150,José Silva,Persona,Lampa,Santiago,29/10/2026,Minorista
+10151,Comercializadora Santiago SpA,Empresa,Buin,Santiago,11/05/2026,Corporativo
+10152,José Ortega,Persona,Macul,Santiago,30/03/2025,Minorista
+10153,Vicente Valdés,Persona,Pedro Aguirre Cerda,Santiago,07/08/2026,Minorista
+10154,Leonardo Garrido,Persona,Maipú,Santiago,22/05/2026,Minorista
+10155,Lucía Jiménez,Persona,Lo Prado,Santiago,22/09/2025,Minorista
+10156,Comercial Chile SpA,Empresa,Independencia,Santiago,24/07/2026,Pyme
+10157,Sebastián Herrera,Persona,La Granja,Santiago,16/05/2026,Minorista
+10158,Comercial Central SpA,Empresa,Lo Barnechea,Santiago,04/04/2026,Corporativo
+10159,Valentina Molina,Persona,Macul,Santiago,10/11/2025,Minorista
+10160,Natalia Salazar,Persona,Lampa,Santiago,19/12/2025,Minorista
+10161,Laura Hernández,Persona,Pedro Aguirre Cerda,Santiago,05/10/2025,Minorista
+10162,Cristóbal Romero,Persona,Estación Central,Santiago,20/11/2025,Minorista
+10163,Inversiones Providencia SpA,Empresa,Cerrillos,Santiago,16/07/2025,Corporativo
+10164,Josefa Espinoza,Persona,Lampa,Santiago,04/09/2026,Minorista
+10165,Abastecimiento Metropolitana SpA,Empresa,Las Condes,Santiago,21/08/2025,Corporativo
+10166,José Campos,Persona,Buin,Santiago,10/05/2025,Minorista
+10167,Importadora San Cristóbal SpA,Empresa,Las Condes,Santiago,16/12/2026,Corporativo
+10168,Josefa Pérez,Persona,Santiago,Santiago,11/08/2026,Minorista
+10169,Bárbara Hernández,Persona,La Cisterna,Santiago,08/07/2025,Minorista
+10170,Distribuidora Santiago SpA,Empresa,San Ramón,Santiago,27/04/2025,Corporativo
+10171,Elena Sánchez,Persona,Quilicura,Santiago,05/06/2025,Minorista
+10172,Distribuidora Chile SpA,Empresa,Pudahuel,Santiago,12/09/2025,Corporativo
+10173,Martín Ortega,Persona,San Bernardo,Santiago,20/06/2026,Minorista
+10174,Transportes Norte SpA,Empresa,Recoleta,Santiago,26/08/2026,Pyme
+10175,Ignacio Hernández,Persona,Puente Alto,Santiago,01/08/2025,Minorista
+10176,Importadora Chile SpA,Empresa,San Miguel,Santiago,03/09/2025,Pyme
+10177,Verónica Pérez,Persona,La Granja,Santiago,07/04/2026,Minorista
+10178,Josefa Vásquez,Persona,San Bernardo,Santiago,23/10/2025,Minorista
+10179,Inversiones Santa María SpA,Empresa,La Florida,Santiago,05/12/2026,Corporativo
+10180,Distribuidora Chile SpA,Empresa,Estación Central,Santiago,12/03/2026,Pyme
+10181,Benjamín Castillo,Persona,Independencia,Santiago,26/05/2025,Minorista
+10182,Sergio Lagos,Persona,Recoleta,Santiago,02/09/2026,Minorista
+10183,Laura Vásquez,Persona,Pedro Aguirre Cerda,Santiago,07/12/2026,Minorista
+10184,Rodrigo Ramírez,Persona,Independencia,Santiago,28/05/2026,Minorista
+10185,Leonardo Sepúlveda,Persona,Ñuñoa,Santiago,19/03/2026,Minorista
+10186,Sergio Sandoval,Persona,Pudahuel,Santiago,23/08/2025,Minorista
+10187,Comercial Maipú SpA,Empresa,Independencia,Santiago,14/08/2026,Pyme
+10188,Francisco Sandoval,Persona,Lo Espejo,Santiago,12/10/2025,Minorista
+10189,Rafael Mendoza,Persona,Lo Barnechea,Santiago,04/04/2025,Minorista
+10190,Catalina García,Persona,Conchalí,Santiago,18/11/2026,Minorista
+10191,Matías Salazar,Persona,Lo Barnechea,Santiago,23/10/2025,Minorista
+10192,Joaquín López,Persona,Pudahuel,Santiago,19/11/2025,Minorista
+10193,Alejandro Valdés,Persona,San Joaquín,Santiago,11/06/2026,Minorista
+10194,Comercial Del Sur SpA,Empresa,Pedro Aguirre Cerda,Santiago,28/02/2026,Corporativo
+10195,Patricio Castillo,Persona,Lo Barnechea,Santiago,03/10/2026,Minorista
+10196,Patricio Vásquez,Persona,La Reina,Santiago,22/10/2025,Minorista
+10197,Verónica Herrera,Persona,Maipú,Santiago,08/10/2026,Minorista
+10198,Comercial Chile SpA,Empresa,Recoleta,Santiago,19/07/2026,Corporativo
+10199,Cristóbal Torres,Persona,Providencia,Santiago,18/04/2026,Minorista
+10200,Industrias Providencia SpA,Empresa,Lo Barnechea,Santiago,26/10/2025,Corporativo
+10201,Javiera Paredes,Persona,San Ramón,Santiago,29/04/2026,Minorista
+10202,Verónica Reyes,Persona,Renca,Santiago,15/07/2025,Minorista
+10203,Servicios Maipú SpA,Empresa,La Reina,Santiago,13/03/2025,Corporativo
+10204,Alejandro Lagos,Persona,Colina,Santiago,01/10/2025,Minorista
+10205,Comercializadora Chile SpA,Empresa,Lo Barnechea,Santiago,02/06/2025,Corporativo
+10206,Pía López,Persona,Buin,Santiago,22/01/2026,Minorista
+10207,Transportes Del Sur SpA,Empresa,Macul,Santiago,09/08/2026,Corporativo
+10208,Martín Morales,Persona,San Ramón,Santiago,24/12/2026,Minorista
+10209,Comercial Metropolitana SpA,Empresa,Huechuraba,Santiago,23/05/2026,Corporativo
+10210,Industrias Santa María SpA,Empresa,Lo Espejo,Santiago,13/04/2025,Corporativo
+10211,Elena Contreras,Persona,Huechuraba,Santiago,24/02/2026,Minorista
+10212,Vicente Vásquez,Persona,Peñalolén,Santiago,13/12/2025,Minorista
+10213,Rodrigo Morales,Persona,Pudahuel,Santiago,03/12/2025,Minorista
+10214,Comercial Los Alerces SpA,Empresa,Lo Barnechea,Santiago,09/07/2026,Pyme
+10215,Carolina Núñez,Persona,Las Condes,Santiago,21/08/2025,Minorista
+10216,Importadora Providencia SpA,Empresa,Puente Alto,Santiago,31/03/2026,Corporativo
+10217,Comercial Norte SpA,Empresa,Ñuñoa,Santiago,29/11/2025,Corporativo
+10218,Roberto Navarro,Persona,Huechuraba,Santiago,08/09/2025,Minorista
+10219,Francisco Cortés,Persona,Cerrillos,Santiago,24/06/2025,Minorista
+10220,Javiera Ramírez,Persona,Renca,Santiago,27/09/2026,Minorista
+10221,Comercializadora San Cristóbal SpA,Empresa,Huechuraba,Santiago,26/08/2025,Corporativo
+10222,Josefa Vargas,Persona,Santiago,Santiago,22/04/2026,Minorista
+10223,Manuel Sandoval,Persona,La Florida,Santiago,29/03/2026,Minorista
+10224,Joaquín Paredes,Persona,El Bosque,Santiago,08/12/2026,Minorista
+10225,Comercializadora Central SpA,Empresa,Estación Central,Santiago,29/01/2026,Pyme
+10226,Josefa Vásquez,Persona,Lo Prado,Santiago,12/08/2026,Minorista
+10227,Alejandro Sánchez,Persona,San Joaquín,Santiago,09/10/2025,Minorista
+10228,Logística Cordillera SpA,Empresa,Quilicura,Santiago,13/09/2026,Corporativo
+10229,Abastecimiento Del Sur SpA,Empresa,San Bernardo,Santiago,14/09/2026,Pyme
+10230,Catalina Soto,Persona,La Reina,Santiago,06/10/2026,Minorista
+10231,Antonia Sandoval,Persona,Recoleta,Santiago,28/03/2026,Minorista
+10232,Josefa López,Persona,La Reina,Santiago,03/04/2025,Minorista
+10233,Importadora Maipú SpA,Empresa,Cerrillos,Santiago,25/07/2025,Corporativo
+10234,Joaquín Pérez,Persona,Independencia,Santiago,18/06/2025,Minorista
+10235,Distribuidora Cordillera SpA,Empresa,Las Condes,Santiago,13/12/2025,Pyme
+10236,Matías Salazar,Persona,San Bernardo,Santiago,24/11/2026,Minorista
+10237,Joaquín Romero,Persona,San Joaquín,Santiago,15/01/2025,Minorista
+10238,Joaquín Sandoval,Persona,Quinta Normal,Santiago,20/11/2026,Minorista
+10239,Isabel Pérez,Persona,Quinta Normal,Santiago,21/04/2025,Minorista
+10240,Isabel Torres,Persona,Conchalí,Santiago,17/09/2026,Minorista
+10241,Laura Torres,Persona,Pedro Aguirre Cerda,Santiago,19/12/2026,Minorista
+10242,Antonia Leiva,Persona,La Reina,Santiago,16/02/2025,Minorista
+10243,Inversiones Santa María SpA,Empresa,Providencia,Santiago,10/04/2025,Pyme
+10244,Rodrigo Navarro,Persona,Quinta Normal,Santiago,18/11/2026,Minorista
+10245,Catalina Ramírez,Persona,Huechuraba,Santiago,01/03/2026,Minorista
+10246,Marcela González,Persona,Independencia,Santiago,03/02/2025,Minorista
+10247,Catalina Vargas,Persona,Macul,Santiago,07/01/2026,Minorista
+10248,Matías Jiménez,Persona,Lo Prado,Santiago,04/03/2025,Minorista
+10249,Carolina Valdés,Persona,Providencia,Santiago,11/04/2026,Minorista
+10250,Lucía Herrera,Persona,Maipú,Santiago,21/02/2025,Minorista
+10251,Industrias Del Sur SpA,Empresa,Vitacura,Santiago,12/03/2025,Pyme
+10252,Importadora Maipú SpA,Empresa,San Bernardo,Santiago,03/12/2025,Pyme
+10253,Rodrigo Hernández,Persona,Huechuraba,Santiago,14/05/2025,Minorista
+10254,Comercial Metropolitana SpA,Empresa,Providencia,Santiago,08/11/2026,Pyme
+10255,Leonardo Bustos,Persona,Macul,Santiago,26/08/2026,Minorista
+10256,Mauricio Rojas,Persona,Quilicura,Santiago,10/05/2025,Minorista
+10257,Patricio Molina,Persona,La Florida,Santiago,03/05/2026,Minorista
+10258,Ricardo Guerrero,Persona,Puente Alto,Santiago,08/04/2026,Minorista
+10259,Industrias Norte SpA,Empresa,Ñuñoa,Santiago,06/11/2026,Corporativo
+10260,Rafael Muñoz,Persona,Maipú,Santiago,04/03/2025,Minorista
+10261,Patricio Contreras,Persona,Puente Alto,Santiago,18/05/2026,Minorista
+10262,Importadora Central SpA,Empresa,Conchalí,Santiago,15/09/2026,Pyme
+10263,Verónica Rojas,Persona,Conchalí,Santiago,26/01/2026,Minorista
+10264,Natalia Espinoza,Persona,Colina,Santiago,12/09/2026,Minorista
+10265,Productos Santa María SpA,Empresa,Providencia,Santiago,02/11/2026,Pyme
+10266,Lucía Paredes,Persona,San Bernardo,Santiago,28/02/2026,Minorista
+10267,Natalia López,Persona,Puente Alto,Santiago,17/11/2025,Minorista
+10268,Productos Santa María SpA,Empresa,Quinta Normal,Santiago,06/06/2025,Corporativo
+10269,Natalia Espinoza,Persona,Pudahuel,Santiago,06/04/2025,Minorista
+10270,Industrias Andes SpA,Empresa,Quinta Normal,Santiago,14/05/2025,Corporativo
+10271,Productos Maipú SpA,Empresa,La Granja,Santiago,29/12/2025,Corporativo
+10272,Soluciones Norte SpA,Empresa,Quilicura,Santiago,22/10/2025,Corporativo
+10273,Elena Valdés,Persona,Colina,Santiago,06/08/2025,Minorista
+10274,Sebastián Molina,Persona,Puente Alto,Santiago,25/12/2025,Minorista
+10275,Isabel Núñez,Persona,Independencia,Santiago,11/08/2026,Minorista
+10276,Productos La Reina SpA,Empresa,Maipú,Santiago,16/09/2026,Corporativo
+10277,Laura Martínez,Persona,Independencia,Santiago,21/12/2026,Minorista
+10278,Sergio Valdés,Persona,Cerrillos,Santiago,27/05/2025,Minorista
+10279,Andrea Cortés,Persona,Huechuraba,Santiago,11/10/2026,Minorista
+10280,Transportes Cordillera SpA,Empresa,Vitacura,Santiago,21/01/2026,Corporativo
+10281,Sergio Sepúlveda,Persona,Recoleta,Santiago,29/11/2025,Minorista
+10282,Fernanda Silva,Persona,Quilicura,Santiago,09/06/2025,Minorista
+10283,Patricio Valdés,Persona,Pudahuel,Santiago,06/10/2025,Minorista
+10284,José González,Persona,Lo Espejo,Santiago,01/03/2026,Minorista
+10285,Transportes Central SpA,Empresa,Providencia,Santiago,20/12/2025,Corporativo
+10286,Productos Norte SpA,Empresa,Lo Barnechea,Santiago,24/06/2026,Pyme
+10287,Ignacio Leiva,Persona,Quilicura,Santiago,08/01/2025,Minorista
+10288,Servicios Pacífico SpA,Empresa,La Reina,Santiago,19/09/2025,Pyme
+10289,Diego Morales,Persona,El Bosque,Santiago,29/06/2025,Minorista
+10290,Sebastián Valdés,Persona,San Bernardo,Santiago,28/05/2026,Minorista
+10291,Logística Andes SpA,Empresa,La Florida,Santiago,11/02/2026,Corporativo
+10292,Sergio Núñez,Persona,La Florida,Santiago,17/11/2025,Minorista
+10293,Cristóbal Muñoz,Persona,La Granja,Santiago,24/10/2025,Minorista
+10294,Vicente Paredes,Persona,Conchalí,Santiago,25/06/2025,Minorista
+10295,Transportes La Reina SpA,Empresa,Quinta Normal,Santiago,01/04/2025,Pyme
+10296,Carolina Muñoz,Persona,San Joaquín,Santiago,21/06/2026,Minorista
+10297,Abastecimiento Maipú SpA,Empresa,La Cisterna,Santiago,15/08/2025,Pyme
+10298,Ricardo Gómez,Persona,Providencia,Santiago,28/06/2026,Minorista
+10299,Logística La Reina SpA,Empresa,Lo Prado,Santiago,26/12/2025,Pyme
+10300,Gabriela Garrido,Persona,Huechuraba,Santiago,20/09/2025,Minorista
+10301,Raúl Paredes,Persona,La Florida,Santiago,01/07/2025,Minorista
+10302,Soluciones San Cristóbal SpA,Empresa,Lo Espejo,Santiago,29/11/2026,Corporativo
+10303,Comercializadora Central SpA,Empresa,Conchalí,Santiago,04/06/2025,Corporativo
+10304,Valentina Castillo,Persona,Recoleta,Santiago,09/10/2025,Minorista
+10305,Pía Ortega,Persona,La Florida,Santiago,14/11/2025,Minorista
+10306,Benjamín Torres,Persona,Quinta Normal,Santiago,21/10/2025,Minorista
+10307,Soluciones Chile SpA,Empresa,Pudahuel,Santiago,22/09/2026,Corporativo
+10308,Sergio Torres,Persona,Ñuñoa,Santiago,06/04/2026,Minorista
+10309,Elena Castillo,Persona,San Ramón,Santiago,29/05/2026,Minorista
+10310,Ricardo Torres,Persona,La Cisterna,Santiago,28/03/2025,Minorista
+10311,Patricio Ortega,Persona,Macul,Santiago,26/12/2026,Minorista
+10312,Marcela Lagos,Persona,San Miguel,Santiago,08/01/2026,Minorista
+10313,Verónica Castillo,Persona,La Cisterna,Santiago,27/11/2026,Minorista
+10314,Abastecimiento Central SpA,Empresa,La Cisterna,Santiago,09/03/2025,Corporativo
+10315,Carolina Sandoval,Persona,Huechuraba,Santiago,08/12/2025,Minorista
+10316,Productos Providencia SpA,Empresa,Lo Prado,Santiago,14/11/2025,Corporativo
+10317,Sebastián Morales,Persona,Pudahuel,Santiago,14/11/2025,Minorista
+10318,Roberto Cortés,Persona,La Cisterna,Santiago,11/05/2025,Minorista
+10319,Marcela Bustos,Persona,El Bosque,Santiago,05/06/2026,Minorista
+10320,Lucía Ramírez,Persona,Cerrillos,Santiago,08/08/2025,Minorista
+10321,Benjamín Lagos,Persona,La Reina,Santiago,08/06/2025,Minorista
+10322,Industrias La Reina SpA,Empresa,Puente Alto,Santiago,04/06/2026,Pyme
+10323,Transportes Metropolitana SpA,Empresa,La Reina,Santiago,04/09/2026,Pyme
+10324,Antonia Navarro,Persona,San Miguel,Santiago,25/03/2026,Minorista
+10325,Vicente Lagos,Persona,Macul,Santiago,31/03/2026,Minorista
+10326,Industrias Del Sur SpA,Empresa,Lo Espejo,Santiago,28/08/2025,Corporativo
+10327,Abastecimiento San Cristóbal SpA,Empresa,San Ramón,Santiago,18/07/2025,Corporativo
+10328,Ricardo Rojas,Persona,Las Condes,Santiago,27/01/2026,Minorista
+10329,Verónica Flores,Persona,San Miguel,Santiago,24/07/2025,Minorista
+10330,Comercializadora La Reina SpA,Empresa,Quilicura,Santiago,19/10/2026,Corporativo
+10331,Roberto Fernández,Persona,Puente Alto,Santiago,30/12/2026,Minorista
+10332,Patricio Reyes,Persona,San Miguel,Santiago,07/10/2025,Minorista
+10333,Isabel Ortega,Persona,El Bosque,Santiago,04/04/2025,Minorista
+10334,Comercial Santiago SpA,Empresa,Maipú,Santiago,01/03/2026,Corporativo
+10335,Isabel Bustos,Persona,Pudahuel,Santiago,19/01/2026,Minorista
+10336,Lucía Fuentes,Persona,Puente Alto,Santiago,28/10/2026,Minorista
+10337,Diego Pérez,Persona,Las Condes,Santiago,29/04/2026,Minorista
+10338,Andrea Hernández,Persona,Santiago,Santiago,23/03/2025,Minorista
+10339,Verónica Rojas,Persona,Huechuraba,Santiago,16/07/2026,Minorista
+10340,Laura Fernández,Persona,Las Condes,Santiago,01/09/2025,Minorista
+10341,Vicente Paredes,Persona,La Granja,Santiago,17/10/2026,Minorista
+10342,Rodrigo Bustos,Persona,Lo Barnechea,Santiago,04/09/2026,Minorista
+10343,Josefa Núñez,Persona,Macul,Santiago,28/05/2025,Minorista
+10344,Sergio Navarro,Persona,Lo Prado,Santiago,04/09/2025,Minorista
+10345,Marcela Contreras,Persona,Pudahuel,Santiago,21/06/2026,Minorista
+10346,Industrias Chile SpA,Empresa,Buin,Santiago,04/06/2026,Pyme
+10347,Martín Molina,Persona,San Ramón,Santiago,14/02/2025,Minorista
+10348,Benjamín Mendoza,Persona,Maipú,Santiago,01/01/2026,Minorista
+10349,Lucía Flores,Persona,Puente Alto,Santiago,19/08/2026,Minorista
+10350,Francisco Vargas,Persona,Buin,Santiago,13/12/2025,Minorista
+10351,Francisco Flores,Persona,San Ramón,Santiago,09/10/2026,Minorista
+10352,Josefa Gómez,Persona,Pedro Aguirre Cerda,Santiago,07/02/2025,Minorista
+10353,Leonardo Leiva,Persona,Estación Central,Santiago,12/02/2025,Minorista
+10354,Joaquín Campos,Persona,Buin,Santiago,30/04/2026,Minorista
+10355,Abastecimiento La Reina SpA,Empresa,Estación Central,Santiago,20/10/2025,Pyme
+10356,Distribuidora Maipú SpA,Empresa,La Cisterna,Santiago,07/10/2025,Corporativo
+10357,Martín Martínez,Persona,San Joaquín,Santiago,27/03/2026,Minorista
+10358,Comercializadora Pacífico SpA,Empresa,Lo Barnechea,Santiago,10/12/2026,Corporativo
+10359,Transportes Los Alerces SpA,Empresa,El Bosque,Santiago,22/03/2025,Pyme
+10360,Carolina López,Persona,Conchalí,Santiago,16/04/2025,Minorista
+10361,Soluciones Providencia SpA,Empresa,Recoleta,Santiago,02/04/2026,Corporativo
+10362,Patricio Campos,Persona,Lo Espejo,Santiago,26/12/2025,Minorista
+10363,Transportes Norte SpA,Empresa,Lo Prado,Santiago,22/09/2026,Pyme
+10364,Ricardo Vargas,Persona,San Joaquín,Santiago,08/01/2026,Minorista
+10365,Verónica Vargas,Persona,Maipú,Santiago,27/05/2025,Minorista
+10366,Distribuidora Del Sur SpA,Empresa,Ñuñoa,Santiago,10/05/2025,Corporativo
+10367,Elena Vargas,Persona,Ñuñoa,Santiago,12/09/2026,Minorista
+10368,Patricio Contreras,Persona,Quinta Normal,Santiago,16/01/2026,Minorista
+10369,Matías López,Persona,Lampa,Santiago,11/01/2026,Minorista
+10370,Andrea Garrido,Persona,Macul,Santiago,27/04/2025,Minorista
+10371,Cristóbal Hernández,Persona,Renca,Santiago,30/07/2026,Minorista
+10372,Soluciones Norte SpA,Empresa,Lo Espejo,Santiago,08/08/2025,Corporativo
+10373,Patricio Garrido,Persona,La Reina,Santiago,17/03/2025,Minorista
+10374,Productos La Reina SpA,Empresa,Lo Espejo,Santiago,31/03/2025,Corporativo
+10375,Industrias Norte SpA,Empresa,La Florida,Santiago,18/07/2026,Corporativo
+10376,Industrias Del Sur SpA,Empresa,Cerrillos,Santiago,06/01/2026,Pyme
+10377,Comercializadora Andes SpA,Empresa,La Reina,Santiago,31/08/2025,Corporativo
+10378,Sebastián Flores,Persona,Quinta Normal,Santiago,24/04/2026,Minorista
+10379,Laura Muñoz,Persona,Pudahuel,Santiago,09/03/2025,Minorista
+10380,Transportes Maipú SpA,Empresa,San Ramón,Santiago,23/06/2026,Corporativo
+10381,Abastecimiento San Cristóbal SpA,Empresa,La Florida,Santiago,09/05/2025,Pyme
+10382,Diego Salazar,Persona,Lampa,Santiago,19/12/2025,Minorista
+10383,Natalia Reyes,Persona,Cerrillos,Santiago,13/05/2025,Minorista
+10384,Industrias Metropolitana SpA,Empresa,Quilicura,Santiago,08/05/2025,Corporativo
+10385,Isabel Mendoza,Persona,Conchalí,Santiago,28/12/2026,Minorista
+10386,Distribuidora Norte SpA,Empresa,Lampa,Santiago,18/10/2025,Pyme
+10387,Laura Silva,Persona,Independencia,Santiago,09/05/2025,Minorista
+10388,Fernanda Sandoval,Persona,Colina,Santiago,19/10/2026,Minorista
+10389,Productos Los Alerces SpA,Empresa,Huechuraba,Santiago,25/06/2025,Corporativo
+10390,Distribuidora Andes SpA,Empresa,Ñuñoa,Santiago,30/01/2025,Corporativo
+10391,Productos Andes SpA,Empresa,La Granja,Santiago,25/09/2026,Corporativo
+10392,Productos Norte SpA,Empresa,Buin,Santiago,24/10/2025,Corporativo
+10393,Pía Contreras,Persona,San Joaquín,Santiago,01/11/2025,Minorista
+10394,Transportes Cordillera SpA,Empresa,San Miguel,Santiago,27/03/2026,Corporativo
+10395,Leonardo Mendoza,Persona,Huechuraba,Santiago,17/11/2025,Minorista
+10396,Industrias Chile SpA,Empresa,La Reina,Santiago,15/01/2026,Pyme
+10397,José Ortega,Persona,Pedro Aguirre Cerda,Santiago,06/05/2025,Minorista
+10398,Josefa Morales,Persona,Puente Alto,Santiago,21/02/2025,Minorista
+10399,Importadora La Reina SpA,Empresa,La Granja,Santiago,12/09/2025,Corporativo
+10400,Importadora Cordillera SpA,Empresa,Conchalí,Santiago,14/07/2025,Corporativo
+10401,Andrea Cortés,Persona,Recoleta,Santiago,25/05/2026,Minorista
+10402,Inversiones Del Sur SpA,Empresa,Colina,Santiago,14/04/2026,Corporativo
+10403,Verónica Torres,Persona,Las Condes,Santiago,22/05/2026,Minorista
+10404,Comercial La Reina SpA,Empresa,Las Condes,Santiago,04/07/2026,Pyme
+10405,Matías Molina,Persona,Peñalolén,Santiago,10/01/2026,Minorista
+10406,Sebastián Gómez,Persona,Quilicura,Santiago,07/08/2026,Minorista
+10407,Martín Reyes,Persona,Las Condes,Santiago,17/03/2025,Minorista
+10408,Vicente Fernández,Persona,Independencia,Santiago,01/10/2026,Minorista
+10409,Marcela Martínez,Persona,Puente Alto,Santiago,08/02/2026,Minorista
+10410,Gabriela Sepúlveda,Persona,Quinta Normal,Santiago,28/05/2025,Minorista
+10411,Antonia Campos,Persona,Colina,Santiago,11/02/2025,Minorista
+10412,Roberto Paredes,Persona,La Cisterna,Santiago,01/05/2026,Minorista
+10413,Leonardo Silva,Persona,Colina,Santiago,24/05/2025,Minorista
+10414,Laura Sandoval,Persona,San Joaquín,Santiago,24/09/2026,Minorista
+10415,Raúl Sánchez,Persona,Colina,Santiago,30/06/2026,Minorista
+10416,Lucía Vargas,Persona,Maipú,Santiago,13/01/2026,Minorista
+10417,Laura Vásquez,Persona,La Granja,Santiago,21/08/2026,Minorista
+10418,Valentina Sánchez,Persona,San Ramón,Santiago,29/09/2025,Minorista
+10419,Rafael García,Persona,Quilicura,Santiago,21/08/2026,Minorista
+10420,Javiera Campos,Persona,Renca,Santiago,01/06/2025,Minorista
+10421,Andrea Ortega,Persona,Providencia,Santiago,15/07/2025,Minorista
+10422,Ignacio Navarro,Persona,Huechuraba,Santiago,27/02/2026,Minorista
+10423,Diego Rojas,Persona,San Ramón,Santiago,05/03/2025,Minorista
+10424,Rafael Rojas,Persona,Conchalí,Santiago,10/11/2026,Minorista
+10425,Rodrigo Martínez,Persona,Cerrillos,Santiago,16/04/2026,Minorista
+10426,Rafael Gómez,Persona,Peñalolén,Santiago,17/09/2026,Minorista
+10427,Servicios Del Sur SpA,Empresa,Independencia,Santiago,26/07/2026,Corporativo
+10428,Logística Cordillera SpA,Empresa,Vitacura,Santiago,08/12/2026,Corporativo
+10429,Cristóbal Sánchez,Persona,Independencia,Santiago,22/10/2025,Minorista
+10430,Abastecimiento Maipú SpA,Empresa,Renca,Santiago,09/02/2026,Pyme
+10431,Manuel Ortega,Persona,Las Condes,Santiago,22/03/2025,Minorista
+10432,Inversiones La Reina SpA,Empresa,San Ramón,Santiago,08/08/2025,Corporativo
+10433,Distribuidora Los Alerces SpA,Empresa,Independencia,Santiago,21/05/2025,Pyme
+10434,Isabel Castillo,Persona,Lampa,Santiago,20/08/2025,Minorista
+10435,Catalina Vargas,Persona,La Cisterna,Santiago,29/04/2026,Minorista
+10436,Importadora Santiago SpA,Empresa,Santiago,Santiago,18/07/2026,Corporativo
+10437,Leonardo Lagos,Persona,Estación Central,Santiago,22/10/2025,Minorista
+10438,Sergio Guerrero,Persona,Pudahuel,Santiago,30/10/2026,Minorista
+10439,Mauricio Garrido,Persona,Ñuñoa,Santiago,29/06/2025,Minorista
+10440,Comercializadora Metropolitana SpA,Empresa,Ñuñoa,Santiago,11/02/2026,Corporativo
+10441,Soluciones Los Alerces SpA,Empresa,Santiago,Santiago,02/11/2025,Pyme
+10442,Comercializadora San Cristóbal SpA,Empresa,La Cisterna,Santiago,19/10/2025,Corporativo
+10443,Comercializadora Norte SpA,Empresa,La Reina,Santiago,01/06/2026,Pyme
+10444,Logística Cordillera SpA,Empresa,La Cisterna,Santiago,16/06/2025,Corporativo
+10445,Servicios Los Alerces SpA,Empresa,Santiago,Santiago,12/12/2025,Pyme
+10446,Ricardo López,Persona,San Joaquín,Santiago,14/03/2026,Minorista
+10447,Diego Pérez,Persona,Puente Alto,Santiago,09/07/2025,Minorista
+10448,Joaquín Morales,Persona,Macul,Santiago,07/01/2025,Minorista
+10449,Laura Sandoval,Persona,Independencia,Santiago,04/12/2025,Minorista
+10450,Productos Pacífico SpA,Empresa,Santiago,Santiago,25/09/2025,Pyme
+10451,Laura García,Persona,Providencia,Santiago,22/04/2026,Minorista
+10452,Laura Vásquez,Persona,Colina,Santiago,22/12/2026,Minorista
+10453,Vicente Guerrero,Persona,Las Condes,Santiago,12/01/2026,Minorista
+10454,Elena Paredes,Persona,La Reina,Santiago,05/05/2026,Minorista
+10455,Logística Chile SpA,Empresa,Quinta Normal,Santiago,02/03/2026,Corporativo
+10456,Productos Maipú SpA,Empresa,Vitacura,Santiago,11/09/2025,Pyme
+10457,Marcela Contreras,Persona,Lampa,Santiago,22/12/2026,Minorista
+10458,Industrias Santa María SpA,Empresa,Providencia,Santiago,05/03/2025,Pyme
+10459,Leonardo Rojas,Persona,Huechuraba,Santiago,18/06/2025,Minorista
+10460,Raúl Cortés,Persona,Vitacura,Santiago,21/08/2026,Minorista
+10461,Comercializadora Metropolitana SpA,Empresa,Lo Espejo,Santiago,26/02/2025,Corporativo
+10462,Pía Vargas,Persona,Quilicura,Santiago,27/07/2026,Minorista
+10463,Servicios La Reina SpA,Empresa,Maipú,Santiago,10/02/2026,Pyme
+10464,Transportes Pacífico SpA,Empresa,La Florida,Santiago,16/02/2025,Pyme
+10465,Rafael Campos,Persona,Quilicura,Santiago,12/03/2025,Minorista
+10466,Mauricio Molina,Persona,Cerrillos,Santiago,19/05/2025,Minorista
+10467,Transportes Santiago SpA,Empresa,Renca,Santiago,05/04/2026,Pyme
+10468,Productos La Reina SpA,Empresa,Buin,Santiago,17/05/2025,Corporativo
+10469,Roberto Flores,Persona,Buin,Santiago,07/02/2026,Minorista
+10470,Comercial Norte SpA,Empresa,San Bernardo,Santiago,04/01/2025,Corporativo
+10471,Industrias Santiago SpA,Empresa,Buin,Santiago,11/03/2026,Pyme
+10472,José Gómez,Persona,Lo Prado,Santiago,08/06/2025,Minorista
+10473,Productos Santiago SpA,Empresa,Providencia,Santiago,02/02/2025,Pyme
+10474,Verónica Campos,Persona,La Florida,Santiago,14/04/2025,Minorista
+10475,Antonia Muñoz,Persona,Quilicura,Santiago,08/09/2025,Minorista
+10476,Bárbara Flores,Persona,Buin,Santiago,11/08/2025,Minorista
+10477,Sergio López,Persona,Las Condes,Santiago,28/08/2025,Minorista
+10478,Laura Fuentes,Persona,Conchalí,Santiago,31/08/2025,Minorista
+10479,Transportes Norte SpA,Empresa,Lampa,Santiago,15/08/2025,Corporativo
+10480,Natalia Salazar,Persona,Cerrillos,Santiago,04/10/2026,Minorista
+10481,Martín Rojas,Persona,Lo Prado,Santiago,21/10/2026,Minorista
+10482,Elena Leiva,Persona,La Granja,Santiago,23/02/2026,Minorista
+10483,Javiera Guerrero,Persona,Buin,Santiago,30/04/2026,Minorista
+10484,Bárbara Salazar,Persona,Huechuraba,Santiago,20/04/2026,Minorista
+10485,Roberto Flores,Persona,La Granja,Santiago,25/07/2026,Minorista
+10486,Lucía Torres,Persona,Peñalolén,Santiago,28/07/2025,Minorista
+10487,Carolina Romero,Persona,Lo Espejo,Santiago,15/01/2026,Minorista
+10488,Servicios Santiago SpA,Empresa,Estación Central,Santiago,22/02/2025,Pyme
+10489,Logística San Cristóbal SpA,Empresa,Estación Central,Santiago,25/08/2026,Pyme
+10490,Alejandro González,Persona,La Cisterna,Santiago,07/11/2025,Minorista
+10491,Inversiones Providencia SpA,Empresa,Providencia,Santiago,06/05/2026,Pyme
+10492,Leonardo Lagos,Persona,Macul,Santiago,20/07/2026,Minorista
+10493,Manuel Leiva,Persona,Buin,Santiago,27/10/2026,Minorista
+10494,Pía Espinoza,Persona,Colina,Santiago,25/05/2026,Minorista
+10495,Inversiones Pacífico SpA,Empresa,San Ramón,Santiago,24/11/2025,Corporativo
+10496,Andrea Hernández,Persona,San Bernardo,Santiago,30/05/2025,Minorista
+10497,Elena Gómez,Persona,La Granja,Santiago,30/10/2025,Minorista
+10498,Javiera Ramírez,Persona,Renca,Santiago,07/08/2026,Minorista
+10499,Raúl Torres,Persona,La Cisterna,Santiago,21/09/2025,Minorista
+10500,Logística Maipú SpA,Empresa,Pedro Aguirre Cerda,Santiago,22/06/2025,Corporativo

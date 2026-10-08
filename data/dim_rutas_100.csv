@@ -1,0 +1,101 @@
+﻿ruta_id,nombre_ruta,comuna_origen,comuna_destino,distancia_km,tiempo_estimado_min,nivel_trafico_habitual,tipo_ruta,peajes,estado
+40001,Maipú → Santiago Centro,Maipú,Santiago,18.5,45,Alto,Urbana,0,Activa
+40002,Quilicura → Providencia,Quilicura,Providencia,24.2,55,Alto,Urbana,0,Activa
+40003,La Florida → Santiago Centro,La Florida,Santiago,15.8,42,Alto,Urbana,0,Activa
+40004,Pudahuel → Las Condes,Pudahuel,Las Condes,27.4,60,Alto,Urbana,1,Activa
+40005,Ñuñoa → Maipú,Ñuñoa,Maipú,22.1,48,Medio,Urbana,0,Activa
+40006,San Bernardo → Providencia,San Bernardo,Providencia,31.5,70,Alto,Mixta,1,Activa
+40007,Puente Alto → La Reina,Puente Alto,La Reina,19.7,50,Medio,Urbana,0,Activa
+40008,Cerrillos → Vitacura,Cerrillos,Vitacura,25.8,58,Medio,Urbana,1,Activa
+40009,Huechuraba → Santiago Centro,Huechuraba,Santiago,16.9,40,Medio,Urbana,0,Activa
+40010,Maipú → Colina,Maipú,Colina,38.6,75,Medio,Mixta,2,Activa
+40011,Independencia → La Granja,Independencia,La Granja,24.5,78,Bajo,Urbana,0,Activa
+40012,Las Condes → Providencia,Las Condes,Providencia,43.3,85,Bajo,Urbana,0,Suspendida
+40013,Huechuraba → Vitacura,Huechuraba,Vitacura,44.7,87,Bajo,Interurbana,0,Activa
+40014,Ñuñoa → Cerrillos,Ñuñoa,Cerrillos,17.8,49,Bajo,Interurbana,0,Activa
+40015,Conchalí → Renca,Conchalí,Renca,33.0,64,Alto,Mixta,2,Activa
+40016,Lo Barnechea → Quinta Normal,Lo Barnechea,Quinta Normal,41.5,107,Bajo,Urbana,0,Restringida
+40017,El Bosque → Las Condes,El Bosque,Las Condes,13.4,40,Bajo,Interurbana,2,Restringida
+40018,Renca → Quilicura,Renca,Quilicura,40.3,80,Alto,Mixta,1,Activa
+40019,Cerrillos → Santiago,Cerrillos,Santiago,29.9,91,Bajo,Mixta,2,Activa
+40020,Lo Espejo → Estación Central,Lo Espejo,Estación Central,18.2,43,Alto,Urbana,0,Activa
+40021,Maipú → Peñalolén,Maipú,Peñalolén,38.8,120,Bajo,Urbana,0,Activa
+40022,La Reina → San Joaquín,La Reina,San Joaquín,36.8,110,Alto,Interurbana,3,Activa
+40023,Independencia → Renca,Independencia,Renca,35.7,64,Alto,Urbana,0,Restringida
+40024,La Granja → San Bernardo,La Granja,San Bernardo,17.9,51,Bajo,Interurbana,3,Restringida
+40025,Santiago → La Granja,Santiago,La Granja,28.6,61,Medio,Urbana,0,Restringida
+40026,Pudahuel → Quinta Normal,Pudahuel,Quinta Normal,27.8,75,Medio,Interurbana,2,Suspendida
+40027,San Joaquín → Pedro Aguirre Cerda,San Joaquín,Pedro Aguirre Cerda,34.8,81,Medio,Urbana,0,Activa
+40028,Pudahuel → Quinta Normal,Pudahuel,Quinta Normal,43.1,115,Bajo,Interurbana,1,Activa
+40029,La Granja → Conchalí,La Granja,Conchalí,34.7,76,Alto,Interurbana,2,Activa
+40030,Buin → La Reina,Buin,La Reina,30.1,56,Alto,Urbana,1,Suspendida
+40031,Recoleta → Independencia,Recoleta,Independencia,30.7,64,Alto,Urbana,0,Suspendida
+40032,La Cisterna → San Joaquín,La Cisterna,San Joaquín,28.1,55,Bajo,Urbana,0,Activa
+40033,Buin → Ñuñoa,Buin,Ñuñoa,38.7,122,Alto,Mixta,1,Suspendida
+40034,Colina → Peñalolén,Colina,Peñalolén,15.9,37,Medio,Urbana,0,Activa
+40035,Macul → Puente Alto,Macul,Puente Alto,36.4,107,Medio,Interurbana,3,Activa
+40036,Colina → La Granja,Colina,La Granja,18.9,39,Bajo,Interurbana,0,Restringida
+40037,Lo Barnechea → Huechuraba,Lo Barnechea,Huechuraba,32.8,81,Bajo,Mixta,2,Activa
+40038,Lo Prado → Ñuñoa,Lo Prado,Ñuñoa,9.1,37,Medio,Interurbana,1,Activa
+40039,Ñuñoa → La Cisterna,Ñuñoa,La Cisterna,33.9,73,Bajo,Mixta,0,Activa
+40040,Lampa → Buin,Lampa,Buin,35.2,76,Alto,Mixta,1,Activa
+40041,San Miguel → Puente Alto,San Miguel,Puente Alto,38.6,92,Medio,Urbana,0,Activa
+40042,Quinta Normal → Huechuraba,Quinta Normal,Huechuraba,42.5,100,Medio,Interurbana,0,Activa
+40043,Independencia → Providencia,Independencia,Providencia,15.7,52,Bajo,Urbana,0,Restringida
+40044,Cerrillos → Las Condes,Cerrillos,Las Condes,42.8,72,Alto,Urbana,0,Activa
+40045,La Granja → Cerrillos,La Granja,Cerrillos,42.3,79,Alto,Mixta,1,Suspendida
+40046,Quilicura → Recoleta,Quilicura,Recoleta,12.5,33,Medio,Urbana,0,Activa
+40047,Pedro Aguirre Cerda → La Cisterna,Pedro Aguirre Cerda,La Cisterna,19.0,37,Medio,Interurbana,2,Activa
+40048,San Bernardo → La Reina,San Bernardo,La Reina,31.1,58,Bajo,Interurbana,3,Suspendida
+40049,Independencia → San Ramón,Independencia,San Ramón,31.9,69,Medio,Urbana,0,Activa
+40050,Quinta Normal → La Cisterna,Quinta Normal,La Cisterna,31.1,72,Bajo,Interurbana,2,Restringida
+40051,El Bosque → Colina,El Bosque,Colina,12.7,43,Medio,Mixta,3,Activa
+40052,Santiago → Lo Barnechea,Santiago,Lo Barnechea,31.8,55,Alto,Interurbana,1,Activa
+40053,Vitacura → La Cisterna,Vitacura,La Cisterna,39.8,101,Bajo,Interurbana,1,Suspendida
+40054,Pedro Aguirre Cerda → San Bernardo,Pedro Aguirre Cerda,San Bernardo,32.4,82,Bajo,Urbana,0,Activa
+40055,La Reina → San Bernardo,La Reina,San Bernardo,35.5,78,Medio,Interurbana,3,Activa
+40056,Recoleta → Colina,Recoleta,Colina,27.7,69,Medio,Urbana,1,Restringida
+40057,Buin → San Ramón,Buin,San Ramón,30.5,56,Medio,Interurbana,1,Activa
+40058,Lo Prado → El Bosque,Lo Prado,El Bosque,37.7,93,Alto,Urbana,0,Activa
+40059,Puente Alto → Lampa,Puente Alto,Lampa,6.1,23,Bajo,Mixta,2,Activa
+40060,Lo Prado → Lo Espejo,Lo Prado,Lo Espejo,35.1,66,Alto,Interurbana,1,Activa
+40061,Huechuraba → Lo Prado,Huechuraba,Lo Prado,35.7,93,Medio,Mixta,1,Suspendida
+40062,Buin → La Reina,Buin,La Reina,23.4,76,Alto,Interurbana,1,Activa
+40063,Independencia → Buin,Independencia,Buin,28.5,52,Alto,Mixta,2,Activa
+40064,La Florida → Huechuraba,La Florida,Huechuraba,6.9,22,Alto,Urbana,0,Suspendida
+40065,La Florida → Cerrillos,La Florida,Cerrillos,29.2,61,Bajo,Urbana,0,Activa
+40066,Quinta Normal → San Ramón,Quinta Normal,San Ramón,37.5,81,Bajo,Mixta,2,Activa
+40067,Colina → Santiago,Colina,Santiago,24.9,62,Bajo,Mixta,1,Restringida
+40068,Conchalí → Estación Central,Conchalí,Estación Central,35.1,116,Bajo,Interurbana,2,Suspendida
+40069,Maipú → Providencia,Maipú,Providencia,16.3,52,Medio,Mixta,2,Activa
+40070,Vitacura → Ñuñoa,Vitacura,Ñuñoa,40.6,75,Alto,Urbana,0,Restringida
+40071,Puente Alto → San Bernardo,Puente Alto,San Bernardo,28.5,64,Bajo,Urbana,0,Activa
+40072,La Granja → Pudahuel,La Granja,Pudahuel,39.5,112,Alto,Mixta,1,Activa
+40073,Cerrillos → Buin,Cerrillos,Buin,36.0,83,Alto,Urbana,0,Activa
+40074,San Bernardo → Buin,San Bernardo,Buin,10.7,32,Medio,Interurbana,1,Suspendida
+40075,San Miguel → Independencia,San Miguel,Independencia,32.0,74,Medio,Interurbana,2,Suspendida
+40076,Huechuraba → Lampa,Huechuraba,Lampa,22.9,64,Medio,Urbana,0,Activa
+40077,Providencia → Lo Espejo,Providencia,Lo Espejo,6.4,24,Bajo,Urbana,0,Activa
+40078,San Bernardo → Pedro Aguirre Cerda,San Bernardo,Pedro Aguirre Cerda,36.8,84,Alto,Urbana,0,Activa
+40079,Las Condes → Maipú,Las Condes,Maipú,13.9,40,Bajo,Urbana,1,Restringida
+40080,Lo Espejo → Renca,Lo Espejo,Renca,5.0,15,Bajo,Mixta,1,Activa
+40081,La Florida → San Ramón,La Florida,San Ramón,30.3,94,Bajo,Urbana,0,Activa
+40082,Peñalolén → Vitacura,Peñalolén,Vitacura,37.7,74,Medio,Urbana,0,Activa
+40083,La Cisterna → La Granja,La Cisterna,La Granja,26.2,82,Alto,Urbana,0,Restringida
+40084,Macul → La Granja,Macul,La Granja,8.3,33,Alto,Urbana,0,Activa
+40085,Estación Central → Recoleta,Estación Central,Recoleta,15.9,41,Bajo,Urbana,0,Activa
+40086,Ñuñoa → Peñalolén,Ñuñoa,Peñalolén,37.0,103,Bajo,Urbana,1,Activa
+40087,Lampa → El Bosque,Lampa,El Bosque,42.9,113,Bajo,Urbana,0,Activa
+40088,Cerrillos → Renca,Cerrillos,Renca,9.8,31,Alto,Urbana,0,Restringida
+40089,Lo Prado → La Granja,Lo Prado,La Granja,25.3,57,Bajo,Urbana,0,Activa
+40090,Estación Central → Colina,Estación Central,Colina,12.6,36,Bajo,Interurbana,2,Activa
+40091,Macul → La Granja,Macul,La Granja,9.4,22,Medio,Urbana,0,Restringida
+40092,Lo Prado → Colina,Lo Prado,Colina,6.0,23,Medio,Mixta,0,Activa
+40093,Providencia → Huechuraba,Providencia,Huechuraba,13.3,39,Bajo,Interurbana,0,Activa
+40094,San Ramón → Estación Central,San Ramón,Estación Central,8.6,24,Bajo,Urbana,0,Activa
+40095,Providencia → Colina,Providencia,Colina,33.4,73,Bajo,Mixta,0,Activa
+40096,Lo Espejo → Conchalí,Lo Espejo,Conchalí,10.7,37,Bajo,Interurbana,2,Activa
+40097,Quinta Normal → Quilicura,Quinta Normal,Quilicura,28.5,81,Medio,Urbana,1,Suspendida
+40098,La Reina → Lo Espejo,La Reina,Lo Espejo,13.9,31,Medio,Urbana,0,Activa
+40099,Vitacura → Recoleta,Vitacura,Recoleta,9.4,32,Alto,Urbana,0,Activa
+40100,Macul → Renca,Macul,Renca,41.8,86,Bajo,Urbana,0,Suspendida
