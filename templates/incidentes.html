@@ -13,6 +13,7 @@
         font-size: 14px;
     }
 
+
     /* =========================
        TARJETAS INTERACTIVAS
        ========================= */
@@ -30,6 +31,7 @@
     .card-filtro.seleccionada {
         border: 2px solid #063b2e;
     }
+
 
     /* =========================
        PAGINACIÓN
@@ -79,6 +81,7 @@
         color: #777;
     }
 
+
     /* =========================
        TABLA
        ========================= */
@@ -86,6 +89,15 @@
     #tablaIncidentes {
         width: 100%;
         table-layout: fixed;
+    }
+
+    #tablaIncidentes th,
+    #tablaIncidentes td {
+        padding: 9px 7px;
+        font-size: 13px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     #tablaIncidentes th {
@@ -97,68 +109,59 @@
         background: #085844;
     }
 
-    /* Anchos de columnas */
 
-    #tablaIncidentes th:nth-child(1),
-    #tablaIncidentes td:nth-child(1) {
+    /* =========================
+       ANCHOS DE COLUMNAS
+       ========================= */
+
+    #tablaIncidentes th:nth-child(1) {
         width: 8%;
     }
 
-    #tablaIncidentes th:nth-child(2),
-    #tablaIncidentes td:nth-child(2) {
-        width: 7%;
+    #tablaIncidentes th:nth-child(2) {
+        width: 8%;
     }
 
-    #tablaIncidentes th:nth-child(3),
-    #tablaIncidentes td:nth-child(3) {
+    #tablaIncidentes th:nth-child(3) {
+        width: 11%;
+    }
+
+    #tablaIncidentes th:nth-child(4) {
         width: 9%;
     }
 
-    #tablaIncidentes th:nth-child(4),
-    #tablaIncidentes td:nth-child(4) {
-        width: 7%;
+    #tablaIncidentes th:nth-child(5) {
+        width: 9%;
     }
 
-    #tablaIncidentes th:nth-child(5),
-    #tablaIncidentes td:nth-child(5) {
+    #tablaIncidentes th:nth-child(6) {
+        width: 11%;
+    }
+
+    #tablaIncidentes th:nth-child(7) {
+        width: 9%;
+    }
+
+    #tablaIncidentes th:nth-child(8) {
+        width: 16%;
+    }
+
+    #tablaIncidentes th:nth-child(9) {
         width: 8%;
     }
 
-    #tablaIncidentes th:nth-child(6),
-    #tablaIncidentes td:nth-child(6) {
-        width: 10%;
+    #tablaIncidentes th:nth-child(10) {
+        width: 9%;
     }
 
-    #tablaIncidentes th:nth-child(7),
-    #tablaIncidentes td:nth-child(7) {
+    #tablaIncidentes th:nth-child(11) {
         width: 8%;
     }
 
-    #tablaIncidentes th:nth-child(8),
-    #tablaIncidentes td:nth-child(8) {
-        width: 15%;
-    }
 
-    #tablaIncidentes th:nth-child(9),
-    #tablaIncidentes td:nth-child(9) {
-        width: 10%;
-    }
-
-    #tablaIncidentes th:nth-child(10),
-    #tablaIncidentes td:nth-child(10) {
-        width: 10%;
-    }
-
-    #tablaIncidentes th:nth-child(11),
-    #tablaIncidentes td:nth-child(11) {
-        width: 8%;
-    }
-
-    #tablaIncidentes th,
-    #tablaIncidentes td {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+    .orden {
+        font-size: 12px;
+        margin-left: 3px;
     }
 
 </style>
@@ -175,27 +178,27 @@
 
     <!-- TOTAL -->
 
-    <div
-        class="card card-filtro seleccionada"
-        id="cardTotal"
-        data-filtro="Todos"
+    <a
+        href="{{ url_for('incidentes', estado='Todos', pagina=1) }}"
+        class="card card-filtro {% if estado_filtro == 'Todos' %}seleccionada{% endif %}"
+        style="text-decoration: none; color: inherit;"
     >
 
         <h3>🚨 Total incidentes</h3>
 
         <p>
-            {{ total_registros|miles }}
+            {{ (incidentes_abiertos + incidentes_resueltos)|miles }}
         </p>
 
-    </div>
+    </a>
 
 
     <!-- ABIERTOS -->
 
-    <div
-        class="card card-filtro"
-        id="cardAbiertos"
-        data-filtro="Abierto"
+    <a
+        href="{{ url_for('incidentes', estado='Abierto', pagina=1) }}"
+        class="card card-filtro {% if estado_filtro == 'Abierto' %}seleccionada{% endif %}"
+        style="text-decoration: none; color: inherit;"
     >
 
         <h3>⚠️ Incidentes abiertos</h3>
@@ -204,15 +207,15 @@
             {{ incidentes_abiertos|miles }}
         </p>
 
-    </div>
+    </a>
 
 
     <!-- RESUELTOS -->
 
-    <div
-        class="card card-filtro"
-        id="cardResueltos"
-        data-filtro="Resuelto"
+    <a
+        href="{{ url_for('incidentes', estado='Resuelto', pagina=1) }}"
+        class="card card-filtro {% if estado_filtro == 'Resuelto' %}seleccionada{% endif %}"
+        style="text-decoration: none; color: inherit;"
     >
 
         <h3>✅ Incidentes resueltos</h3>
@@ -221,7 +224,7 @@
             {{ incidentes_resueltos|miles }}
         </p>
 
-    </div>
+    </a>
 
 </div>
 
@@ -234,7 +237,7 @@
     type="text"
     id="buscadorIncidentes"
     class="buscador"
-    placeholder="🔎 Buscar por ID, entrega, vehículo, conductor, tipo, gravedad o estado..."
+    placeholder="🔎 Buscar por ID, entrega, patente, conductor, tipo, gravedad o estado..."
 >
 
 
@@ -280,47 +283,47 @@
             <tr>
 
                 <th data-columna="0">
-                    ID Incidente ↕
+                    ID Incidente <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="1">
-                    Entrega ↕
+                    Entrega <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="2">
-                    Fecha ↕
+                    Fecha <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="3">
-                    Vehículo ↕
+                    Patente <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="4">
-                    Conductor ↕
+                    Conductor <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="5">
-                    Tipo ↕
+                    Tipo <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="6">
-                    Gravedad ↕
+                    Gravedad <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="7">
-                    Descripción ↕
+                    Descripción <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="8">
-                    Tiempo perdido ↕
+                    Tiempo perdido <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="9">
-                    Costo estimado ↕
+                    Costo estimado <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="10">
-                    Estado ↕
+                    Estado <span class="orden">↕</span>
                 </th>
 
             </tr>
@@ -347,7 +350,7 @@
                 </td>
 
                 <td>
-                    {{ incidente.vehiculo_id }}
+                    {{ incidente.patente }}
                 </td>
 
                 <td>
@@ -371,11 +374,9 @@
                 </td>
 
                 <td>
-
                     ${{ "{:,.0f}".format(
                         incidente.costo_estimado
                     ).replace(",", ".") }}
-
                 </td>
 
                 <td>
@@ -401,7 +402,11 @@
 
     {% if pagina > 1 %}
 
-        <a href="{{ url_for('incidentes', pagina=pagina-1) }}">
+        <a href="{{ url_for(
+            'incidentes',
+            estado=estado_filtro,
+            pagina=pagina-1
+        ) }}">
             ←
         </a>
 
@@ -410,7 +415,11 @@
 
     {% if pagina > 3 %}
 
-        <a href="{{ url_for('incidentes', pagina=1) }}">
+        <a href="{{ url_for(
+            'incidentes',
+            estado=estado_filtro,
+            pagina=1
+        ) }}">
             1
         </a>
 
@@ -434,7 +443,11 @@
 
         {% else %}
 
-            <a href="{{ url_for('incidentes', pagina=numero) }}">
+            <a href="{{ url_for(
+                'incidentes',
+                estado=estado_filtro,
+                pagina=numero
+            ) }}">
                 {{ numero }}
             </a>
 
@@ -449,7 +462,11 @@
             ...
         </span>
 
-        <a href="{{ url_for('incidentes', pagina=total_paginas) }}">
+        <a href="{{ url_for(
+            'incidentes',
+            estado=estado_filtro,
+            pagina=total_paginas
+        ) }}">
             {{ total_paginas }}
         </a>
 
@@ -458,7 +475,11 @@
 
     {% if pagina < total_paginas %}
 
-        <a href="{{ url_for('incidentes', pagina=pagina+1) }}">
+        <a href="{{ url_for(
+            'incidentes',
+            estado=estado_filtro,
+            pagina=pagina+1
+        ) }}">
             →
         </a>
 
@@ -473,57 +494,32 @@
 
 <script>
 
-    const buscador =
-        document.getElementById("buscadorIncidentes");
+const buscador =
+    document.getElementById("buscadorIncidentes");
 
-    const filas =
-        document.querySelectorAll(
-            "#tablaIncidentes tbody tr"
-        );
-
-    const tarjetas =
-        document.querySelectorAll(".card-filtro");
+const filas =
+    document.querySelectorAll(
+        "#tablaIncidentes tbody tr"
+    );
 
 
-    /* =========================
-       FILTRO ACTUAL
-       ========================= */
+/* =========================
+   BUSCADOR
+   ========================= */
 
-    let filtroEstado = "Todos";
-
-
-    /* =========================
-       FUNCIÓN PARA FILTRAR
-       ========================= */
-
-    function aplicarFiltros() {
+buscador.addEventListener(
+    "input",
+    function() {
 
         const texto =
-            buscador.value.toLowerCase().trim();
+            this.value.toLowerCase().trim();
 
-
-        filas.forEach(function (fila) {
+        filas.forEach(function(fila) {
 
             const contenido =
                 fila.textContent.toLowerCase();
 
-            const estado =
-                fila.cells[10].textContent.trim();
-
-
-            const coincideTexto =
-                contenido.includes(texto);
-
-
-            const coincideEstado =
-                filtroEstado === "Todos" ||
-                estado === filtroEstado;
-
-
-            if (
-                coincideTexto &&
-                coincideEstado
-            ) {
+            if (contenido.includes(texto)) {
 
                 fila.style.display = "";
 
@@ -536,238 +532,197 @@
         });
 
     }
+);
 
 
-    /* =========================
-       BUSCADOR
-       ========================= */
+/* =========================
+   ORDENAMIENTO
+   ========================= */
 
-    buscador.addEventListener(
-        "keyup",
-        aplicarFiltros
+const encabezados =
+    document.querySelectorAll(
+        "#tablaIncidentes th"
     );
 
 
-    /* =========================
-       TARJETAS
-       ========================= */
+encabezados.forEach(function(encabezado) {
 
-    tarjetas.forEach(function (tarjeta) {
+    encabezado.addEventListener(
+        "click",
+        function() {
 
-        tarjeta.addEventListener(
-            "click",
-            function () {
-
-                filtroEstado =
-                    this.dataset.filtro;
-
-
-                /* Quitar selección */
-
-                tarjetas.forEach(function (card) {
-
-                    card.classList.remove(
-                        "seleccionada"
-                    );
-
-                });
-
-
-                /* Marcar tarjeta seleccionada */
-
-                this.classList.add(
-                    "seleccionada"
+            const columna =
+                parseInt(
+                    this.dataset.columna
                 );
 
 
-                /* Aplicar filtro */
+            const tabla =
+                document.getElementById(
+                    "tablaIncidentes"
+                );
 
-                aplicarFiltros();
+
+            const tbody =
+                tabla.querySelector("tbody");
+
+
+            const filasArray =
+                Array.from(
+                    tbody.querySelectorAll("tr")
+                );
+
+
+            const ordenActual =
+                this.dataset.orden === "asc"
+                    ? "desc"
+                    : "asc";
+
+
+            /* Reiniciar indicadores */
+
+            encabezados.forEach(function(th) {
+
+                th.dataset.orden = "";
+
+                const indicador =
+                    th.querySelector(".orden");
+
+                if (indicador) {
+                    indicador.textContent = "↕";
+                }
+
+            });
+
+
+            this.dataset.orden =
+                ordenActual;
+
+
+            const indicador =
+                this.querySelector(".orden");
+
+
+            if (indicador) {
+
+                indicador.textContent =
+                    ordenActual === "asc"
+                        ? "↑"
+                        : "↓";
 
             }
-        );
-
-    });
 
 
-    /* =========================
-       ORDENAR TABLA
-       ========================= */
+            /* Ordenar filas */
 
-    const encabezados =
-        document.querySelectorAll(
-            "#tablaIncidentes th"
-        );
+            filasArray.sort(function(a, b) {
 
+                let valorA =
+                    a.cells[columna]
+                        .textContent
+                        .trim();
 
-    encabezados.forEach(function (encabezado) {
-
-        encabezado.addEventListener(
-            "click",
-            function () {
-
-                const columna =
-                    parseInt(
-                        this.dataset.columna
-                    );
+                let valorB =
+                    b.cells[columna]
+                        .textContent
+                        .trim();
 
 
-                const tbody =
-                    document.querySelector(
-                        "#tablaIncidentes tbody"
-                    );
+                /* Columnas numéricas */
+
+                if (
+                    columna === 0 ||
+                    columna === 1 ||
+                    columna === 8 ||
+                    columna === 9
+                ) {
+
+                    valorA =
+                        parseFloat(
+                            valorA
+                                .replace("$", "")
+                                .replace(/\./g, "")
+                                .replace(",", ".")
+                        ) || 0;
 
 
-                const filasArray =
-                    Array.from(
-                        tbody.querySelectorAll("tr")
-                    );
+                    valorB =
+                        parseFloat(
+                            valorB
+                                .replace("$", "")
+                                .replace(/\./g, "")
+                                .replace(",", ".")
+                        ) || 0;
 
 
-                const direccionActual =
-                    this.dataset.direccion || "asc";
+                    return ordenActual === "asc"
+                        ? valorA - valorB
+                        : valorB - valorA;
+
+                }
 
 
-                const nuevaDireccion =
-                    direccionActual === "asc"
-                        ? "desc"
-                        : "asc";
+                /* Fecha */
+
+                if (columna === 2) {
+
+                    const fechaA =
+                        new Date(valorA);
+
+                    const fechaB =
+                        new Date(valorB);
 
 
-                encabezados.forEach(function (th) {
+                    return ordenActual === "asc"
+                        ? fechaA - fechaB
+                        : fechaB - fechaA;
 
-                    th.dataset.direccion = "";
-
-                    th.textContent =
-                        th.textContent
-                            .replace(" ↑", "")
-                            .replace(" ↓", "")
-                            .replace(" ↕", "");
-
-                    th.textContent += " ↕";
-
-                });
+                }
 
 
-                this.dataset.direccion =
-                    nuevaDireccion;
+                /* Texto */
+
+                valorA =
+                    valorA.toLowerCase();
+
+                valorB =
+                    valorB.toLowerCase();
 
 
-                this.textContent =
-                    this.textContent
-                        .replace(" ↕", "")
-                        .replace(" ↑", "")
-                        .replace(" ↓", "")
-                    +
-                    (
-                        nuevaDireccion === "asc"
-                            ? " ↑"
-                            : " ↓"
-                    );
+                if (valorA < valorB) {
+
+                    return ordenActual === "asc"
+                        ? -1
+                        : 1;
+
+                }
 
 
-                filasArray.sort(
-                    function (a, b) {
+                if (valorA > valorB) {
 
-                        let valorA =
-                            a.cells[columna]
-                                .textContent
-                                .trim();
+                    return ordenActual === "asc"
+                        ? 1
+                        : -1;
 
-                        let valorB =
-                            b.cells[columna]
-                                .textContent
-                                .trim();
+                }
 
 
-                        /*
-                         * Intentar ordenar números
-                         */
+                return 0;
 
-                        const numeroA =
-                            parseFloat(
-                                valorA
-                                    .replace(/\./g, "")
-                                    .replace(",", ".")
-                                    .replace("$", "")
-                            );
-
-                        const numeroB =
-                            parseFloat(
-                                valorB
-                                    .replace(/\./g, "")
-                                    .replace(",", ".")
-                                    .replace("$", "")
-                            );
+            });
 
 
-                        if (
-                            !isNaN(numeroA) &&
-                            !isNaN(numeroB)
-                        ) {
+            filasArray.forEach(function(fila) {
 
-                            return nuevaDireccion === "asc"
-                                ? numeroA - numeroB
-                                : numeroB - numeroA;
+                tbody.appendChild(fila);
 
-                        }
+            });
 
+        }
 
-                        /*
-                         * Ordenar texto
-                         */
+    );
 
-                        valorA =
-                            valorA.toLowerCase();
-
-                        valorB =
-                            valorB.toLowerCase();
-
-
-                        if (valorA < valorB) {
-
-                            return nuevaDireccion === "asc"
-                                ? -1
-                                : 1;
-
-                        }
-
-
-                        if (valorA > valorB) {
-
-                            return nuevaDireccion === "asc"
-                                ? 1
-                                : -1;
-
-                        }
-
-
-                        return 0;
-
-                    }
-                );
-
-
-                filasArray.forEach(
-                    function (fila) {
-
-                        tbody.appendChild(fila);
-
-                    }
-                );
-
-
-                /*
-                 * Volver a aplicar
-                 * los filtros
-                 */
-
-                aplicarFiltros();
-
-            }
-        );
-
-    });
+});
 
 </script>
 

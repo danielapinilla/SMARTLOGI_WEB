@@ -69,7 +69,10 @@
         font-weight: bold;
     }
 
-    /* Anchos de columnas */
+
+    /* =========================
+       ANCHOS DE COLUMNAS
+       ========================= */
 
     #tablaVehiculos th:nth-child(1),
     #tablaVehiculos td:nth-child(1) {
@@ -177,38 +180,68 @@
 
 <div class="cards">
 
-    <div class="card" data-estado="Todos">
+
+    <!-- TOTAL -->
+
+    <div
+        class="card {% if estado_filtro == 'Todos' %}activa{% endif %}"
+       data-url="{{ url_for('vehiculos', estado='...', pagina=1) }}"
+        onclick="window.location.href=this.dataset.url"
 
         <h3>🚚 Total vehículos</h3>
 
-        <p>{{ total_registros|miles }}</p>
+        <p>{{ total_vehiculos|miles }}</p>
 
     </div>
 
 
-    <div class="card" data-estado="Disponible">
+    <!-- DISPONIBLES -->
+
+    <div
+        class="card {% if estado_filtro == 'Disponible' %}activa{% endif %}"
+        data-url="{{ url_for('vehiculos', estado='Disponible', pagina=1) }}"
+        onclick="window.location.href=this.dataset.url"
+    >
 
         <h3>✅ Disponibles</h3>
 
-        <p>{{ estados_vehiculos.get("Disponible", 0)|miles }}</p>
+        <p>
+            {{ estados_vehiculos.get("Disponible", 0)|miles }}
+        </p>
 
     </div>
 
 
-    <div class="card" data-estado="En ruta">
+    <!-- EN RUTA -->
+
+    <div
+        class="card {% if estado_filtro == 'En ruta' %}activa{% endif %}"
+        data-url="{{ url_for('vehiculos', estado='En ruta', pagina=1) }}"
+        onclick="window.location.href=this.dataset.url"
+    >
 
         <h3>🛣️ En ruta</h3>
 
-        <p>{{ estados_vehiculos.get("En ruta", 0)|miles }}</p>
+        <p>
+            {{ estados_vehiculos.get("En ruta", 0)|miles }}
+        </p>
 
     </div>
 
 
-    <div class="card" data-estado="Mantención">
+    <!-- MANTENCIÓN -->
+
+    <div
+        class="card {% if estado_filtro == 'Mantención' %}activa{% endif %}"
+        data-url="{{ url_for('vehiculos', estado='Mantención', pagina=1) }}"
+        onclick="window.location.href=this.dataset.url"
+    >
 
         <h3>🔧 En mantención</h3>
 
-        <p>{{ estados_vehiculos.get("Mantención", 0)|miles }}</p>
+        <p>
+            {{ estados_vehiculos.get("Mantención", 0)|miles }}
+        </p>
 
     </div>
 
@@ -235,7 +268,19 @@
 
     Mostrando
 
-    <strong>{{ ((pagina - 1) * 50) + 1 }}</strong>
+    <strong>
+
+        {% if vehiculos|length > 0 %}
+
+            {{ ((pagina - 1) * 50) + 1 }}
+
+        {% else %}
+
+            0
+
+        {% endif %}
+
+    </strong>
 
     –
 
@@ -245,7 +290,9 @@
 
     de
 
-    <strong>{{ total_registros|miles }}</strong>
+    <strong>
+        {{ total_registros|miles }}
+    </strong>
 
     vehículos
 
@@ -265,48 +312,101 @@
             <tr>
 
                 <th data-columna="0">
+
                     ID Vehículo
-                    <span class="flecha">↕</span>
+
+                    <span class="flecha">
+                        ↕
+                    </span>
+
                 </th>
+
 
                 <th data-columna="1">
+
                     Patente
-                    <span class="flecha">↕</span>
+
+                    <span class="flecha">
+                        ↕
+                    </span>
+
                 </th>
+
 
                 <th data-columna="2">
+
                     Tipo
-                    <span class="flecha">↕</span>
+
+                    <span class="flecha">
+                        ↕
+                    </span>
+
                 </th>
+
 
                 <th data-columna="3">
+
                     Marca
-                    <span class="flecha">↕</span>
+
+                    <span class="flecha">
+                        ↕
+                    </span>
+
                 </th>
+
 
                 <th data-columna="4">
+
                     Modelo
-                    <span class="flecha">↕</span>
+
+                    <span class="flecha">
+                        ↕
+                    </span>
+
                 </th>
+
 
                 <th data-columna="5">
+
                     Año
-                    <span class="flecha">↕</span>
+
+                    <span class="flecha">
+                        ↕
+                    </span>
+
                 </th>
+
 
                 <th data-columna="6">
+
                     Capacidad (kg)
-                    <span class="flecha">↕</span>
+
+                    <span class="flecha">
+                        ↕
+                    </span>
+
                 </th>
+
 
                 <th data-columna="7">
+
                     Combustible
-                    <span class="flecha">↕</span>
+
+                    <span class="flecha">
+                        ↕
+                    </span>
+
                 </th>
 
+
                 <th data-columna="8">
+
                     Estado
-                    <span class="flecha">↕</span>
+
+                    <span class="flecha">
+                        ↕
+                    </span>
+
                 </th>
 
             </tr>
@@ -320,23 +420,41 @@
 
             <tr>
 
-                <td>{{ vehiculo.vehiculo_id }}</td>
+                <td>
+                    {{ vehiculo.vehiculo_id }}
+                </td>
 
-                <td>{{ vehiculo.patente }}</td>
+                <td>
+                    {{ vehiculo.patente }}
+                </td>
 
-                <td>{{ vehiculo.tipo_vehiculo }}</td>
+                <td>
+                    {{ vehiculo.tipo_vehiculo }}
+                </td>
 
-                <td>{{ vehiculo.marca }}</td>
+                <td>
+                    {{ vehiculo.marca }}
+                </td>
 
-                <td>{{ vehiculo.modelo }}</td>
+                <td>
+                    {{ vehiculo.modelo }}
+                </td>
 
-                <td>{{ vehiculo.anio }}</td>
+                <td>
+                    {{ vehiculo.anio }}
+                </td>
 
-                <td>{{ vehiculo.capacidad_kg }}</td>
+                <td>
+                    {{ vehiculo.capacidad_kg }}
+                </td>
 
-                <td>{{ vehiculo.combustible }}</td>
+                <td>
+                    {{ vehiculo.combustible }}
+                </td>
 
-                <td>{{ vehiculo.estado }}</td>
+                <td>
+                    {{ vehiculo.estado }}
+                </td>
 
             </tr>
 
@@ -355,9 +473,14 @@
 
 <div class="pagination">
 
+
     {% if pagina > 1 %}
 
-        <a href="{{ url_for('vehiculos', pagina=pagina-1) }}">
+        <a href="{{ url_for(
+            'vehiculos',
+            estado=estado_filtro,
+            pagina=pagina-1
+        ) }}">
             ←
         </a>
 
@@ -366,7 +489,11 @@
 
     {% if pagina > 3 %}
 
-        <a href="{{ url_for('vehiculos', pagina=1) }}">
+        <a href="{{ url_for(
+            'vehiculos',
+            estado=estado_filtro,
+            pagina=1
+        ) }}">
             1
         </a>
 
@@ -382,6 +509,7 @@
         [total_paginas+1, pagina+3]|min
     ) %}
 
+
         {% if numero == pagina %}
 
             <span class="pagina-actual">
@@ -390,11 +518,16 @@
 
         {% else %}
 
-            <a href="{{ url_for('vehiculos', pagina=numero) }}">
+            <a href="{{ url_for(
+                'vehiculos',
+                estado=estado_filtro,
+                pagina=numero
+            ) }}">
                 {{ numero }}
             </a>
 
         {% endif %}
+
 
     {% endfor %}
 
@@ -405,7 +538,11 @@
             ...
         </span>
 
-        <a href="{{ url_for('vehiculos', pagina=total_paginas) }}">
+        <a href="{{ url_for(
+            'vehiculos',
+            estado=estado_filtro,
+            pagina=total_paginas
+        ) }}">
             {{ total_paginas }}
         </a>
 
@@ -414,7 +551,11 @@
 
     {% if pagina < total_paginas %}
 
-        <a href="{{ url_for('vehiculos', pagina=pagina+1) }}">
+        <a href="{{ url_for(
+            'vehiculos',
+            estado=estado_filtro,
+            pagina=pagina+1
+        ) }}">
             →
         </a>
 
@@ -429,119 +570,58 @@
 
 <script>
 
+
+// =========================
+// BUSCADOR
+// =========================
+
 const buscador =
-    document.getElementById("buscadorVehiculos");
+    document.getElementById(
+        "buscadorVehiculos"
+    );
+
 
 const filas =
     document.querySelectorAll(
         "#tablaVehiculos tbody tr"
     );
 
-const tarjetas =
-    document.querySelectorAll(
-        ".card[data-estado]"
-    );
-
-
-// =========================
-// FILTRO GENERAL
-// =========================
-
-let estadoSeleccionado = "Todos";
-
-
-// =========================
-// FUNCIÓN PARA MOSTRAR FILAS
-// =========================
-
-function actualizarFilas() {
-
-    const texto =
-        buscador.value.toLowerCase().trim();
-
-
-    filas.forEach(function (fila) {
-
-        const contenido =
-            fila.textContent.toLowerCase();
-
-        const estado =
-            fila.children[8]
-                .textContent
-                .trim();
-
-
-        const coincideTexto =
-            contenido.includes(texto);
-
-
-        const coincideEstado =
-            estadoSeleccionado === "Todos" ||
-            estado === estadoSeleccionado;
-
-
-        if (
-            coincideTexto &&
-            coincideEstado
-        ) {
-
-            fila.style.display = "";
-
-        } else {
-
-            fila.style.display = "none";
-
-        }
-
-    });
-
-}
-
-
-// =========================
-// BUSCADOR
-// =========================
 
 buscador.addEventListener(
     "keyup",
-    actualizarFilas
-);
+    function () {
+
+        const texto =
+            buscador.value
+                .toLowerCase()
+                .trim();
 
 
-// =========================
-// FILTRO POR TARJETAS
-// =========================
+        filas.forEach(
+            function (fila) {
 
-tarjetas.forEach(function (tarjeta) {
-
-    tarjeta.addEventListener(
-        "click",
-        function () {
-
-            estadoSeleccionado =
-                this.dataset.estado;
+                const contenido =
+                    fila.textContent
+                        .toLowerCase();
 
 
-            tarjetas.forEach(
-                function (otraTarjeta) {
+                if (
+                    contenido.includes(texto)
+                ) {
 
-                    otraTarjeta.classList.remove(
-                        "activa"
-                    );
+                    fila.style.display = "";
+
+                } else {
+
+                    fila.style.display = "none";
 
                 }
-            );
 
+            }
+        );
 
-            this.classList.add("activa");
-
-
-            actualizarFilas();
-
-        }
-    );
-
-});
+    }
+);
 
 
 // =========================
@@ -555,6 +635,7 @@ const encabezados =
 
 
 let columnaOrdenada = null;
+
 let ordenAscendente = true;
 
 
@@ -685,7 +766,9 @@ encabezados.forEach(
                 );
 
 
-                // Actualizar flechas
+                // =========================
+                // ACTUALIZAR FLECHAS
+                // =========================
 
                 encabezados.forEach(
                     function (otroEncabezado) {
@@ -727,13 +810,6 @@ encabezados.forEach(
 
     }
 );
-
-
-// =========================
-// INICIO
-// =========================
-
-actualizarFilas();
 
 </script>
 

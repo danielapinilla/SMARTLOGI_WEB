@@ -59,6 +59,8 @@
     .card-filtro {
         cursor: pointer;
         transition: 0.2s;
+        text-decoration: none;
+        color: inherit;
     }
 
     .card-filtro:hover {
@@ -128,30 +130,49 @@
 
 <div class="cards">
 
-    <div class="card card-filtro activa" data-estado="">
+    <a
+        href="{{ url_for('conductores', estado='Todos', pagina=1) }}"
+        class="card card-filtro {% if estado_filtro == 'Todos' %}activa{% endif %}"
+    >
         <h3>👨‍✈️ Total conductores</h3>
-        <p>{{ total_registros|miles }}</p>
-    </div>
+        <p>{{ total_conductores|miles }}</p>
+    </a>
 
-    <div class="card card-filtro" data-estado="Activo">
+
+    <a
+        href="{{ url_for('conductores', estado='Activo', pagina=1) }}"
+        class="card card-filtro {% if estado_filtro == 'Activo' %}activa{% endif %}"
+    >
         <h3>🟢 Activos</h3>
         <p>{{ estados_conductores.get("Activo", 0)|miles }}</p>
-    </div>
+    </a>
 
-    <div class="card card-filtro" data-estado="Inactivo">
+
+    <a
+        href="{{ url_for('conductores', estado='Inactivo', pagina=1) }}"
+        class="card card-filtro {% if estado_filtro == 'Inactivo' %}activa{% endif %}"
+    >
         <h3>🔴 Inactivos</h3>
         <p>{{ estados_conductores.get("Inactivo", 0)|miles }}</p>
-    </div>
+    </a>
 
-    <div class="card card-filtro" data-estado="Licencia médica">
+
+    <a
+        href="{{ url_for('conductores', estado='Licencia médica', pagina=1) }}"
+        class="card card-filtro {% if estado_filtro == 'Licencia médica' %}activa{% endif %}"
+    >
         <h3>🩺 Licencia médica</h3>
         <p>{{ estados_conductores.get("Licencia médica", 0)|miles }}</p>
-    </div>
+    </a>
 
-    <div class="card card-filtro" data-estado="Vacaciones">
+
+    <a
+        href="{{ url_for('conductores', estado='Vacaciones', pagina=1) }}"
+        class="card card-filtro {% if estado_filtro == 'Vacaciones' %}activa{% endif %}"
+    >
         <h3>🌴 Vacaciones</h3>
         <p>{{ estados_conductores.get("Vacaciones", 0)|miles }}</p>
-    </div>
+    </a>
 
 </div>
 
@@ -173,13 +194,29 @@
      ========================= -->
 
 <div class="info-conductores">
+
     Mostrando
-    <strong>{{ ((pagina - 1) * 50) + 1 }}</strong>
+
+    <strong>
+        {% if total_registros > 0 %}
+            {{ ((pagina - 1) * 50) + 1 }}
+        {% else %}
+            0
+        {% endif %}
+    </strong>
+
     –
-    <strong>{{ ((pagina - 1) * 50) + conductores|length }}</strong>
+
+    <strong>
+        {{ ((pagina - 1) * 50) + conductores|length }}
+    </strong>
+
     de
-    <strong>{{ total_registros }}</strong>
+
+    <strong>{{ total_registros|miles }}</strong>
+
     conductores
+
 </div>
 
 
@@ -192,34 +229,43 @@
     <table id="tablaConductores">
 
         <thead>
+
             <tr>
 
                 <th data-columna="0">
-                    ID Conductor <span class="orden">↕</span>
+                    ID Conductor
+                    <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="1">
-                    Nombre <span class="orden">↕</span>
+                    Nombre
+                    <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="2">
-                    Fecha ingreso <span class="orden">↕</span>
+                    Fecha ingreso
+                    <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="3">
-                    Experiencia (años) <span class="orden">↕</span>
+                    Experiencia (años)
+                    <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="4">
-                    Licencia <span class="orden">↕</span>
+                    Licencia
+                    <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="5">
-                    Estado <span class="orden">↕</span>
+                    Estado
+                    <span class="orden">↕</span>
                 </th>
 
             </tr>
+
         </thead>
+
 
         <tbody>
 
@@ -258,7 +304,13 @@
 
     {% if pagina > 1 %}
 
-        <a href="{{ url_for('conductores', pagina=pagina-1) }}">
+        <a
+            href="{{ url_for(
+                'conductores',
+                estado=estado_filtro,
+                pagina=pagina-1
+            ) }}"
+        >
             ←
         </a>
 
@@ -267,7 +319,13 @@
 
     {% if pagina > 3 %}
 
-        <a href="{{ url_for('conductores', pagina=1) }}">
+        <a
+            href="{{ url_for(
+                'conductores',
+                estado=estado_filtro,
+                pagina=1
+            ) }}"
+        >
             1
         </a>
 
@@ -289,7 +347,13 @@
 
         {% else %}
 
-            <a href="{{ url_for('conductores', pagina=numero) }}">
+            <a
+                href="{{ url_for(
+                    'conductores',
+                    estado=estado_filtro,
+                    pagina=numero
+                ) }}"
+            >
                 {{ numero }}
             </a>
 
@@ -302,7 +366,13 @@
 
         <span class="puntos">...</span>
 
-        <a href="{{ url_for('conductores', pagina=total_paginas) }}">
+        <a
+            href="{{ url_for(
+                'conductores',
+                estado=estado_filtro,
+                pagina=total_paginas
+            ) }}"
+        >
             {{ total_paginas }}
         </a>
 
@@ -311,7 +381,13 @@
 
     {% if pagina < total_paginas %}
 
-        <a href="{{ url_for('conductores', pagina=pagina+1) }}">
+        <a
+            href="{{ url_for(
+                'conductores',
+                estado=estado_filtro,
+                pagina=pagina+1
+            ) }}"
+        >
             →
         </a>
 
@@ -326,43 +402,32 @@
 
 <script>
 
-const buscador = document.getElementById("buscadorConductores");
+const buscador = document.getElementById(
+    "buscadorConductores"
+);
 
 const filas = document.querySelectorAll(
     "#tablaConductores tbody tr"
 );
 
-const tarjetas = document.querySelectorAll(
-    ".card-filtro"
-);
-
-let estadoSeleccionado = "";
-
 
 /* =========================
-   FILTRO + BUSCADOR
+   BUSCADOR
    ========================= */
 
-function actualizarTabla() {
+buscador.addEventListener("input", function() {
 
-    const texto = buscador.value.toLowerCase().trim();
+    const texto =
+        buscador.value
+        .toLowerCase()
+        .trim();
 
     filas.forEach(function(fila) {
 
         const contenido =
             fila.textContent.toLowerCase();
 
-        const estado =
-            fila.cells[5].textContent.trim();
-
-        const coincideTexto =
-            contenido.includes(texto);
-
-        const coincideEstado =
-            estadoSeleccionado === "" ||
-            estado === estadoSeleccionado;
-
-        if (coincideTexto && coincideEstado) {
+        if (contenido.includes(texto)) {
 
             fila.style.display = "";
 
@@ -373,42 +438,6 @@ function actualizarTabla() {
         }
 
     });
-}
-
-
-/* =========================
-   BUSCADOR
-   ========================= */
-
-buscador.addEventListener("input", function() {
-
-    actualizarTabla();
-
-});
-
-
-/* =========================
-   FILTRO POR TARJETAS
-   ========================= */
-
-tarjetas.forEach(function(tarjeta) {
-
-    tarjeta.addEventListener("click", function() {
-
-        tarjetas.forEach(function(t) {
-
-            t.classList.remove("activa");
-
-        });
-
-        this.classList.add("activa");
-
-        estadoSeleccionado =
-            this.dataset.estado;
-
-        actualizarTabla();
-
-    });
 
 });
 
@@ -417,161 +446,202 @@ tarjetas.forEach(function(tarjeta) {
    ORDENAMIENTO
    ========================= */
 
-const encabezados = document.querySelectorAll(
-    "#tablaConductores th"
-);
+const encabezados =
+    document.querySelectorAll(
+        "#tablaConductores th"
+    );
+
 
 encabezados.forEach(function(encabezado) {
 
-    encabezado.addEventListener("click", function() {
+    encabezado.addEventListener(
+        "click",
+        function() {
 
-        const columna =
-            parseInt(this.dataset.columna);
+            const columna =
+                parseInt(
+                    this.dataset.columna
+                );
 
-        const tabla =
-            document.getElementById("tablaConductores");
+            const tabla =
+                document.getElementById(
+                    "tablaConductores"
+                );
 
-        const tbody =
-            tabla.querySelector("tbody");
+            const tbody =
+                tabla.querySelector("tbody");
 
-        const filasArray =
-            Array.from(
-                tbody.querySelectorAll("tr")
+            const filasArray =
+                Array.from(
+                    tbody.querySelectorAll("tr")
+                );
+
+
+            const ordenActual =
+                this.dataset.orden === "asc"
+                    ? "desc"
+                    : "asc";
+
+
+            encabezados.forEach(
+                function(th) {
+
+                    th.dataset.orden = "";
+
+                    const indicador =
+                        th.querySelector(".orden");
+
+                    if (indicador) {
+
+                        indicador.textContent =
+                            "↕";
+
+                    }
+
+                }
             );
 
-        const ordenActual =
-            this.dataset.orden === "asc"
-                ? "desc"
-                : "asc";
 
+            this.dataset.orden =
+                ordenActual;
 
-        encabezados.forEach(function(th) {
-
-            th.dataset.orden = "";
 
             const indicador =
-                th.querySelector(".orden");
+                this.querySelector(".orden");
+
 
             if (indicador) {
-                indicador.textContent = "↕";
+
+                indicador.textContent =
+                    ordenActual === "asc"
+                        ? "↑"
+                        : "↓";
+
             }
 
-        });
+
+            filasArray.sort(
+                function(a, b) {
+
+                    let valorA =
+                        a.cells[columna]
+                        .textContent
+                        .trim();
+
+                    let valorB =
+                        b.cells[columna]
+                        .textContent
+                        .trim();
 
 
-        this.dataset.orden =
-            ordenActual;
+                    /* ID y experiencia */
+
+                    if (
+                        columna === 0 ||
+                        columna === 3
+                    ) {
+
+                        valorA =
+                            parseFloat(
+                                valorA.replace(
+                                    ",",
+                                    "."
+                                )
+                            ) || 0;
+
+                        valorB =
+                            parseFloat(
+                                valorB.replace(
+                                    ",",
+                                    "."
+                                )
+                            ) || 0;
 
 
-        const indicador =
-            this.querySelector(".orden");
+                        return ordenActual === "asc"
+                            ? valorA - valorB
+                            : valorB - valorA;
 
-        if (indicador) {
+                    }
 
-            indicador.textContent =
-                ordenActual === "asc"
-                    ? "↑"
-                    : "↓";
+
+                    /* Fecha */
+
+                    if (columna === 2) {
+
+                        const partesA =
+                            valorA.split("/");
+
+                        const partesB =
+                            valorB.split("/");
+
+
+                        const fechaA =
+                            new Date(
+                                partesA[2],
+                                partesA[1] - 1,
+                                partesA[0]
+                            );
+
+
+                        const fechaB =
+                            new Date(
+                                partesB[2],
+                                partesB[1] - 1,
+                                partesB[0]
+                            );
+
+
+                        return ordenActual === "asc"
+                            ? fechaA - fechaB
+                            : fechaB - fechaA;
+
+                    }
+
+
+                    /* Texto */
+
+                    valorA =
+                        valorA.toLowerCase();
+
+                    valorB =
+                        valorB.toLowerCase();
+
+
+                    if (valorA < valorB) {
+
+                        return ordenActual === "asc"
+                            ? -1
+                            : 1;
+
+                    }
+
+
+                    if (valorA > valorB) {
+
+                        return ordenActual === "asc"
+                            ? 1
+                            : -1;
+
+                    }
+
+
+                    return 0;
+
+                }
+            );
+
+
+            filasArray.forEach(
+                function(fila) {
+
+                    tbody.appendChild(fila);
+
+                }
+            );
 
         }
-
-
-        filasArray.sort(function(a, b) {
-
-            let valorA =
-                a.cells[columna]
-                .textContent
-                .trim();
-
-            let valorB =
-                b.cells[columna]
-                .textContent
-                .trim();
-
-
-            /* ID y experiencia */
-            if (
-                columna === 0 ||
-                columna === 3
-            ) {
-
-                valorA =
-                    parseFloat(
-                        valorA.replace(",", ".")
-                    ) || 0;
-
-                valorB =
-                    parseFloat(
-                        valorB.replace(",", ".")
-                    ) || 0;
-
-                return ordenActual === "asc"
-                    ? valorA - valorB
-                    : valorB - valorA;
-            }
-
-
-            /* Fecha */
-            if (columna === 2) {
-
-                const partesA =
-                    valorA.split("/");
-
-                const partesB =
-                    valorB.split("/");
-
-                const fechaA =
-                    new Date(
-                        partesA[2],
-                        partesA[1] - 1,
-                        partesA[0]
-                    );
-
-                const fechaB =
-                    new Date(
-                        partesB[2],
-                        partesB[1] - 1,
-                        partesB[0]
-                    );
-
-                return ordenActual === "asc"
-                    ? fechaA - fechaB
-                    : fechaB - fechaA;
-            }
-
-
-            /* Texto */
-            valorA =
-                valorA.toLowerCase();
-
-            valorB =
-                valorB.toLowerCase();
-
-
-            if (valorA < valorB) {
-                return ordenActual === "asc"
-                    ? -1
-                    : 1;
-            }
-
-            if (valorA > valorB) {
-                return ordenActual === "asc"
-                    ? 1
-                    : -1;
-            }
-
-            return 0;
-
-        });
-
-
-        filasArray.forEach(function(fila) {
-
-            tbody.appendChild(fila);
-
-        });
-
-    });
+    );
 
 });
 

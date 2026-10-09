@@ -88,7 +88,10 @@
         text-overflow: ellipsis;
     }
 
-    /* Anchos de columnas */
+
+    /* =========================
+       ANCHOS DE COLUMNAS
+       ========================= */
 
     #tablaPedidos th:nth-child(1),
     #tablaPedidos td:nth-child(1) {
@@ -221,45 +224,51 @@
     <!-- TOTAL -->
 
     <div
-        class="card tarjeta-pedido activa"
+        class="card tarjeta-pedido {% if estado_filtro == 'Todos' %}activa{% endif %}"
         data-estado="Todos"
-        onclick="filtrarPorEstado('Todos', this)"
+        onclick="filtrarPorEstado('Todos')"
     >
+
         <h3>📦 Total pedidos</h3>
 
         <p>
-            {{ total_registros|miles }}
+            {{ total_pedidos|miles }}
         </p>
+
     </div>
 
 
     <!-- ENTREGADOS -->
 
     <div
-        class="card tarjeta-pedido"
+        class="card tarjeta-pedido {% if estado_filtro == 'Entregado' %}activa{% endif %}"
         data-estado="Entregado"
-        onclick="filtrarPorEstado('Entregado', this)"
+        onclick="filtrarPorEstado('Entregado')"
     >
+
         <h3>✅ Entregados</h3>
 
         <p>
             {{ estados_pedidos.get("Entregado", 0)|miles }}
         </p>
+
     </div>
 
 
     <!-- EN RUTA -->
 
     <div
-        class="card tarjeta-pedido"
+        class="card tarjeta-pedido {% if estado_filtro == 'En ruta' %}activa{% endif %}"
         data-estado="En ruta"
-        onclick="filtrarPorEstado('En ruta', this)"
+        onclick="filtrarPorEstado('En ruta')"
     >
+
         <h3>🚚 En ruta</h3>
 
         <p>
             {{ estados_pedidos.get("En ruta", 0)|miles }}
         </p>
+
     </div>
 
 </div>
@@ -298,7 +307,11 @@
         Mostrando
 
         <strong>
-            {{ ((pagina - 1) * 50) + 1 }}
+            {% if pedidos|length > 0 %}
+                {{ ((pagina - 1) * 50) + 1 }}
+            {% else %}
+                0
+            {% endif %}
         </strong>
 
         –
@@ -314,6 +327,11 @@
         </strong>
 
         pedidos
+
+        {% if estado_filtro != "Todos" %}
+            — filtrados por
+            <strong>{{ estado_filtro }}</strong>
+        {% endif %}
 
     </div>
 
@@ -455,7 +473,11 @@
 
         {% if pagina > 1 %}
 
-            <a href="{{ url_for('pedidos', pagina=pagina-1) }}">
+            <a href="{{ url_for(
+                'pedidos',
+                pagina=pagina-1,
+                estado=estado_filtro
+            ) }}">
                 ←
             </a>
 
@@ -466,7 +488,11 @@
 
         {% if pagina > 3 %}
 
-            <a href="{{ url_for('pedidos', pagina=1) }}">
+            <a href="{{ url_for(
+                'pedidos',
+                pagina=1,
+                estado=estado_filtro
+            ) }}">
                 1
             </a>
 
@@ -492,7 +518,11 @@
 
             {% else %}
 
-                <a href="{{ url_for('pedidos', pagina=numero) }}">
+                <a href="{{ url_for(
+                    'pedidos',
+                    pagina=numero,
+                    estado=estado_filtro
+                ) }}">
                     {{ numero }}
                 </a>
 
@@ -509,7 +539,11 @@
                 ...
             </span>
 
-            <a href="{{ url_for('pedidos', pagina=total_paginas) }}">
+            <a href="{{ url_for(
+                'pedidos',
+                pagina=total_paginas,
+                estado=estado_filtro
+            ) }}">
                 {{ total_paginas }}
             </a>
 
@@ -520,7 +554,11 @@
 
         {% if pagina < total_paginas %}
 
-            <a href="{{ url_for('pedidos', pagina=pagina+1) }}">
+            <a href="{{ url_for(
+                'pedidos',
+                pagina=pagina+1,
+                estado=estado_filtro
+            ) }}">
                 →
             </a>
 
@@ -537,17 +575,19 @@
    VARIABLES
    ===================================================== */
 
-const buscador = document.getElementById("buscador");
+const buscador =
+    document.getElementById("buscador");
 
-const tabla = document.getElementById("tablaPedidos");
+const tabla =
+    document.getElementById("tablaPedidos");
 
-const cuerpoTabla = tabla.querySelector("tbody");
+const cuerpoTabla =
+    tabla.querySelector("tbody");
 
-const filas = Array.from(
-    cuerpoTabla.querySelectorAll("tr")
-);
-
-let estadoSeleccionado = "Todos";
+const filas =
+    Array.from(
+        cuerpoTabla.querySelectorAll("tr")
+    );
 
 let columnaOrdenada = -1;
 
@@ -558,68 +598,51 @@ let ordenAscendente = true;
    BUSCADOR
    ===================================================== */
 
-buscador.addEventListener("input", aplicarFiltros);
+buscador.addEventListener(
+    "input",
+    aplicarBusqueda
+);
 
 
 /* =====================================================
    FILTRO POR TARJETAS
    ===================================================== */
 
-function filtrarPorEstado(estado, tarjeta) {
+function filtrarPorEstado(estado) {
 
-    estadoSeleccionado = estado;
+    const url =
+        "{{ url_for('pedidos') }}" +
+        "?estado=" +
+        encodeURIComponent(estado) +
+        "&pagina=1";
 
+    window.location.href = url;
 
-    /* Quitar selección de todas las tarjetas */
-
-    document
-        .querySelectorAll(".tarjeta-pedido")
-        .forEach(function(elemento) {
-
-            elemento.classList.remove("activa");
-
-        });
-
-
-    /* Activar tarjeta seleccionada */
-
-    tarjeta.classList.add("activa");
-
-
-    aplicarFiltros();
 }
 
 
 /* =====================================================
-   APLICAR FILTROS
+   APLICAR BUSCADOR
    ===================================================== */
 
-function aplicarFiltros() {
+function aplicarBusqueda() {
 
     const texto =
-        buscador.value.toLowerCase().trim();
+        buscador.value
+        .toLowerCase()
+        .trim();
 
 
     filas.forEach(function(fila) {
 
         const contenido =
-            fila.textContent.toLowerCase();
+            fila.textContent
+            .toLowerCase();
 
 
-        const estado =
-            fila.cells[9].textContent.trim();
-
-
-        const coincideTexto =
-            contenido.includes(texto);
-
-
-        const coincideEstado =
-            estadoSeleccionado === "Todos" ||
-            estado === estadoSeleccionado;
-
-
-        if (coincideTexto && coincideEstado) {
+        if (
+            contenido.includes(texto)
+        ) {
 
             fila.style.display = "";
 
@@ -639,7 +662,9 @@ function aplicarFiltros() {
    ===================================================== */
 
 document
-    .querySelectorAll("#tablaPedidos th")
+    .querySelectorAll(
+        "#tablaPedidos th"
+    )
     .forEach(function(encabezado) {
 
         encabezado.addEventListener(
@@ -652,16 +677,20 @@ document
                     );
 
 
-                if (columnaOrdenada === columna) {
+                if (
+                    columnaOrdenada === columna
+                ) {
 
                     ordenAscendente =
                         !ordenAscendente;
 
                 } else {
 
-                    columnaOrdenada = columna;
+                    columnaOrdenada =
+                        columna;
 
-                    ordenAscendente = true;
+                    ordenAscendente =
+                        true;
 
                 }
 
@@ -686,7 +715,10 @@ document
    ORDENAR TABLA
    ===================================================== */
 
-function ordenarTabla(columna, ascendente) {
+function ordenarTabla(
+    columna,
+    ascendente
+) {
 
     filas.sort(function(a, b) {
 
@@ -694,6 +726,7 @@ function ordenarTabla(columna, ascendente) {
             a.cells[columna]
             .textContent
             .trim();
+
 
         let valorB =
             b.cells[columna]
@@ -710,6 +743,7 @@ function ordenarTabla(columna, ascendente) {
                 .replace("$", "")
                 .replace(",", ".")
             );
+
 
         const numeroB =
             parseFloat(
@@ -738,12 +772,16 @@ function ordenarTabla(columna, ascendente) {
             ? valorA.localeCompare(
                 valorB,
                 "es",
-                { sensitivity: "base" }
+                {
+                    sensitivity: "base"
+                }
             )
             : valorB.localeCompare(
                 valorA,
                 "es",
-                { sensitivity: "base" }
+                {
+                    sensitivity: "base"
+                }
             );
 
     });
@@ -758,7 +796,7 @@ function ordenarTabla(columna, ascendente) {
     });
 
 
-    aplicarFiltros();
+    aplicarBusqueda();
 
 }
 
@@ -767,7 +805,9 @@ function ordenarTabla(columna, ascendente) {
    ACTUALIZAR FLECHAS
    ===================================================== */
 
-function actualizarFlechas(encabezado) {
+function actualizarFlechas(
+    encabezado
+) {
 
     document
         .querySelectorAll(
@@ -781,7 +821,9 @@ function actualizarFlechas(encabezado) {
 
 
     const flecha =
-        encabezado.querySelector(".flecha");
+        encabezado.querySelector(
+            ".flecha"
+        );
 
 
     if (ordenAscendente) {

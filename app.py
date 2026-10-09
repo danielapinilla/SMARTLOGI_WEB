@@ -1,11 +1,21 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import pandas as pd
+from dotenv import load_dotenv
+from openai import OpenAI
+
+# Cargar la clave privada desde .env
+load_dotenv()
 
 app = Flask(__name__)
+
+# Conexión con OpenAI
+cliente_openai = OpenAI()
+
 
 @app.template_filter("miles")
 def formato_miles(valor):
     return f"{valor:,}".replace(",", ".")
+
 
 # =========================
 # CARGAR DATOS
@@ -18,6 +28,8 @@ rutas_df = pd.read_csv("data/dim_rutas_100.csv")
 mantenciones_df = pd.read_csv("data/fact_mantenciones_1000.csv")
 combustible_df = pd.read_csv("data/fact_combustible_3000.csv")
 incidentes_df = pd.read_csv("data/fact_incidentes_500.csv")
+entregas_df = pd.read_csv("data/fact_entregas.csv")
+
 
 
 # =========================
@@ -27,154 +39,362 @@ incidentes_df = pd.read_csv("data/fact_incidentes_500.csv")
 @app.route("/")
 def inicio():
 
-    # Datos de pedidos
+    # Indicadores generales
     total_pedidos = len(pedidos_df)
+    total_vehiculos = len(vehiculos_df)
+    total_conductores = len(conductores_df)
+    total_rutas = len(rutas_df)
+
+    # Estados de pedidos
     estados_pedidos = pedidos_df["estado_pedido"].value_counts().to_dict()
     estados_pedidos_labels = list(estados_pedidos.keys())
     estados_pedidos_valores = list(estados_pedidos.values())
 
-    # Datos de vehículos
-    total_vehiculos = len(vehiculos_df)
+    # Estados de vehículos
     estados_vehiculos = vehiculos_df["estado"].value_counts().to_dict()
-
     estados_vehiculos_labels = list(estados_vehiculos.keys())
     estados_vehiculos_valores = list(estados_vehiculos.values())
 
-    total_conductores = len(conductores_df)
-    total_rutas = len(rutas_df)
+    # Vehículos disponibles
+    vehiculos_disponibles = int(
+        (vehiculos_df["estado"] == "Disponible").sum()
+    )
 
+    # Conductores activos
+    conductores_activos = int(
+        (conductores_df["estado"] == "Activo").sum()
+    )
+
+    # Entregas realizadas a tiempo
+    entregas = entregas_df.copy()
+
+    entregas["a_tiempo"] = (
+        entregas["entrega_a_tiempo"]
+        .astype(str)
+        .str.strip()
+        .str.lower()
+        .isin(["true", "1", "si", "sí", "yes", "a tiempo"])
+    )
+
+    total_entregas = len(entregas)
+
+    entregas_a_tiempo = int(entregas["a_tiempo"].sum())
+
+    porcentaje_a_tiempo = (
+        round(entregas_a_tiempo / total_entregas * 100, 1)
+        if total_entregas > 0 else 0
+    )
+
+    # Costos operacionales
+    gasto_combustible = float(combustible_df["costo_total"].sum())
+    costo_mantenciones = float(mantenciones_df["costo"].sum())
+    costo_incidentes = float(incidentes_df["costo_estimado"].sum())
+
+    costo_operacional = (
+        gasto_combustible
+        + costo_mantenciones
+        + costo_incidentes
+    )
 
     return render_template(
         "dashboard.html",
         total_pedidos=total_pedidos,
-        estados_pedidos=estados_pedidos,
         total_vehiculos=total_vehiculos,
-        estados_vehiculos=estados_vehiculos,
         total_conductores=total_conductores,
         total_rutas=total_rutas,
+        estados_pedidos=estados_pedidos,
+        estados_vehiculos=estados_vehiculos,
         estados_pedidos_labels=estados_pedidos_labels,
         estados_pedidos_valores=estados_pedidos_valores,
         estados_vehiculos_labels=estados_vehiculos_labels,
         estados_vehiculos_valores=estados_vehiculos_valores,
+        vehiculos_disponibles=vehiculos_disponibles,
+        conductores_activos=conductores_activos,
+        total_entregas=total_entregas,
+        entregas_a_tiempo=entregas_a_tiempo,
+        porcentaje_a_tiempo=porcentaje_a_tiempo,
+        gasto_combustible=gasto_combustible,
+        costo_mantenciones=costo_mantenciones,
+        costo_incidentes=costo_incidentes,
+        costo_operacional=costo_operacional,
     )
 
 
 # =========================
-# MÓDULOS
+# PEDIDOS
 # =========================
 
 @app.route("/pedidos")
 def pedidos():
 
     # =========================
-    # CONFIGURACIÓN PAGINACIÓN
+    # FILTRO POR ESTADO
     # =========================
 
-    pagina = request.args.get("pagina", 1, type=int)
+    estado_filtro = request.args.get(
+        "estado",
+        "Todos"
+    )
+
+    estados_validos = [
+        "Todos",
+        "Entregado",
+        "En ruta"
+    ]
+
+    if estado_filtro not in estados_validos:
+        estado_filtro = "Todos"
+
+
+    # =========================
+    # APLICAR FILTRO
+    # =========================
+
+    if estado_filtro == "Todos":
+
+        pedidos_filtrados = pedidos_df.copy()
+
+    else:
+
+        pedidos_filtrados = pedidos_df[
+            pedidos_df["estado_pedido"]
+            == estado_filtro
+        ].copy()
+
+
+    # =========================
+    # PAGINACIÓN
+    # =========================
+
+    pagina = request.args.get(
+        "pagina",
+        1,
+        type=int
+    )
 
     registros_por_pagina = 50
 
-    total_registros = len(pedidos_df)
+    total_registros = len(
+        pedidos_filtrados
+    )
 
     total_paginas = (
-        total_registros + registros_por_pagina - 1
+        total_registros
+        + registros_por_pagina
+        - 1
     ) // registros_por_pagina
 
-    # Evitar páginas inválidas
+
+    if total_paginas == 0:
+        total_paginas = 1
+
+
     if pagina < 1:
         pagina = 1
+
 
     if pagina > total_paginas:
         pagina = total_paginas
 
-    inicio = (pagina - 1) * registros_por_pagina
-    fin = inicio + registros_por_pagina
+
+    inicio = (
+        pagina - 1
+    ) * registros_por_pagina
+
+    fin = (
+        inicio
+        + registros_por_pagina
+    )
+
 
     # =========================
     # OBTENER PEDIDOS
     # =========================
 
-    datos_pedidos = pedidos_df.iloc[inicio:fin].copy()
+    datos_pedidos = (
+        pedidos_filtrados
+        .iloc[inicio:fin]
+        .copy()
+    )
+
 
     # =========================
     # FORMATO DE FECHA
     # =========================
 
-    datos_pedidos["fecha_pedido_id"] = (
-        datos_pedidos["fecha_pedido_id"]
+    datos_pedidos[
+        "fecha_pedido_id"
+    ] = (
+        datos_pedidos[
+            "fecha_pedido_id"
+        ]
         .astype(str)
         .apply(
-            lambda fecha: f"{fecha[6:8]}/{fecha[4:6]}/{fecha[0:4]}"
+            lambda fecha:
+                f"{fecha[6:8]}/"
+                f"{fecha[4:6]}/"
+                f"{fecha[0:4]}"
         )
     )
 
+
     # =========================
-    # ESTADOS DE PEDIDOS
+    # ESTADOS
     # =========================
 
     estados_pedidos = (
-        pedidos_df["estado_pedido"]
+        pedidos_df[
+            "estado_pedido"
+        ]
         .value_counts()
         .to_dict()
     )
+
 
     # =========================
     # CONVERTIR A REGISTROS
     # =========================
 
-    datos_pedidos = datos_pedidos.to_dict(
-        orient="records"
+    datos_pedidos = (
+        datos_pedidos
+        .to_dict(
+            orient="records"
+        )
     )
 
+
     # =========================
-    # ENVIAR DATOS A LA PÁGINA
+    # ENVIAR DATOS
     # =========================
 
     return render_template(
+
         "pedidos.html",
+
         pedidos=datos_pedidos,
+
         pagina=pagina,
-        total_paginas=total_paginas,
-        total_registros=total_registros,
-        estados_pedidos=estados_pedidos
+
+        total_paginas=
+            total_paginas,
+
+        total_registros=
+            total_registros,
+
+        estados_pedidos=
+            estados_pedidos,
+
+        estado_filtro=
+            estado_filtro,
+
+        total_pedidos=
+            len(pedidos_df)
     )
 
+
+# =========================
+# VEHÍCULOS
+# =========================
 
 @app.route("/vehiculos")
 def vehiculos():
 
     # =========================
-    # CONFIGURACIÓN PAGINACIÓN
+    # FILTRO POR ESTADO
     # =========================
 
-    pagina = request.args.get("pagina", 1, type=int)
+    estado_filtro = request.args.get(
+        "estado",
+        "Todos"
+    )
+
+    estados_validos = [
+        "Todos",
+        "Disponible",
+        "En ruta",
+        "Mantención"
+    ]
+
+    if estado_filtro not in estados_validos:
+        estado_filtro = "Todos"
+
+
+    # =========================
+    # APLICAR FILTRO
+    # =========================
+
+    if estado_filtro == "Todos":
+
+        vehiculos_filtrados = (
+            vehiculos_df.copy()
+        )
+
+    else:
+
+        vehiculos_filtrados = (
+            vehiculos_df[
+                vehiculos_df["estado"]
+                == estado_filtro
+            ]
+            .copy()
+        )
+
+
+    # =========================
+    # PAGINACIÓN
+    # =========================
+
+    pagina = request.args.get(
+        "pagina",
+        1,
+        type=int
+    )
 
     registros_por_pagina = 50
 
-    total_registros = len(vehiculos_df)
+    total_registros = len(
+        vehiculos_filtrados
+    )
 
     total_paginas = (
-        total_registros + registros_por_pagina - 1
+        total_registros
+        + registros_por_pagina
+        - 1
     ) // registros_por_pagina
+
+
+    if total_paginas == 0:
+        total_paginas = 1
+
 
     if pagina < 1:
         pagina = 1
 
+
     if pagina > total_paginas:
         pagina = total_paginas
 
-    inicio = (pagina - 1) * registros_por_pagina
-    fin = inicio + registros_por_pagina
+
+    inicio = (
+        pagina - 1
+    ) * registros_por_pagina
+
+    fin = (
+        inicio
+        + registros_por_pagina
+    )
+
 
     # =========================
     # OBTENER VEHÍCULOS
     # =========================
 
-    datos_vehiculos = vehiculos_df.iloc[inicio:fin].copy()
-
-    datos_vehiculos = datos_vehiculos.to_dict(
-        orient="records"
+    datos_vehiculos = (
+        vehiculos_filtrados
+        .iloc[inicio:fin]
+        .copy()
     )
+
 
     # =========================
     # ESTADOS DE VEHÍCULOS
@@ -186,21 +406,84 @@ def vehiculos():
         .to_dict()
     )
 
+
+    # =========================
+    # CONVERTIR A REGISTROS
+    # =========================
+
+    datos_vehiculos = (
+        datos_vehiculos
+        .to_dict(
+            orient="records"
+        )
+    )
+
+
     # =========================
     # ENVIAR DATOS
     # =========================
 
     return render_template(
+
         "vehiculos.html",
+
         vehiculos=datos_vehiculos,
+
         pagina=pagina,
-        total_paginas=total_paginas,
-        total_registros=total_registros,
-        estados_vehiculos=estados_vehiculos
+
+        total_paginas=
+            total_paginas,
+
+        total_registros=
+            total_registros,
+
+        estados_vehiculos=
+            estados_vehiculos,
+
+        estado_filtro=
+            estado_filtro,
+
+        total_vehiculos=
+            len(vehiculos_df)
     )
+
+
+# =========================
+# CONDUCTORES
+# =========================
 
 @app.route("/conductores")
 def conductores():
+
+    # =========================
+    # FILTRO POR ESTADO
+    # =========================
+
+    estado_filtro = request.args.get("estado", "Todos")
+
+    estados_validos = [
+        "Todos",
+        "Activo",
+        "Inactivo",
+        "Licencia médica",
+        "Vacaciones"
+    ]
+
+    if estado_filtro not in estados_validos:
+        estado_filtro = "Todos"
+
+
+    # =========================
+    # APLICAR FILTRO
+    # =========================
+
+    if estado_filtro == "Todos":
+        conductores_filtrados = conductores_df.copy()
+    else:
+        conductores_filtrados = conductores_df[
+            conductores_df["estado"] == estado_filtro
+        ].copy()
+
 
     # =========================
     # CONFIGURACIÓN PAGINACIÓN
@@ -210,11 +493,17 @@ def conductores():
 
     registros_por_pagina = 50
 
-    total_registros = len(conductores_df)
+    total_registros = len(conductores_filtrados)
 
     total_paginas = (
         total_registros + registros_por_pagina - 1
     ) // registros_por_pagina
+
+
+    # Evitar páginas inválidas
+
+    if total_paginas == 0:
+        total_paginas = 1
 
     if pagina < 1:
         pagina = 1
@@ -222,18 +511,24 @@ def conductores():
     if pagina > total_paginas:
         pagina = total_paginas
 
+
     inicio = (pagina - 1) * registros_por_pagina
     fin = inicio + registros_por_pagina
+
 
     # =========================
     # OBTENER CONDUCTORES
     # =========================
 
-    datos_conductores = conductores_df.iloc[inicio:fin].copy()
+    datos_conductores = conductores_filtrados.iloc[
+        inicio:fin
+    ].copy()
+
 
     datos_conductores = datos_conductores.to_dict(
         orient="records"
     )
+
 
     # =========================
     # ESTADOS
@@ -245,8 +540,9 @@ def conductores():
         .to_dict()
     )
 
+
     # =========================
-    # ENVIAR DATOS A LA PÁGINA
+    # ENVIAR DATOS
     # =========================
 
     return render_template(
@@ -255,49 +551,105 @@ def conductores():
         pagina=pagina,
         total_paginas=total_paginas,
         total_registros=total_registros,
-        estados_conductores=estados_conductores
+        total_conductores=len(conductores_df),
+        estados_conductores=estados_conductores,
+        estado_filtro=estado_filtro
     )
 
+
+# =========================
+# RUTAS
+# =========================
 
 @app.route("/rutas")
 def rutas():
 
     # =========================
-    # CONFIGURACIÓN PAGINACIÓN
+    # FILTRO POR ESTADO
     # =========================
 
-    pagina = request.args.get("pagina", 1, type=int)
+    estado_filtro = request.args.get("estado", "Todos")
+
+    estados_validos = [
+        "Todos",
+        "Activa",
+        "Restringida",
+        "Suspendida"
+    ]
+
+    if estado_filtro not in estados_validos:
+        estado_filtro = "Todos"
+
+
+    # =========================
+    # APLICAR FILTRO
+    # =========================
+
+    if estado_filtro == "Todos":
+
+        rutas_filtradas = rutas_df.copy()
+
+    else:
+
+        rutas_filtradas = rutas_df[
+            rutas_df["estado"] == estado_filtro
+        ].copy()
+
+
+    # =========================
+    # PAGINACIÓN
+    # =========================
+
+    pagina = request.args.get(
+        "pagina",
+        1,
+        type=int
+    )
 
     registros_por_pagina = 50
 
-    total_registros = len(rutas_df)
+    total_registros = len(rutas_filtradas)
 
     total_paginas = (
         total_registros + registros_por_pagina - 1
     ) // registros_por_pagina
 
-    # Evitar páginas inválidas
+
+    if total_paginas == 0:
+        total_paginas = 1
+
+
     if pagina < 1:
         pagina = 1
+
 
     if pagina > total_paginas:
         pagina = total_paginas
 
-    inicio = (pagina - 1) * registros_por_pagina
+
+    inicio = (
+        pagina - 1
+    ) * registros_por_pagina
+
     fin = inicio + registros_por_pagina
 
+
     # =========================
-    # OBTENER RUTAS
+    # DATOS DE LA PÁGINA
     # =========================
 
-    datos_rutas = rutas_df.iloc[inicio:fin].copy()
+    datos_rutas = rutas_filtradas.iloc[
+        inicio:fin
+    ].copy()
+
 
     datos_rutas = datos_rutas.to_dict(
         orient="records"
     )
 
+
     # =========================
-    # ESTADOS DE RUTAS
+    # ESTADOS
     # =========================
 
     estados_rutas = (
@@ -305,6 +657,7 @@ def rutas():
         .value_counts()
         .to_dict()
     )
+
 
     # =========================
     # ENVIAR DATOS
@@ -316,88 +669,83 @@ def rutas():
         pagina=pagina,
         total_paginas=total_paginas,
         total_registros=total_registros,
-        estados_rutas=estados_rutas
+        total_rutas=len(rutas_df),
+        estados_rutas=estados_rutas,
+        estado_filtro=estado_filtro
     )
 
+# =========================
+# MANTENCIONES
+# =========================
 
 @app.route("/mantenciones")
 def mantenciones():
 
-    # =========================
-    # CONFIGURACIÓN PAGINACIÓN
-    # =========================
-
     pagina = request.args.get("pagina", 1, type=int)
 
-    registros_por_pagina = 50
+    por_pagina = 50
 
     total_registros = len(mantenciones_df)
 
     total_paginas = (
-        total_registros + registros_por_pagina - 1
-    ) // registros_por_pagina
+        (total_registros + por_pagina - 1)
+        // por_pagina
+    )
 
-    # Evitar páginas inválidas
     if pagina < 1:
         pagina = 1
 
     if pagina > total_paginas:
         pagina = total_paginas
 
-    inicio = (pagina - 1) * registros_por_pagina
-    fin = inicio + registros_por_pagina
+    inicio = (pagina - 1) * por_pagina
+    fin = inicio + por_pagina
 
-    # =========================
-    # OBTENER MANTENCIONES
-    # =========================
-
+    # Datos de la página actual
     datos_mantenciones = mantenciones_df.iloc[inicio:fin].copy()
 
-    # =========================
-    # FORMATO DE FECHA
-    # =========================
-
+    # Formatear fecha
     datos_mantenciones["fecha_mantencion_id"] = (
         datos_mantenciones["fecha_mantencion_id"]
         .astype(str)
-        .apply(
-            lambda fecha: (
-                f"{fecha[6:8]}/{fecha[4:6]}/{fecha[0:4]}"
-                if len(fecha) == 8
-                else fecha
-            )
-        )
+        .str.replace(r"(\d{4})(\d{2})(\d{2})", r"\1-\2-\3", regex=True)
     )
 
-    # =========================
-    # CONVERTIR A REGISTROS
-    # =========================
-
-    datos_mantenciones = datos_mantenciones.to_dict(
-        orient="records"
+    # Relacionar vehiculo_id con patente
+    mapa_patentes = (
+        vehiculos_df
+        .set_index("vehiculo_id")["patente"]
+        .to_dict()
     )
 
-    # =========================
-    # DATOS RESUMEN
-    # =========================
+    datos_mantenciones["patente"] = (
+        datos_mantenciones["vehiculo_id"]
+        .map(mapa_patentes)
+    )
 
+    # Convertir NaN a texto vacío por seguridad
+    datos_mantenciones["patente"] = (
+        datos_mantenciones["patente"]
+        .fillna("")
+    )
+
+    mantenciones = datos_mantenciones.to_dict("records")
+
+    # Vehículos únicos con mantenciones
     vehiculos_mantencion = (
         mantenciones_df["vehiculo_id"]
         .nunique()
     )
 
+    # Costo total
     costo_total = (
         mantenciones_df["costo"]
         .sum()
     )
 
-    # =========================
-    # ENVIAR DATOS
-    # =========================
-
     return render_template(
         "mantenciones.html",
-        mantenciones=datos_mantenciones,
+        mantenciones=mantenciones,
         pagina=pagina,
         total_paginas=total_paginas,
         total_registros=total_registros,
@@ -406,154 +754,223 @@ def mantenciones():
     )
 
 
+# =========================
+# COMBUSTIBLE
+# =========================
+
 @app.route("/combustible")
 def combustible():
 
-    # =========================
-    # CONFIGURACIÓN PAGINACIÓN
-    # =========================
-
     pagina = request.args.get("pagina", 1, type=int)
 
-    registros_por_pagina = 50
+    por_pagina = 50
 
     total_registros = len(combustible_df)
 
     total_paginas = (
-        total_registros + registros_por_pagina - 1
-    ) // registros_por_pagina
+        (total_registros + por_pagina - 1)
+        // por_pagina
+    )
 
-    # Evitar páginas inválidas
     if pagina < 1:
         pagina = 1
 
     if pagina > total_paginas:
         pagina = total_paginas
 
-    inicio = (pagina - 1) * registros_por_pagina
-    fin = inicio + registros_por_pagina
+    inicio = (pagina - 1) * por_pagina
+    fin = inicio + por_pagina
 
-    # =========================
-    # OBTENER REGISTROS
-    # =========================
-
+    # Datos de la página actual
     datos_combustible = combustible_df.iloc[inicio:fin].copy()
 
-    # =========================
-    # FORMATO DE FECHA
-    # =========================
-
+    # Formatear fecha
     datos_combustible["fecha_id"] = (
         datos_combustible["fecha_id"]
         .astype(str)
-        .apply(
-            lambda fecha: (
-                f"{fecha[6:8]}/{fecha[4:6]}/{fecha[0:4]}"
-                if len(fecha) == 8
-                else fecha
-            )
+        .str.replace(
+            r"(\d{4})(\d{2})(\d{2})",
+            r"\1-\2-\3",
+            regex=True
         )
     )
 
-    # =========================
-    # CONVERTIR A REGISTROS
-    # =========================
-
-    datos_combustible = datos_combustible.to_dict(
-        orient="records"
+    # Relacionar vehiculo_id con patente
+    mapa_patentes = (
+        vehiculos_df
+        .set_index("vehiculo_id")["patente"]
+        .to_dict()
     )
 
-    # =========================
-    # DATOS RESUMEN
-    # =========================
+    datos_combustible["patente"] = (
+        datos_combustible["vehiculo_id"]
+        .map(mapa_patentes)
+    )
 
+    # Seguridad por si algún vehículo no tiene coincidencia
+    datos_combustible["patente"] = (
+        datos_combustible["patente"]
+        .fillna("")
+    )
+
+    combustible = datos_combustible.to_dict("records")
+
+    # Vehículos registrados
     vehiculos_registrados = (
         combustible_df["vehiculo_id"]
         .nunique()
     )
 
+    # Gasto total
     gasto_total = (
         combustible_df["costo_total"]
         .sum()
     )
 
-    litros_totales = (
-        combustible_df["litros_cargados"]
-        .sum()
-    )
-
-    # =========================
-    # ENVIAR DATOS
-    # =========================
-
     return render_template(
         "combustible.html",
-        combustible=datos_combustible,
+        combustible=combustible,
         pagina=pagina,
         total_paginas=total_paginas,
         total_registros=total_registros,
         vehiculos_registrados=vehiculos_registrados,
-        gasto_total=gasto_total,
-        litros_totales=litros_totales
+        gasto_total=gasto_total
     )
 
+# =========================
+# INCIDENTES
+# =========================
 
 @app.route("/incidentes")
 def incidentes():
 
-    # =========================
-    # CONFIGURACIÓN PAGINACIÓN
-    # =========================
-
     pagina = request.args.get("pagina", 1, type=int)
 
-    registros_por_pagina = 50
+    estado_filtro = request.args.get("estado", "Todos")
 
-    total_registros = len(incidentes_df)
+    estados_validos = [
+        "Todos",
+        "Abierto",
+        "Resuelto"
+    ]
 
-    total_paginas = (
-        total_registros + registros_por_pagina - 1
-    ) // registros_por_pagina
+    if estado_filtro not in estados_validos:
+        estado_filtro = "Todos"
 
-    # Evitar páginas inválidas
+    por_pagina = 50
+
+    # Crear una copia para trabajar con el estado
+    incidentes_base = incidentes_df.copy()
+
+    # Convertir resuelto a estado visible
+    incidentes_base["estado_incidente"] = (
+        incidentes_base["resuelto"]
+        .astype(str)
+        .str.lower()
+        .map({
+            "true": "Resuelto",
+            "1": "Resuelto",
+            "si": "Resuelto",
+            "sí": "Resuelto",
+            "false": "Abierto",
+            "0": "Abierto",
+            "no": "Abierto"
+        })
+        .fillna("Abierto")
+    )
+
+    # Contadores generales
+    incidentes_abiertos = (
+        incidentes_base["estado_incidente"]
+        .eq("Abierto")
+        .sum()
+    )
+
+    incidentes_resueltos = (
+        incidentes_base["estado_incidente"]
+        .eq("Resuelto")
+        .sum()
+    )
+
+    # Aplicar filtro de tarjeta
+    if estado_filtro != "Todos":
+
+        incidentes_filtrados = incidentes_base[
+            incidentes_base["estado_incidente"] == estado_filtro
+        ].copy()
+
+    else:
+
+        incidentes_filtrados = incidentes_base.copy()
+
+    # Total según filtro
+    total_registros = len(incidentes_filtrados)
+
+    # Paginación
+    total_paginas = max(
+        1,
+        (total_registros + por_pagina - 1) // por_pagina
+    )
+
     if pagina < 1:
         pagina = 1
 
     if pagina > total_paginas:
         pagina = total_paginas
 
-    inicio = (pagina - 1) * registros_por_pagina
-    fin = inicio + registros_por_pagina
+    inicio = (pagina - 1) * por_pagina
+    fin = inicio + por_pagina
 
-    # =========================
-    # COPIAR DATOS
-    # =========================
+    datos_incidentes = incidentes_filtrados.iloc[inicio:fin].copy()
 
-    datos_incidentes = incidentes_df.iloc[inicio:fin].copy()
-
-    # =========================
-    # FORMATO DE FECHA
-    # =========================
-
+    # Formatear fecha
     datos_incidentes["fecha_incidente_id"] = (
         datos_incidentes["fecha_incidente_id"]
         .astype(str)
-        .apply(
-            lambda fecha: (
-                f"{fecha[6:8]}/{fecha[4:6]}/{fecha[0:4]}"
-                if len(fecha) == 8
-                else fecha
-            )
+        .str.replace(
+            r"(\d{4})(\d{2})(\d{2})",
+            r"\1-\2-\3",
+            regex=True
         )
     )
 
+    # Relacionar vehiculo_id con patente
+    mapa_patentes = (
+        vehiculos_df
+        .set_index("vehiculo_id")["patente"]
+        .to_dict()
+    )
+
+    datos_incidentes["patente"] = (
+        datos_incidentes["vehiculo_id"]
+        .map(mapa_patentes)
+        .fillna("")
+    )
+
+    incidentes = datos_incidentes.to_dict("records")
+
+    return render_template(
+        "incidentes.html",
+        incidentes=incidentes,
+        pagina=pagina,
+        total_paginas=total_paginas,
+        total_registros=total_registros,
+        incidentes_abiertos=incidentes_abiertos,
+        incidentes_resueltos=incidentes_resueltos,
+        estado_filtro=estado_filtro
+    )
+
     # =========================
-    # FORMATO DE ESTADO
+    # CONVERTIR ESTADO
     # =========================
 
     def convertir_resuelto(valor):
 
-        texto = str(valor).strip().lower()
+        texto = (
+            str(valor)
+            .strip()
+            .lower()
+        )
 
         if texto in [
             "true",
@@ -564,60 +981,81 @@ def incidentes():
             "resuelto",
             "cerrado"
         ]:
+
             return "Resuelto"
 
         return "Abierto"
 
-    datos_incidentes["estado_incidente"] = (
-        datos_incidentes["resuelto"]
-        .apply(convertir_resuelto)
+
+    datos_incidentes[
+        "estado_incidente"
+    ] = (
+        datos_incidentes[
+            "resuelto"
+        ]
+        .apply(
+            convertir_resuelto
+        )
     )
 
-    # =========================
-    # CONVERTIR A REGISTROS
-    # =========================
 
-    datos_incidentes = datos_incidentes.to_dict(
-        orient="records"
+    datos_incidentes = (
+        datos_incidentes
+        .to_dict(
+            orient="records"
+        )
     )
 
-    # =========================
-    # RESUMEN
-    # =========================
 
-    estados = incidentes_df["resuelto"].apply(
-        convertir_resuelto
+    estados = (
+        incidentes_df["resuelto"]
+        .apply(
+            convertir_resuelto
+        )
     )
+
 
     incidentes_resueltos = (
         estados == "Resuelto"
     ).sum()
 
+
     incidentes_abiertos = (
         estados == "Abierto"
     ).sum()
 
-    # =========================
-    # COSTO TOTAL
-    # =========================
 
-    costo_total = incidentes_df[
-        "costo_estimado"
-    ].sum()
+    costo_total = (
+        incidentes_df[
+            "costo_estimado"
+        ]
+        .sum()
+    )
 
-    # =========================
-    # ENVIAR DATOS
-    # =========================
 
     return render_template(
+
         "incidentes.html",
-        incidentes=datos_incidentes,
+
+        incidentes=
+            datos_incidentes,
+
         pagina=pagina,
-        total_paginas=total_paginas,
-        total_registros=total_registros,
-        incidentes_resueltos=incidentes_resueltos,
-        incidentes_abiertos=incidentes_abiertos,
-        costo_total=costo_total
+
+        total_paginas=
+            total_paginas,
+
+        total_registros=
+            total_registros,
+
+        incidentes_resueltos=
+            incidentes_resueltos,
+
+        incidentes_abiertos=
+            incidentes_abiertos,
+
+        costo_total=
+            costo_total
     )
 
 
@@ -626,4 +1064,9 @@ def incidentes():
 # =========================
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+
+    app.run(
+        host="0.0.0.0",
+        port=5000,
+        debug=True
+    )

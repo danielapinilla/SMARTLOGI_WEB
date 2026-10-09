@@ -57,9 +57,12 @@
     }
 
     /* Tarjetas */
+
     .card-filtro {
         cursor: pointer;
         transition: 0.2s;
+        text-decoration: none;
+        color: inherit;
     }
 
     .card-filtro:hover {
@@ -71,6 +74,7 @@
     }
 
     /* Tabla */
+
     #tablaRutas {
         width: 100%;
         table-layout: fixed;
@@ -146,27 +150,43 @@
 
 <div class="cards">
 
-    <div class="card card-filtro activa" data-estado="">
+    <a
+        href="{{ url_for('rutas', estado='Todos', pagina=1) }}"
+        class="card card-filtro {% if estado_filtro == 'Todos' %}activa{% endif %}"
+    >
         <h3>🗺️ Total rutas</h3>
-        <p>{{ total_registros|miles }}</p>
-    </div>
+        <p>{{ total_rutas|miles }}</p>
+    </a>
 
-    <div class="card card-filtro" data-estado="Activa">
+
+    <a
+        href="{{ url_for('rutas', estado='Activa', pagina=1) }}"
+        class="card card-filtro {% if estado_filtro == 'Activa' %}activa{% endif %}"
+    >
         <h3>🟢 Activas</h3>
         <p>{{ estados_rutas.get("Activa", 0)|miles }}</p>
-    </div>
+    </a>
 
-    <div class="card card-filtro" data-estado="Restringida">
+
+    <a
+        href="{{ url_for('rutas', estado='Restringida', pagina=1) }}"
+        class="card card-filtro {% if estado_filtro == 'Restringida' %}activa{% endif %}"
+    >
         <h3>🟡 Restringidas</h3>
         <p>{{ estados_rutas.get("Restringida", 0)|miles }}</p>
-    </div>
+    </a>
 
-    <div class="card card-filtro" data-estado="Suspendida">
+
+    <a
+        href="{{ url_for('rutas', estado='Suspendida', pagina=1) }}"
+        class="card card-filtro {% if estado_filtro == 'Suspendida' %}activa{% endif %}"
+    >
         <h3>🔴 Suspendidas</h3>
         <p>{{ estados_rutas.get("Suspendida", 0)|miles }}</p>
-    </div>
+    </a>
 
 </div>
+
 
 <!-- =========================
      BUSCADOR
@@ -187,11 +207,25 @@
 <div class="info-rutas">
 
     Mostrando
-    <strong>{{ ((pagina - 1) * 50) + 1 }}</strong>
+
+    <strong>
+        {% if total_registros > 0 %}
+            {{ ((pagina - 1) * 50) + 1 }}
+        {% else %}
+            0
+        {% endif %}
+    </strong>
+
     –
-    <strong>{{ ((pagina - 1) * 50) + rutas|length }}</strong>
+
+    <strong>
+        {{ ((pagina - 1) * 50) + rutas|length }}
+    </strong>
+
     de
-    <strong>{{ total_registros }}</strong>
+
+    <strong>{{ total_registros|miles }}</strong>
+
     rutas
 
 </div>
@@ -210,43 +244,53 @@
             <tr>
 
                 <th data-columna="0">
-                    ID Ruta <span class="orden">↕</span>
+                    ID Ruta
+                    <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="1">
-                    Nombre ruta <span class="orden">↕</span>
+                    Nombre ruta
+                    <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="2">
-                    Origen <span class="orden">↕</span>
+                    Origen
+                    <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="3">
-                    Destino <span class="orden">↕</span>
+                    Destino
+                    <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="4">
-                    Distancia (km) <span class="orden">↕</span>
+                    Distancia (km)
+                    <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="5">
-                    Tiempo estimado (min) <span class="orden">↕</span>
+                    Tiempo estimado (min)
+                    <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="6">
-                    Tráfico habitual <span class="orden">↕</span>
+                    Tráfico habitual
+                    <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="7">
-                    Tipo de ruta <span class="orden">↕</span>
+                    Tipo de ruta
+                    <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="8">
-                    Peajes <span class="orden">↕</span>
+                    Peajes
+                    <span class="orden">↕</span>
                 </th>
 
                 <th data-columna="9">
-                    Estado <span class="orden">↕</span>
+                    Estado
+                    <span class="orden">↕</span>
                 </th>
 
             </tr>
@@ -299,7 +343,13 @@
 
     {% if pagina > 1 %}
 
-        <a href="{{ url_for('rutas', pagina=pagina-1) }}">
+        <a
+            href="{{ url_for(
+                'rutas',
+                estado=estado_filtro,
+                pagina=pagina-1
+            ) }}"
+        >
             ←
         </a>
 
@@ -308,7 +358,13 @@
 
     {% if pagina > 3 %}
 
-        <a href="{{ url_for('rutas', pagina=1) }}">
+        <a
+            href="{{ url_for(
+                'rutas',
+                estado=estado_filtro,
+                pagina=1
+            ) }}"
+        >
             1
         </a>
 
@@ -332,7 +388,13 @@
 
         {% else %}
 
-            <a href="{{ url_for('rutas', pagina=numero) }}">
+            <a
+                href="{{ url_for(
+                    'rutas',
+                    estado=estado_filtro,
+                    pagina=numero
+                ) }}"
+            >
                 {{ numero }}
             </a>
 
@@ -347,7 +409,13 @@
             ...
         </span>
 
-        <a href="{{ url_for('rutas', pagina=total_paginas) }}">
+        <a
+            href="{{ url_for(
+                'rutas',
+                estado=estado_filtro,
+                pagina=total_paginas
+            ) }}"
+        >
             {{ total_paginas }}
         </a>
 
@@ -356,7 +424,13 @@
 
     {% if pagina < total_paginas %}
 
-        <a href="{{ url_for('rutas', pagina=pagina+1) }}">
+        <a
+            href="{{ url_for(
+                'rutas',
+                estado=estado_filtro,
+                pagina=pagina+1
+            ) }}"
+        >
             →
         </a>
 
@@ -371,240 +445,227 @@
 
 <script>
 
-const buscador = document.getElementById("buscadorRutas");
+const buscador =
+    document.getElementById("buscadorRutas");
 
-const filas = document.querySelectorAll(
-    "#tablaRutas tbody tr"
-);
-
-const tarjetas = document.querySelectorAll(
-    ".card-filtro"
-);
-
-let estadoSeleccionado = "";
-
-
-/* =========================
-   FILTRO + BUSCADOR
-   ========================= */
-
-function actualizarTabla() {
-
-    const texto =
-        buscador.value.toLowerCase().trim();
-
-    filas.forEach(function(fila) {
-
-        const contenido =
-            fila.textContent.toLowerCase();
-
-        const estado =
-            fila.cells[9].textContent.trim();
-
-        const coincideTexto =
-            contenido.includes(texto);
-
-        const coincideEstado =
-            estadoSeleccionado === "" ||
-            estado === estadoSeleccionado;
-
-        if (coincideTexto && coincideEstado) {
-
-            fila.style.display = "";
-
-        } else {
-
-            fila.style.display = "none";
-
-        }
-
-    });
-
-}
+const filas =
+    document.querySelectorAll(
+        "#tablaRutas tbody tr"
+    );
 
 
 /* =========================
    BUSCADOR
    ========================= */
 
-buscador.addEventListener("input", function() {
+buscador.addEventListener(
+    "input",
+    function() {
 
-    actualizarTabla();
+        const texto =
+            buscador.value
+            .toLowerCase()
+            .trim();
 
-});
+
+        filas.forEach(function(fila) {
+
+            const contenido =
+                fila.textContent.toLowerCase();
 
 
-/* =========================
-   FILTRO POR TARJETAS
-   ========================= */
+            if (contenido.includes(texto)) {
 
-tarjetas.forEach(function(tarjeta) {
+                fila.style.display = "";
 
-    tarjeta.addEventListener("click", function() {
+            } else {
 
-        tarjetas.forEach(function(t) {
+                fila.style.display = "none";
 
-            t.classList.remove("activa");
+            }
 
         });
 
-        this.classList.add("activa");
-
-        estadoSeleccionado =
-            this.dataset.estado;
-
-        actualizarTabla();
-
-    });
-
-});
+    }
+);
 
 
 /* =========================
    ORDENAMIENTO
    ========================= */
 
-const encabezados = document.querySelectorAll(
-    "#tablaRutas th"
-);
+const encabezados =
+    document.querySelectorAll(
+        "#tablaRutas th"
+    );
+
 
 encabezados.forEach(function(encabezado) {
 
-    encabezado.addEventListener("click", function() {
+    encabezado.addEventListener(
+        "click",
+        function() {
 
-        const columna =
-            parseInt(this.dataset.columna);
+            const columna =
+                parseInt(
+                    this.dataset.columna
+                );
 
-        const tabla =
-            document.getElementById("tablaRutas");
 
-        const tbody =
-            tabla.querySelector("tbody");
+            const tabla =
+                document.getElementById(
+                    "tablaRutas"
+                );
 
-        const filasArray =
-            Array.from(
-                tbody.querySelectorAll("tr")
+
+            const tbody =
+                tabla.querySelector("tbody");
+
+
+            const filasArray =
+                Array.from(
+                    tbody.querySelectorAll("tr")
+                );
+
+
+            const ordenActual =
+                this.dataset.orden === "asc"
+                    ? "desc"
+                    : "asc";
+
+
+            encabezados.forEach(
+                function(th) {
+
+                    th.dataset.orden = "";
+
+                    const indicador =
+                        th.querySelector(".orden");
+
+                    if (indicador) {
+
+                        indicador.textContent =
+                            "↕";
+
+                    }
+
+                }
             );
 
-        const ordenActual =
-            this.dataset.orden === "asc"
-                ? "desc"
-                : "asc";
 
+            this.dataset.orden =
+                ordenActual;
 
-        /* Reiniciar indicadores */
-
-        encabezados.forEach(function(th) {
-
-            th.dataset.orden = "";
 
             const indicador =
-                th.querySelector(".orden");
+                this.querySelector(".orden");
+
 
             if (indicador) {
-                indicador.textContent = "↕";
+
+                indicador.textContent =
+                    ordenActual === "asc"
+                        ? "↑"
+                        : "↓";
+
             }
 
-        });
+
+            /* Ordenar filas */
+
+            filasArray.sort(
+                function(a, b) {
+
+                    let valorA =
+                        a.cells[columna]
+                        .textContent
+                        .trim();
 
 
-        this.dataset.orden =
-            ordenActual;
+                    let valorB =
+                        b.cells[columna]
+                        .textContent
+                        .trim();
 
 
-        const indicador =
-            this.querySelector(".orden");
+                    /* Columnas numéricas */
 
-        if (indicador) {
+                    if (
+                        columna === 0 ||
+                        columna === 4 ||
+                        columna === 5 ||
+                        columna === 8
+                    ) {
 
-            indicador.textContent =
-                ordenActual === "asc"
-                    ? "↑"
-                    : "↓";
+                        valorA =
+                            parseFloat(
+                                valorA.replace(
+                                    ",",
+                                    "."
+                                )
+                            ) || 0;
+
+
+                        valorB =
+                            parseFloat(
+                                valorB.replace(
+                                    ",",
+                                    "."
+                                )
+                            ) || 0;
+
+
+                        return ordenActual === "asc"
+                            ? valorA - valorB
+                            : valorB - valorA;
+
+                    }
+
+
+                    /* Columnas de texto */
+
+                    valorA =
+                        valorA.toLowerCase();
+
+
+                    valorB =
+                        valorB.toLowerCase();
+
+
+                    if (valorA < valorB) {
+
+                        return ordenActual === "asc"
+                            ? -1
+                            : 1;
+
+                    }
+
+
+                    if (valorA > valorB) {
+
+                        return ordenActual === "asc"
+                            ? 1
+                            : -1;
+
+                    }
+
+
+                    return 0;
+
+                }
+            );
+
+
+            filasArray.forEach(
+                function(fila) {
+
+                    tbody.appendChild(fila);
+
+                }
+            );
 
         }
-
-
-        /* Ordenar filas */
-
-        filasArray.sort(function(a, b) {
-
-            let valorA =
-                a.cells[columna]
-                .textContent
-                .trim();
-
-            let valorB =
-                b.cells[columna]
-                .textContent
-                .trim();
-
-
-            /* Columnas numéricas */
-
-            if (
-                columna === 0 ||
-                columna === 4 ||
-                columna === 5 ||
-                columna === 8
-            ) {
-
-                valorA =
-                    parseFloat(
-                        valorA.replace(",", ".")
-                    ) || 0;
-
-                valorB =
-                    parseFloat(
-                        valorB.replace(",", ".")
-                    ) || 0;
-
-                return ordenActual === "asc"
-                    ? valorA - valorB
-                    : valorB - valorA;
-
-            }
-
-
-            /* Columnas de texto */
-
-            valorA =
-                valorA.toLowerCase();
-
-            valorB =
-                valorB.toLowerCase();
-
-
-            if (valorA < valorB) {
-
-                return ordenActual === "asc"
-                    ? -1
-                    : 1;
-
-            }
-
-
-            if (valorA > valorB) {
-
-                return ordenActual === "asc"
-                    ? 1
-                    : -1;
-
-            }
-
-
-            return 0;
-
-        });
-
-
-        filasArray.forEach(function(fila) {
-
-            tbody.appendChild(fila);
-
-        });
-
-    });
+    );
 
 });
 

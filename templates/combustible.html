@@ -159,7 +159,7 @@
     type="text"
     id="buscadorCombustible"
     class="buscador"
-    placeholder="🔎 Buscar por ID, vehículo, fecha, combustible o estación..."
+    placeholder="🔎 Buscar por ID, patente, fecha, combustible o estación..."
 >
 
 
@@ -241,7 +241,7 @@
 
                 <td>{{ registro.combustible_id }}</td>
 
-                <td>{{ registro.vehiculo_id }}</td>
+                <td>{{ registro.patente }}</td>
 
                 <td>{{ registro.fecha_id }}</td>
 
@@ -479,7 +479,6 @@ encabezados.forEach(function(encabezado) {
 
             if (
                 columna === 0 ||
-                columna === 1 ||
                 columna === 4 ||
                 columna === 5 ||
                 columna === 6 ||
