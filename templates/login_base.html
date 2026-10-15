@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SMARTLOGIC | Panel del administrador{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+{% from "iconos.html" import icono, logo %}
+
+<body>
+    <div class="login">
+
+        <!-- =========================
+             PANEL DE MARCA
+             ========================= -->
+
+        <section class="login-marca">
+
+            {{ logo() }}
+
+            <div class="login-texto">
+                <p class="login-eyebrow">TU FLOTA, EN ORDEN</p>
+
+                <h1>Cada entrega,<br>bajo control.</h1>
+
+                <p>Pedidos, vehículos, conductores y costos. Todo tu sistema logístico en un mismo lugar.</p>
+
+                <div class="login-pasos">
+                    <div><b>01</b><span>Pedidos al día</span></div>
+                    <div><b>02</b><span>Flota en ruta</span></div>
+                    <div><b>03</b><span>Costos claros</span></div>
+                </div>
+            </div>
+
+            <p class="login-pie">SMARTLOGIC · GESTIÓN DE FLOTA</p>
+
+        </section>
+
+
+        <!-- =========================
+             FORMULARIO
+             ========================= -->
+
+        <section class="login-formulario">
+            {% block formulario %}{% endblock %}
+        </section>
+
+    </div>
+</body>
+</html>

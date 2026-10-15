@@ -1,104 +1,57 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMARTLOGIC | Panel del administrador</title>
+{% extends "login_base.html" %}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+{% block formulario %}
+<form class="login-caja" method="post">
 
-{% from "iconos.html" import icono, logo %}
+    <p class="login-eyebrow">PANEL DEL ADMINISTRADOR</p>
+    <h2>Inicia sesión</h2>
+    <p>Administra tu flota, tus entregas y tus números.</p>
 
-<body>
-    <div class="login">
+    {% for mensaje in get_flashed_messages() %}
+    <p class="login-exito" role="status">{{ mensaje }}</p>
+    {% endfor %}
 
-        <!-- =========================
-             PANEL DE MARCA
-             ========================= -->
+    {% if error %}
+    <p class="login-error" role="alert">{{ error }}</p>
+    {% endif %}
 
-        <section class="login-marca">
-
-            {{ logo() }}
-
-            <div class="login-texto">
-                <p class="login-eyebrow">TU FLOTA, EN ORDEN</p>
-
-                <h1>Cada entrega,<br>bajo control.</h1>
-
-                <p>Pedidos, vehículos, conductores y costos. Todo tu sistema logístico en un mismo lugar.</p>
-
-                <div class="login-pasos">
-                    <div><b>01</b><span>Pedidos al día</span></div>
-                    <div><b>02</b><span>Flota en ruta</span></div>
-                    <div><b>03</b><span>Costos claros</span></div>
-                </div>
-            </div>
-
-            <p class="login-pie">SMARTLOGIC · GESTIÓN DE FLOTA</p>
-
-        </section>
-
-
-        <!-- =========================
-             FORMULARIO
-             ========================= -->
-
-        <section class="login-formulario">
-
-            <form class="login-caja" method="post">
-
-                <p class="login-eyebrow">PANEL DEL ADMINISTRADOR</p>
-                <h2>Inicia sesión</h2>
-                <p>Administra tu flota, tus entregas y tus números.</p>
-
-                {% if error %}
-                <p class="login-error" role="alert">{{ error }}</p>
-                {% endif %}
-
-                <div class="campo">
-                    <label for="correo">Correo electrónico</label>
-                    <input
-                        type="email"
-                        id="correo"
-                        name="correo"
-                        value="{{ correo }}"
-                        placeholder="admin@smartlogic.cl"
-                        autocomplete="username"
-                        required
-                        autofocus
-                    >
-                </div>
-
-                <div class="campo">
-                    <label for="clave">Clave</label>
-                    <input
-                        type="password"
-                        id="clave"
-                        name="clave"
-                        placeholder="••••••••••"
-                        autocomplete="current-password"
-                        required
-                    >
-                </div>
-
-                <button type="submit" class="boton-principal">
-                    Entrar al panel
-                    {{ icono("flecha") }}
-                </button>
-
-                <p class="login-seguro">
-                    {{ icono("escudo") }}
-                    Acceso protegido por Supabase Auth
-                </p>
-
-            </form>
-
-        </section>
-
+    <div class="campo">
+        <label for="correo">Correo electrónico</label>
+        <input
+            type="email"
+            id="correo"
+            name="correo"
+            value="{{ correo }}"
+            placeholder="admin@smartlogic.cl"
+            autocomplete="username"
+            required
+            autofocus
+        >
     </div>
-</body>
-</html>
+
+    <div class="campo">
+        <label for="clave">Clave</label>
+        <input
+            type="password"
+            id="clave"
+            name="clave"
+            placeholder="••••••••••"
+            autocomplete="current-password"
+            required
+        >
+    </div>
+
+    <a class="login-link" href="{{ url_for('recuperar_clave') }}">¿Olvidaste tu clave?</a>
+
+    <button type="submit" class="boton-principal">
+        Entrar al panel
+        {{ icono("flecha") }}
+    </button>
+
+    <p class="login-seguro">
+        {{ icono("escudo") }}
+        Acceso protegido por Supabase Auth
+    </p>
+
+</form>
+{% endblock %}

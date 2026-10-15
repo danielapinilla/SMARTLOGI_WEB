@@ -2,6 +2,7 @@ import json
 import os
 import secrets
 import urllib.error
+import urllib.parse
 import urllib.request
 from datetime import timedelta
 from functools import lru_cache
@@ -9,12 +10,18 @@ from pathlib import Path
 
 import pandas as pd
 from dotenv import load_dotenv
-from flask import Flask, redirect, render_template, request, session, url_for
+from flask import (
+    Flask, flash, redirect, render_template, request, session, url_for
+)
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 # Cargar variables privadas desde .env (en Vercel se configuran en el panel)
 load_dotenv()
 
 app = Flask(__name__)
+
+# Vercel atiende con https por delante; así url_for(_external=True) genera https://
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 
 # =========================
@@ -130,31 +137,53 @@ def fecha_guiones(serie):
 # INICIO DE SESIÓN (SUPABASE)
 # =========================
 
-def iniciar_sesion_supabase(correo, clave):
-    """Valida correo y clave contra Supabase Auth.
+LARGO_MINIMO_CLAVE = 8
 
-    Devuelve (usuario, mensaje_error).
+
+def llamar_supabase(metodo, ruta, datos, token=None):
+    """Llama a la API de Supabase Auth.
+
+    Devuelve (respuesta_json, mensaje_error). Uno de los dos es None.
     """
 
+    encabezados = {
+        "apikey": SUPABASE_ANON_KEY,
+        "Content-Type": "application/json",
+    }
+
+    if token:
+        encabezados["Authorization"] = f"Bearer {token}"
+
     peticion = urllib.request.Request(
-        f"{SUPABASE_URL}/auth/v1/token?grant_type=password",
-        data=json.dumps({"email": correo, "password": clave}).encode(),
-        headers={
-            "apikey": SUPABASE_ANON_KEY,
-            "Content-Type": "application/json",
-        },
-        method="POST",
+        f"{SUPABASE_URL}/auth/v1/{ruta}",
+        data=json.dumps(datos).encode(),
+        headers=encabezados,
+        method=metodo,
     )
 
     try:
         with urllib.request.urlopen(peticion, timeout=10) as respuesta:
-            return json.load(respuesta).get("user"), None
+            return json.load(respuesta), None
 
-    except urllib.error.HTTPError:
-        return None, "Correo o clave incorrectos."
+    except urllib.error.HTTPError as error:
+        try:
+            detalle = json.load(error)
+        except ValueError:
+            detalle = {}
+
+        return None, (
+            detalle.get("msg")
+            or detalle.get("error_description")
+            or detalle.get("message")
+            or f"Error {error.code}"
+        )
 
     except (urllib.error.URLError, TimeoutError):
         return None, "No se pudo conectar con el servidor de acceso. Intenta de nuevo."
+
+
+def supabase_configurado():
+    return bool(SUPABASE_URL and SUPABASE_ANON_KEY)
 
 
 def destino_seguro(destino):
@@ -166,10 +195,14 @@ def destino_seguro(destino):
     return url_for("inicio")
 
 
+# Páginas que se pueden ver sin haber iniciado sesión
+PAGINAS_PUBLICAS = {"login", "recuperar_clave", "nueva_clave", "static"}
+
+
 @app.before_request
 def exigir_sesion():
 
-    if request.endpoint in ("login", "static"):
+    if request.endpoint in PAGINAS_PUBLICAS:
         return None
 
     if not session.get("usuario"):
@@ -187,7 +220,7 @@ def login():
     error = None
     correo = ""
 
-    if not SUPABASE_URL or not SUPABASE_ANON_KEY:
+    if not supabase_configurado():
         error = "Falta configurar SUPABASE_URL y SUPABASE_ANON_KEY."
 
     elif request.method == "POST":
@@ -202,15 +235,106 @@ def login():
             error = "Este correo no tiene acceso de administrador."
 
         else:
-            usuario, error = iniciar_sesion_supabase(correo, clave)
+            respuesta, error = llamar_supabase(
+                "POST",
+                "token?grant_type=password",
+                {"email": correo, "password": clave},
+            )
 
-            if usuario:
+            if respuesta:
+                usuario = respuesta.get("user") or {}
                 session.clear()
                 session.permanent = True
                 session["usuario"] = usuario.get("email", correo)
                 return redirect(destino_seguro(request.args.get("next")))
 
+            # No mostrar el detalle técnico de Supabase al usuario
+            if not error.startswith("No se pudo conectar"):
+                error = "Correo o clave incorrectos."
+
     return render_template("login.html", error=error, correo=correo)
+
+
+@app.route("/recuperar-clave", methods=["GET", "POST"])
+def recuperar_clave():
+
+    error = None
+    enviado = False
+    correo = ""
+
+    if not supabase_configurado():
+        error = "Falta configurar SUPABASE_URL y SUPABASE_ANON_KEY."
+
+    elif request.method == "POST":
+
+        correo = request.form.get("correo", "").strip().lower()
+
+        if not correo:
+            error = "Ingresa tu correo."
+
+        else:
+            # Solo se envía el correo a administradores, pero el mensaje
+            # es el mismo para todos: así nadie puede averiguar qué correos existen.
+            if not ADMIN_EMAILS or correo in ADMIN_EMAILS:
+                destino = url_for("nueva_clave", _external=True)
+                _, error_envio = llamar_supabase(
+                    "POST",
+                    "recover?redirect_to=" + urllib.parse.quote(destino, safe=""),
+                    {"email": correo},
+                )
+
+                if error_envio:
+                    app.logger.warning("No se pudo enviar recuperación: %s", error_envio)
+
+            enviado = True
+
+    return render_template(
+        "recuperar_clave.html", error=error, enviado=enviado, correo=correo
+    )
+
+
+@app.route("/nueva-clave", methods=["GET", "POST"])
+def nueva_clave():
+    """Página a la que llega el enlace del correo de Supabase.
+
+    Supabase agrega el token después de "#" en la URL. El navegador lo lee
+    con JavaScript y lo envía en el formulario junto a la clave nueva.
+    """
+
+    error = None
+
+    if request.method == "POST":
+
+        token = request.form.get("token", "")
+        clave = request.form.get("clave", "")
+        confirmacion = request.form.get("confirmacion", "")
+
+        if not token:
+            error = "El enlace no es válido o ya expiró. Pide uno nuevo."
+
+        elif len(clave) < LARGO_MINIMO_CLAVE:
+            error = f"La clave debe tener al menos {LARGO_MINIMO_CLAVE} caracteres."
+
+        elif clave != confirmacion:
+            error = "Las claves no coinciden."
+
+        else:
+            _, error = llamar_supabase("PUT", "user", {"password": clave}, token=token)
+
+            if not error:
+                session.clear()
+                flash("Tu clave fue actualizada. Ya puedes iniciar sesión.")
+                return redirect(url_for("login"))
+
+            if "different from the old" in error:
+                error = "La clave nueva debe ser distinta a la anterior."
+
+            elif "expired" in error.lower() or "invalid" in error.lower():
+                error = "El enlace no es válido o ya expiró. Pide uno nuevo."
+
+    return render_template(
+        "nueva_clave.html", error=error, largo_minimo=LARGO_MINIMO_CLAVE
+    )
 
 
 @app.route("/logout", methods=["POST"])

@@ -1,0 +1,56 @@
+{% extends "login_base.html" %}
+
+{% block title %}SMARTLOGIC | Recuperar clave{% endblock %}
+
+{% block formulario %}
+<form class="login-caja" method="post">
+
+    <p class="login-eyebrow">RECUPERAR ACCESO</p>
+    <h2>¿Olvidaste tu clave?</h2>
+
+    {% if enviado %}
+
+        <p class="login-exito" role="status">
+            Si <strong>{{ correo }}</strong> es un correo de administrador,
+            te enviamos un enlace para crear una clave nueva.
+            Revisa tu bandeja de entrada y también la carpeta de spam.
+        </p>
+
+        <a class="boton-principal" href="{{ url_for('login') }}">
+            Volver a iniciar sesión
+            {{ icono("flecha") }}
+        </a>
+
+    {% else %}
+
+        <p>Escribe tu correo y te enviaremos un enlace para crear una clave nueva.</p>
+
+        {% if error %}
+        <p class="login-error" role="alert">{{ error }}</p>
+        {% endif %}
+
+        <div class="campo">
+            <label for="correo">Correo electrónico</label>
+            <input
+                type="email"
+                id="correo"
+                name="correo"
+                value="{{ correo }}"
+                placeholder="admin@smartlogic.cl"
+                autocomplete="username"
+                required
+                autofocus
+            >
+        </div>
+
+        <button type="submit" class="boton-principal">
+            Enviar enlace
+            {{ icono("flecha") }}
+        </button>
+
+        <a class="login-link login-link-centro" href="{{ url_for('login') }}">← Volver a iniciar sesión</a>
+
+    {% endif %}
+
+</form>
+{% endblock %}

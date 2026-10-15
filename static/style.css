@@ -784,7 +784,43 @@ textarea:focus {
     font-size: 13px;
 }
 
+.login-error a {
+    color: inherit;
+    font-weight: 700;
+}
+
+.login-exito {
+    margin: 0 0 18px;
+    padding: 11px 13px;
+    border: 1px solid #bfdccb;
+    border-radius: 7px;
+    background: #edf7f1;
+    color: var(--ok);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.login-link {
+    display: inline-block;
+    margin: -4px 0 10px;
+    color: var(--marino-3);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}
+
+.login-link-centro {
+    display: block;
+    margin: 20px 0 0;
+    text-align: center;
+}
+
 .boton-principal {
+    text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: space-between;

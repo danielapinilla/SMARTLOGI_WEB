@@ -1,0 +1,90 @@
+{% extends "login_base.html" %}
+
+{% block title %}SMARTLOGIC | Nueva clave{% endblock %}
+
+{% block formulario %}
+<form class="login-caja" method="post" id="formNuevaClave">
+
+    <p class="login-eyebrow">RECUPERAR ACCESO</p>
+    <h2>Crea tu clave nueva</h2>
+    <p>Debe tener al menos {{ largo_minimo }} caracteres.</p>
+
+    {% if error %}
+    <p class="login-error" role="alert">{{ error }}</p>
+    {% endif %}
+
+    <!-- Se muestra si el enlace del correo no trae el permiso -->
+    <p class="login-error" role="alert" id="enlaceInvalido" hidden>
+        El enlace no es válido o ya expiró.
+        <a href="{{ url_for('recuperar_clave') }}">Pide uno nuevo</a>.
+    </p>
+
+    <!-- Lo completa el JavaScript con el permiso que viene en el enlace -->
+    <input type="hidden" name="token" id="token" value="{{ request.form.get('token', '') }}">
+
+    <div class="campo">
+        <label for="clave">Clave nueva</label>
+        <input
+            type="password"
+            id="clave"
+            name="clave"
+            minlength="{{ largo_minimo }}"
+            autocomplete="new-password"
+            required
+            autofocus
+        >
+    </div>
+
+    <div class="campo">
+        <label for="confirmacion">Repite la clave nueva</label>
+        <input
+            type="password"
+            id="confirmacion"
+            name="confirmacion"
+            minlength="{{ largo_minimo }}"
+            autocomplete="new-password"
+            required
+        >
+    </div>
+
+    <button type="submit" class="boton-principal">
+        Guardar clave
+        {{ icono("flecha") }}
+    </button>
+
+    <a class="login-link login-link-centro" href="{{ url_for('login') }}">← Volver a iniciar sesión</a>
+
+</form>
+
+<script>
+(() => {
+    /* Supabase manda el permiso después del "#" en la URL:
+       /nueva-clave#access_token=...&type=recovery
+       Lo guardamos en el formulario y lo borramos de la barra de direcciones. */
+
+    const campoToken = document.getElementById("token");
+    const datos = new URLSearchParams(window.location.hash.slice(1));
+
+    if (datos.get("access_token")) {
+        campoToken.value = datos.get("access_token");
+        history.replaceState(null, "", window.location.pathname);
+    }
+
+    if (!campoToken.value || datos.get("error")) {
+        document.getElementById("enlaceInvalido").hidden = false;
+        document.querySelectorAll("#formNuevaClave input, #formNuevaClave button")
+            .forEach(elemento => elemento.disabled = true);
+    }
+
+    /* Avisar antes de enviar si las claves no coinciden */
+    const confirmacion = document.getElementById("confirmacion");
+
+    confirmacion.addEventListener("input", () => {
+        const clave = document.getElementById("clave").value;
+        confirmacion.setCustomValidity(
+            confirmacion.value === clave ? "" : "Las claves no coinciden"
+        );
+    });
+})();
+</script>
+{% endblock %}
