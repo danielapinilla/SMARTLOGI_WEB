@@ -31,7 +31,13 @@ app.config.update(
     SESSION_COOKIE_SECURE=bool(os.environ.get("VERCEL")),
 )
 
-SUPABASE_URL = os.environ.get("SUPABASE_URL", "").rstrip("/")
+# Acepta la URL aunque se pegue con /rest/v1/ al final
+SUPABASE_URL = (
+    os.environ.get("SUPABASE_URL", "")
+    .strip()
+    .rstrip("/")
+    .removesuffix("/rest/v1")
+)
 SUPABASE_ANON_KEY = os.environ.get("SUPABASE_ANON_KEY", "")
 
 # Correos con permiso de administrador, separados por coma.
