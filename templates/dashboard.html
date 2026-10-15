@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block title %}Dashboard - SMARTLOGI{% endblock %}
@@ -7,12 +6,6 @@
 
 <style>
     .dash-v2 {
-        --azul: #4779a8;
-        --azul-claro: #eaf2fa;
-        --naranja: #f2ad58;
-        --texto: #344054;
-        --secundario: #84909e;
-        --borde: #e7eaf0;
         color: var(--texto);
         padding: 0 0 20px;
     }
@@ -32,7 +25,7 @@
         margin: 0;
         font-size: 27px;
         font-weight: 700;
-        color: #29384a;
+        color: #1d2a3d;
     }
 
     .dash-subtitulo {
@@ -47,8 +40,8 @@
         gap: 7px;
         padding: 8px 12px;
         border-radius: 8px;
-        background: #edf4fb;
-        color: #4779a8;
+        background: #fcf0d6;
+        color: #15253f;
         font-size: 12px;
         font-weight: 600;
     }
@@ -58,14 +51,14 @@
         height: 7px;
         display: inline-block;
         border-radius: 50%;
-        background: #4779a8;
+        background: #15253f;
     }
 
     .dash-seccion-titulo {
         margin: 22px 0 12px;
         font-size: 16px;
         font-weight: 700;
-        color: #344054;
+        color: #1d2a3d;
     }
 
     .dash-kpis,
@@ -79,10 +72,10 @@
     .dash-costo,
     .dash-grafico-card {
         min-width: 0;
-        background: #fff;
+        background: var(--superficie);
         border: 1px solid var(--borde);
         border-radius: 11px;
-        box-shadow: 0 2px 8px rgba(30, 50, 75, .035);
+        box-shadow: 0 2px 8px rgba(21, 37, 63, .035);
     }
 
     .dash-kpi {
@@ -93,7 +86,7 @@
     .dash-kpi:hover,
     .dash-costo:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 14px rgba(30, 50, 75, .08);
+        box-shadow: 0 5px 14px rgba(21, 37, 63, .08);
     }
 
     .dash-kpi-superior {
@@ -117,13 +110,14 @@
     .dash-kpi-etiqueta,
     .dash-costo-etiqueta {
         margin: 0 0 7px;
-        color: #778393;
+        color: #6b7585;
         font-size: 12px;
     }
 
     .dash-kpi-valor {
         margin: 0;
-        color: #29384a;
+        color: #1d2a3d;
+        font-family: var(--fuente-titulos);
         font-size: clamp(22px, 2vw, 29px);
         font-weight: 750;
         line-height: 1.25;
@@ -132,7 +126,7 @@
 
     .dash-kpi-nota {
         margin: 7px 0 0;
-        color: #929cab;
+        color: #98a1ad;
         font-size: 11px;
         line-height: 1.4;
     }
@@ -149,19 +143,20 @@
 
     .dash-costo-valor {
         margin: 0;
-        color: #344054;
+        color: #1d2a3d;
+        font-family: var(--fuente-titulos);
         font-size: clamp(17px, 1.5vw, 23px);
         font-weight: 750;
         overflow-wrap: anywhere;
     }
 
     .dash-costo-total {
-        background: #edf3fa;
-        border-color: #d9e5f2;
+        background: #fcf0d6;
+        border-color: #f2dcae;
     }
 
     .dash-costo-total .dash-costo-valor {
-        color: #355f8b;
+        color: #15253f;
     }
 
     .dash-graficos {
@@ -184,20 +179,20 @@
 
     .dash-grafico-encabezado h3 {
         margin: 0 0 5px;
-        color: #344054;
+        color: #1d2a3d;
         font-size: 14px;
         font-weight: 700;
     }
 
     .dash-grafico-encabezado p {
         margin: 0;
-        color: #929cab;
+        color: #98a1ad;
         font-size: 11px;
         line-height: 1.5;
     }
 
     .dash-grafico-marca {
-        color: #a6b1be;
+        color: #c9c2b0;
         font-size: 17px;
     }
 
@@ -209,7 +204,7 @@
 
     .dash-pie {
         margin: 20px 0 0;
-        color: #9aa3af;
+        color: #98a1ad;
         text-align: center;
         font-size: 11px;
     }
@@ -414,7 +409,7 @@
 }
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 
 <script>
 (() => {
@@ -423,11 +418,11 @@
 
     const datos = JSON.parse(elementoDatos.textContent);
 
-    const azul = "#5688b8";
-    const azulClaro = "#a9c8e5";
-    const naranja = "#f2ad58";
-    const gris = "#c8d0da";
-    const paleta = [azul, naranja, azulClaro, "#8e9fbd", "#d7b3a2", gris];
+    const azul = "#15253f";
+    const azulClaro = "#8ea3c2";
+    const naranja = "#f2b84b";
+    const gris = "#d8d2c2";
+    const paleta = [azul, naranja, azulClaro, "#2f4f7c", "#e8c98a", gris];
 
     const formatoMiles = numero =>
         Number(numero || 0).toLocaleString("es-CL", {
@@ -436,8 +431,8 @@
 
     const formatoPesos = numero => "$" + formatoMiles(numero);
 
-    Chart.defaults.font.family = "Arial, sans-serif";
-    Chart.defaults.color = "#778393";
+    Chart.defaults.font.family = "'DM Sans', sans-serif";
+    Chart.defaults.color = "#6b7585";
 
     const textoCentro = {
         id: "textoCentro",
@@ -454,8 +449,8 @@
 
             const ctx = chart.ctx;
             ctx.save();
-            ctx.font = "bold 17px Arial";
-            ctx.fillStyle = "#344054";
+            ctx.font = "800 18px Manrope, sans-serif";
+            ctx.fillStyle = "#1d2a3d";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.fillText(formatoMiles(total), (area.left + area.right) / 2,
@@ -475,7 +470,7 @@
                 datasets: [{
                     data: valores,
                     backgroundColor: colores,
-                    borderColor: "#ffffff",
+                    borderColor: "#fffefa",
                     borderWidth: 3,
                     hoverOffset: 7
                 }]
@@ -549,7 +544,7 @@
                     y: {
                         beginAtZero: true,
                         ticks: { precision: 0 },
-                        grid: { color: "#edf0f4" }
+                        grid: { color: "#eeeae0" }
                     },
                     x: {
                         grid: { display: false },
@@ -593,7 +588,7 @@
                 scales: {
                     x: {
                         beginAtZero: true,
-                        grid: { color: "#edf0f4" },
+                        grid: { color: "#eeeae0" },
                         ticks: {
                             callback: value => formatoPesos(value)
                         }

@@ -12,7 +12,7 @@
 
     .tarjetas-pedidos {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 18px;
         margin-bottom: 25px;
     }
@@ -25,11 +25,11 @@
 
     .tarjeta-pedido:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        box-shadow: 0 6px 16px rgba(21,37,63,.08);
     }
 
     .tarjeta-pedido.activa {
-        border-color: #063b2e;
+        border-color: var(--marino);
     }
 
     .tarjeta-pedido h3 {
@@ -40,7 +40,7 @@
         font-size: 24px;
         font-weight: bold;
         margin: 0;
-        color: #063b2e;
+        color: var(--marino);
     }
 
 
@@ -51,7 +51,7 @@
     .info-pedidos {
         margin-top: 15px;
         margin-bottom: 10px;
-        color: #555;
+        color: var(--secundario);
         font-size: 14px;
     }
 
@@ -73,13 +73,13 @@
     }
 
     #tablaPedidos th:hover {
-        background: #085844;
+        background: var(--marino-2);
     }
 
     #tablaPedidos th .flecha {
         font-size: 10px;
         margin-left: 4px;
-        color: #d9eee7;
+        color: var(--texto-suave);
     }
 
     #tablaPedidos td {
@@ -173,23 +173,23 @@
     }
 
     .pagination a {
-        background: #063b2e;
+        background: var(--marino);
         color: white;
     }
 
     .pagination a:hover {
-        background: #085844;
+        background: var(--marino-2);
     }
 
     .pagination .pagina-actual {
-        background: #e5eee9;
-        color: #063b2e;
+        background: var(--acento-suave);
+        color: var(--marino);
         font-weight: bold;
     }
 
     .pagination .puntos {
         background: transparent;
-        color: #777;
+        color: var(--texto-suave);
     }
 
 
@@ -200,7 +200,8 @@
     @media (max-width: 900px) {
 
         .tarjetas-pedidos {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 11px;
         }
 
         #tablaPedidos {
@@ -271,6 +272,57 @@
 
     </div>
 
+
+    <!-- EN PREPARACIÓN -->
+
+    <div
+        class="card tarjeta-pedido {% if estado_filtro == 'En preparación' %}activa{% endif %}"
+        data-estado="En preparación"
+        onclick="filtrarPorEstado('En preparación')"
+    >
+
+        <h3>🧺 En preparación</h3>
+
+        <p>
+            {{ estados_pedidos.get("En preparación", 0)|miles }}
+        </p>
+
+    </div>
+
+
+    <!-- PENDIENTE -->
+
+    <div
+        class="card tarjeta-pedido {% if estado_filtro == 'Pendiente' %}activa{% endif %}"
+        data-estado="Pendiente"
+        onclick="filtrarPorEstado('Pendiente')"
+    >
+
+        <h3>⏳ Pendientes</h3>
+
+        <p>
+            {{ estados_pedidos.get("Pendiente", 0)|miles }}
+        </p>
+
+    </div>
+
+
+    <!-- CANCELADO -->
+
+    <div
+        class="card tarjeta-pedido {% if estado_filtro == 'Cancelado' %}activa{% endif %}"
+        data-estado="Cancelado"
+        onclick="filtrarPorEstado('Cancelado')"
+    >
+
+        <h3>✖️ Cancelados</h3>
+
+        <p>
+            {{ estados_pedidos.get("Cancelado", 0)|miles }}
+        </p>
+
+    </div>
+
 </div>
 
 
@@ -286,15 +338,8 @@
     <input
         type="text"
         id="buscador"
+        class="buscador"
         placeholder="🔎 Buscar pedido, cliente, comuna o estado..."
-        style="
-            width: 100%;
-            padding: 10px;
-            margin: 15px 0;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-sizing: border-box;
-        "
     >
 
 

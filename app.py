@@ -1,15 +1,48 @@
-from flask import Flask, render_template, request, jsonify
+import json
+import os
+import secrets
+import urllib.error
+import urllib.request
+from datetime import timedelta
+from functools import lru_cache
+from pathlib import Path
+
 import pandas as pd
 from dotenv import load_dotenv
-from openai import OpenAI
+from flask import Flask, redirect, render_template, request, session, url_for
 
-# Cargar la clave privada desde .env
+# Cargar variables privadas desde .env (en Vercel se configuran en el panel)
 load_dotenv()
 
 app = Flask(__name__)
 
-# Conexión con OpenAI
-cliente_openai = OpenAI()
+
+# =========================
+# CONFIGURACIÓN
+# =========================
+
+# Clave para firmar la sesión. En producción SIEMPRE debe venir de SECRET_KEY.
+app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
+
+app.config.update(
+    PERMANENT_SESSION_LIFETIME=timedelta(hours=8),
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax",
+    SESSION_COOKIE_SECURE=bool(os.environ.get("VERCEL")),
+)
+
+SUPABASE_URL = os.environ.get("SUPABASE_URL", "").rstrip("/")
+SUPABASE_ANON_KEY = os.environ.get("SUPABASE_ANON_KEY", "")
+
+# Correos con permiso de administrador, separados por coma.
+# Si se deja vacío, cualquier usuario de Supabase puede entrar.
+ADMIN_EMAILS = {
+    correo.strip().lower()
+    for correo in os.environ.get("ADMIN_EMAILS", "").split(",")
+    if correo.strip()
+}
+
+REGISTROS_POR_PAGINA = 50
 
 
 @app.template_filter("miles")
@@ -21,64 +54,187 @@ def formato_miles(valor):
 # CARGAR DATOS
 # =========================
 
-pedidos_df = pd.read_csv("data/fact_pedidos_10000.csv")
-vehiculos_df = pd.read_csv("data/dim_vehiculos_30.csv")
-conductores_df = pd.read_csv("data/dim_conductores_50.csv")
-rutas_df = pd.read_csv("data/dim_rutas_100.csv")
-mantenciones_df = pd.read_csv("data/fact_mantenciones_1000.csv")
-combustible_df = pd.read_csv("data/fact_combustible_3000.csv")
-incidentes_df = pd.read_csv("data/fact_incidentes_500.csv")
-entregas_df = pd.read_csv("data/fact_entregas.csv")
+CARPETA_DATOS = Path(__file__).resolve().parent / "data"
 
+
+def leer_csv(nombre):
+    return pd.read_csv(CARPETA_DATOS / nombre)
+
+
+pedidos_df = leer_csv("fact_pedidos_10000.csv")
+vehiculos_df = leer_csv("dim_vehiculos_30.csv")
+conductores_df = leer_csv("dim_conductores_50.csv")
+rutas_df = leer_csv("dim_rutas_100.csv")
+mantenciones_df = leer_csv("fact_mantenciones_1000.csv")
+combustible_df = leer_csv("fact_combustible_3000.csv")
+incidentes_df = leer_csv("fact_incidentes_500.csv")
+entregas_df = leer_csv("fact_entregas.csv")
+
+mapa_patentes = (
+    vehiculos_df
+    .set_index("vehiculo_id")["patente"]
+    .to_dict()
+)
+
+
+# =========================
+# FUNCIONES DE APOYO
+# =========================
+
+def paginar(df):
+    """Devuelve (filas de la página, página actual, total de páginas)."""
+
+    pagina = request.args.get("pagina", 1, type=int)
+
+    total_paginas = max(
+        1,
+        (len(df) + REGISTROS_POR_PAGINA - 1) // REGISTROS_POR_PAGINA
+    )
+
+    pagina = min(max(pagina, 1), total_paginas)
+
+    inicio = (pagina - 1) * REGISTROS_POR_PAGINA
+    fin = inicio + REGISTROS_POR_PAGINA
+
+    return df.iloc[inicio:fin].copy(), pagina, total_paginas
+
+
+def filtrar_por_estado(df, columna, estados_validos):
+    """Lee ?estado= y devuelve (df filtrado, estado aplicado)."""
+
+    estado_filtro = request.args.get("estado", "Todos")
+
+    if estado_filtro not in estados_validos:
+        estado_filtro = "Todos"
+
+    if estado_filtro == "Todos":
+        return df.copy(), estado_filtro
+
+    return df[df[columna] == estado_filtro].copy(), estado_filtro
+
+
+def fecha_guiones(serie):
+    """20250108 -> 2025-01-08"""
+    return serie.astype(str).str.replace(
+        r"(\d{4})(\d{2})(\d{2})", r"\1-\2-\3", regex=True
+    )
+
+
+# =========================
+# INICIO DE SESIÓN (SUPABASE)
+# =========================
+
+def iniciar_sesion_supabase(correo, clave):
+    """Valida correo y clave contra Supabase Auth.
+
+    Devuelve (usuario, mensaje_error).
+    """
+
+    peticion = urllib.request.Request(
+        f"{SUPABASE_URL}/auth/v1/token?grant_type=password",
+        data=json.dumps({"email": correo, "password": clave}).encode(),
+        headers={
+            "apikey": SUPABASE_ANON_KEY,
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+
+    try:
+        with urllib.request.urlopen(peticion, timeout=10) as respuesta:
+            return json.load(respuesta).get("user"), None
+
+    except urllib.error.HTTPError:
+        return None, "Correo o clave incorrectos."
+
+    except (urllib.error.URLError, TimeoutError):
+        return None, "No se pudo conectar con el servidor de acceso. Intenta de nuevo."
+
+
+def destino_seguro(destino):
+    """Evita redirigir a otros sitios después del login."""
+
+    if destino and destino.startswith("/") and not destino.startswith("//"):
+        return destino
+
+    return url_for("inicio")
+
+
+@app.before_request
+def exigir_sesion():
+
+    if request.endpoint in ("login", "static"):
+        return None
+
+    if not session.get("usuario"):
+        return redirect(url_for("login", next=request.full_path.rstrip("?")))
+
+    return None
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+
+    if session.get("usuario"):
+        return redirect(url_for("inicio"))
+
+    error = None
+    correo = ""
+
+    if not SUPABASE_URL or not SUPABASE_ANON_KEY:
+        error = "Falta configurar SUPABASE_URL y SUPABASE_ANON_KEY."
+
+    elif request.method == "POST":
+
+        correo = request.form.get("correo", "").strip().lower()
+        clave = request.form.get("clave", "")
+
+        if not correo or not clave:
+            error = "Ingresa tu correo y tu clave."
+
+        elif ADMIN_EMAILS and correo not in ADMIN_EMAILS:
+            error = "Este correo no tiene acceso de administrador."
+
+        else:
+            usuario, error = iniciar_sesion_supabase(correo, clave)
+
+            if usuario:
+                session.clear()
+                session.permanent = True
+                session["usuario"] = usuario.get("email", correo)
+                return redirect(destino_seguro(request.args.get("next")))
+
+    return render_template("login.html", error=error, correo=correo)
+
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
 
 
 # =========================
 # DASHBOARD
 # =========================
 
-@app.route("/")
-def inicio():
+@lru_cache(maxsize=1)
+def indicadores_dashboard():
+    """Los CSV no cambian mientras la app corre, así que se calcula una vez."""
 
-    # Indicadores generales
-    total_pedidos = len(pedidos_df)
-    total_vehiculos = len(vehiculos_df)
-    total_conductores = len(conductores_df)
-    total_rutas = len(rutas_df)
-
-    # Estados de pedidos
     estados_pedidos = pedidos_df["estado_pedido"].value_counts().to_dict()
-    estados_pedidos_labels = list(estados_pedidos.keys())
-    estados_pedidos_valores = list(estados_pedidos.values())
-
-    # Estados de vehículos
     estados_vehiculos = vehiculos_df["estado"].value_counts().to_dict()
-    estados_vehiculos_labels = list(estados_vehiculos.keys())
-    estados_vehiculos_valores = list(estados_vehiculos.values())
-
-    # Vehículos disponibles
-    vehiculos_disponibles = int(
-        (vehiculos_df["estado"] == "Disponible").sum()
-    )
-
-    # Conductores activos
-    conductores_activos = int(
-        (conductores_df["estado"] == "Activo").sum()
-    )
 
     # Entregas realizadas a tiempo
-    entregas = entregas_df.copy()
-
-    entregas["a_tiempo"] = (
-        entregas["entrega_a_tiempo"]
+    a_tiempo = (
+        entregas_df["entrega_a_tiempo"]
         .astype(str)
         .str.strip()
         .str.lower()
         .isin(["true", "1", "si", "sí", "yes", "a tiempo"])
     )
 
-    total_entregas = len(entregas)
-
-    entregas_a_tiempo = int(entregas["a_tiempo"].sum())
+    total_entregas = len(entregas_df)
+    entregas_a_tiempo = int(a_tiempo.sum())
 
     porcentaje_a_tiempo = (
         round(entregas_a_tiempo / total_entregas * 100, 1)
@@ -90,34 +246,32 @@ def inicio():
     costo_mantenciones = float(mantenciones_df["costo"].sum())
     costo_incidentes = float(incidentes_df["costo_estimado"].sum())
 
-    costo_operacional = (
-        gasto_combustible
-        + costo_mantenciones
-        + costo_incidentes
-    )
-
-    return render_template(
-        "dashboard.html",
-        total_pedidos=total_pedidos,
-        total_vehiculos=total_vehiculos,
-        total_conductores=total_conductores,
-        total_rutas=total_rutas,
+    return dict(
+        total_pedidos=len(pedidos_df),
+        total_vehiculos=len(vehiculos_df),
+        total_conductores=len(conductores_df),
+        total_rutas=len(rutas_df),
         estados_pedidos=estados_pedidos,
         estados_vehiculos=estados_vehiculos,
-        estados_pedidos_labels=estados_pedidos_labels,
-        estados_pedidos_valores=estados_pedidos_valores,
-        estados_vehiculos_labels=estados_vehiculos_labels,
-        estados_vehiculos_valores=estados_vehiculos_valores,
-        vehiculos_disponibles=vehiculos_disponibles,
-        conductores_activos=conductores_activos,
+        estados_pedidos_labels=list(estados_pedidos.keys()),
+        estados_pedidos_valores=list(estados_pedidos.values()),
+        estados_vehiculos_labels=list(estados_vehiculos.keys()),
+        estados_vehiculos_valores=list(estados_vehiculos.values()),
+        vehiculos_disponibles=int((vehiculos_df["estado"] == "Disponible").sum()),
+        conductores_activos=int((conductores_df["estado"] == "Activo").sum()),
         total_entregas=total_entregas,
         entregas_a_tiempo=entregas_a_tiempo,
         porcentaje_a_tiempo=porcentaje_a_tiempo,
         gasto_combustible=gasto_combustible,
         costo_mantenciones=costo_mantenciones,
         costo_incidentes=costo_incidentes,
-        costo_operacional=costo_operacional,
+        costo_operacional=gasto_combustible + costo_mantenciones + costo_incidentes,
     )
+
+
+@app.route("/")
+def inicio():
+    return render_template("dashboard.html", **indicadores_dashboard())
 
 
 # =========================
@@ -127,168 +281,30 @@ def inicio():
 @app.route("/pedidos")
 def pedidos():
 
-    # =========================
-    # FILTRO POR ESTADO
-    # =========================
-
-    estado_filtro = request.args.get(
-        "estado",
-        "Todos"
+    pedidos_filtrados, estado_filtro = filtrar_por_estado(
+        pedidos_df,
+        "estado_pedido",
+        ["Todos", "Entregado", "En ruta", "En preparación", "Pendiente", "Cancelado"]
     )
 
-    estados_validos = [
-        "Todos",
-        "Entregado",
-        "En ruta"
-    ]
+    datos_pedidos, pagina, total_paginas = paginar(pedidos_filtrados)
 
-    if estado_filtro not in estados_validos:
-        estado_filtro = "Todos"
-
-
-    # =========================
-    # APLICAR FILTRO
-    # =========================
-
-    if estado_filtro == "Todos":
-
-        pedidos_filtrados = pedidos_df.copy()
-
-    else:
-
-        pedidos_filtrados = pedidos_df[
-            pedidos_df["estado_pedido"]
-            == estado_filtro
-        ].copy()
-
-
-    # =========================
-    # PAGINACIÓN
-    # =========================
-
-    pagina = request.args.get(
-        "pagina",
-        1,
-        type=int
-    )
-
-    registros_por_pagina = 50
-
-    total_registros = len(
-        pedidos_filtrados
-    )
-
-    total_paginas = (
-        total_registros
-        + registros_por_pagina
-        - 1
-    ) // registros_por_pagina
-
-
-    if total_paginas == 0:
-        total_paginas = 1
-
-
-    if pagina < 1:
-        pagina = 1
-
-
-    if pagina > total_paginas:
-        pagina = total_paginas
-
-
-    inicio = (
-        pagina - 1
-    ) * registros_por_pagina
-
-    fin = (
-        inicio
-        + registros_por_pagina
-    )
-
-
-    # =========================
-    # OBTENER PEDIDOS
-    # =========================
-
-    datos_pedidos = (
-        pedidos_filtrados
-        .iloc[inicio:fin]
-        .copy()
-    )
-
-
-    # =========================
-    # FORMATO DE FECHA
-    # =========================
-
-    datos_pedidos[
-        "fecha_pedido_id"
-    ] = (
-        datos_pedidos[
-            "fecha_pedido_id"
-        ]
+    # 20250108 -> 08/01/2025
+    datos_pedidos["fecha_pedido_id"] = (
+        datos_pedidos["fecha_pedido_id"]
         .astype(str)
-        .apply(
-            lambda fecha:
-                f"{fecha[6:8]}/"
-                f"{fecha[4:6]}/"
-                f"{fecha[0:4]}"
-        )
+        .apply(lambda fecha: f"{fecha[6:8]}/{fecha[4:6]}/{fecha[0:4]}")
     )
-
-
-    # =========================
-    # ESTADOS
-    # =========================
-
-    estados_pedidos = (
-        pedidos_df[
-            "estado_pedido"
-        ]
-        .value_counts()
-        .to_dict()
-    )
-
-
-    # =========================
-    # CONVERTIR A REGISTROS
-    # =========================
-
-    datos_pedidos = (
-        datos_pedidos
-        .to_dict(
-            orient="records"
-        )
-    )
-
-
-    # =========================
-    # ENVIAR DATOS
-    # =========================
 
     return render_template(
-
         "pedidos.html",
-
-        pedidos=datos_pedidos,
-
+        pedidos=datos_pedidos.to_dict(orient="records"),
         pagina=pagina,
-
-        total_paginas=
-            total_paginas,
-
-        total_registros=
-            total_registros,
-
-        estados_pedidos=
-            estados_pedidos,
-
-        estado_filtro=
-            estado_filtro,
-
-        total_pedidos=
-            len(pedidos_df)
+        total_paginas=total_paginas,
+        total_registros=len(pedidos_filtrados),
+        estados_pedidos=pedidos_df["estado_pedido"].value_counts().to_dict(),
+        estado_filtro=estado_filtro,
+        total_pedidos=len(pedidos_df)
     )
 
 
@@ -299,152 +315,23 @@ def pedidos():
 @app.route("/vehiculos")
 def vehiculos():
 
-    # =========================
-    # FILTRO POR ESTADO
-    # =========================
-
-    estado_filtro = request.args.get(
+    vehiculos_filtrados, estado_filtro = filtrar_por_estado(
+        vehiculos_df,
         "estado",
-        "Todos"
+        ["Todos", "Disponible", "En ruta", "Mantención"]
     )
 
-    estados_validos = [
-        "Todos",
-        "Disponible",
-        "En ruta",
-        "Mantención"
-    ]
-
-    if estado_filtro not in estados_validos:
-        estado_filtro = "Todos"
-
-
-    # =========================
-    # APLICAR FILTRO
-    # =========================
-
-    if estado_filtro == "Todos":
-
-        vehiculos_filtrados = (
-            vehiculos_df.copy()
-        )
-
-    else:
-
-        vehiculos_filtrados = (
-            vehiculos_df[
-                vehiculos_df["estado"]
-                == estado_filtro
-            ]
-            .copy()
-        )
-
-
-    # =========================
-    # PAGINACIÓN
-    # =========================
-
-    pagina = request.args.get(
-        "pagina",
-        1,
-        type=int
-    )
-
-    registros_por_pagina = 50
-
-    total_registros = len(
-        vehiculos_filtrados
-    )
-
-    total_paginas = (
-        total_registros
-        + registros_por_pagina
-        - 1
-    ) // registros_por_pagina
-
-
-    if total_paginas == 0:
-        total_paginas = 1
-
-
-    if pagina < 1:
-        pagina = 1
-
-
-    if pagina > total_paginas:
-        pagina = total_paginas
-
-
-    inicio = (
-        pagina - 1
-    ) * registros_por_pagina
-
-    fin = (
-        inicio
-        + registros_por_pagina
-    )
-
-
-    # =========================
-    # OBTENER VEHÍCULOS
-    # =========================
-
-    datos_vehiculos = (
-        vehiculos_filtrados
-        .iloc[inicio:fin]
-        .copy()
-    )
-
-
-    # =========================
-    # ESTADOS DE VEHÍCULOS
-    # =========================
-
-    estados_vehiculos = (
-        vehiculos_df["estado"]
-        .value_counts()
-        .to_dict()
-    )
-
-
-    # =========================
-    # CONVERTIR A REGISTROS
-    # =========================
-
-    datos_vehiculos = (
-        datos_vehiculos
-        .to_dict(
-            orient="records"
-        )
-    )
-
-
-    # =========================
-    # ENVIAR DATOS
-    # =========================
+    datos_vehiculos, pagina, total_paginas = paginar(vehiculos_filtrados)
 
     return render_template(
-
         "vehiculos.html",
-
-        vehiculos=datos_vehiculos,
-
+        vehiculos=datos_vehiculos.to_dict(orient="records"),
         pagina=pagina,
-
-        total_paginas=
-            total_paginas,
-
-        total_registros=
-            total_registros,
-
-        estados_vehiculos=
-            estados_vehiculos,
-
-        estado_filtro=
-            estado_filtro,
-
-        total_vehiculos=
-            len(vehiculos_df)
+        total_paginas=total_paginas,
+        total_registros=len(vehiculos_filtrados),
+        estados_vehiculos=vehiculos_df["estado"].value_counts().to_dict(),
+        estado_filtro=estado_filtro,
+        total_vehiculos=len(vehiculos_df)
     )
 
 
@@ -455,104 +342,22 @@ def vehiculos():
 @app.route("/conductores")
 def conductores():
 
-    # =========================
-    # FILTRO POR ESTADO
-    # =========================
-
-    estado_filtro = request.args.get("estado", "Todos")
-
-    estados_validos = [
-        "Todos",
-        "Activo",
-        "Inactivo",
-        "Licencia médica",
-        "Vacaciones"
-    ]
-
-    if estado_filtro not in estados_validos:
-        estado_filtro = "Todos"
-
-
-    # =========================
-    # APLICAR FILTRO
-    # =========================
-
-    if estado_filtro == "Todos":
-        conductores_filtrados = conductores_df.copy()
-    else:
-        conductores_filtrados = conductores_df[
-            conductores_df["estado"] == estado_filtro
-        ].copy()
-
-
-    # =========================
-    # CONFIGURACIÓN PAGINACIÓN
-    # =========================
-
-    pagina = request.args.get("pagina", 1, type=int)
-
-    registros_por_pagina = 50
-
-    total_registros = len(conductores_filtrados)
-
-    total_paginas = (
-        total_registros + registros_por_pagina - 1
-    ) // registros_por_pagina
-
-
-    # Evitar páginas inválidas
-
-    if total_paginas == 0:
-        total_paginas = 1
-
-    if pagina < 1:
-        pagina = 1
-
-    if pagina > total_paginas:
-        pagina = total_paginas
-
-
-    inicio = (pagina - 1) * registros_por_pagina
-    fin = inicio + registros_por_pagina
-
-
-    # =========================
-    # OBTENER CONDUCTORES
-    # =========================
-
-    datos_conductores = conductores_filtrados.iloc[
-        inicio:fin
-    ].copy()
-
-
-    datos_conductores = datos_conductores.to_dict(
-        orient="records"
+    conductores_filtrados, estado_filtro = filtrar_por_estado(
+        conductores_df,
+        "estado",
+        ["Todos", "Activo", "Inactivo", "Licencia médica", "Vacaciones"]
     )
 
-
-    # =========================
-    # ESTADOS
-    # =========================
-
-    estados_conductores = (
-        conductores_df["estado"]
-        .value_counts()
-        .to_dict()
-    )
-
-
-    # =========================
-    # ENVIAR DATOS
-    # =========================
+    datos_conductores, pagina, total_paginas = paginar(conductores_filtrados)
 
     return render_template(
         "conductores.html",
-        conductores=datos_conductores,
+        conductores=datos_conductores.to_dict(orient="records"),
         pagina=pagina,
         total_paginas=total_paginas,
-        total_registros=total_registros,
+        total_registros=len(conductores_filtrados),
         total_conductores=len(conductores_df),
-        estados_conductores=estados_conductores,
+        estados_conductores=conductores_df["estado"].value_counts().to_dict(),
         estado_filtro=estado_filtro
     )
 
@@ -564,115 +369,25 @@ def conductores():
 @app.route("/rutas")
 def rutas():
 
-    # =========================
-    # FILTRO POR ESTADO
-    # =========================
-
-    estado_filtro = request.args.get("estado", "Todos")
-
-    estados_validos = [
-        "Todos",
-        "Activa",
-        "Restringida",
-        "Suspendida"
-    ]
-
-    if estado_filtro not in estados_validos:
-        estado_filtro = "Todos"
-
-
-    # =========================
-    # APLICAR FILTRO
-    # =========================
-
-    if estado_filtro == "Todos":
-
-        rutas_filtradas = rutas_df.copy()
-
-    else:
-
-        rutas_filtradas = rutas_df[
-            rutas_df["estado"] == estado_filtro
-        ].copy()
-
-
-    # =========================
-    # PAGINACIÓN
-    # =========================
-
-    pagina = request.args.get(
-        "pagina",
-        1,
-        type=int
+    rutas_filtradas, estado_filtro = filtrar_por_estado(
+        rutas_df,
+        "estado",
+        ["Todos", "Activa", "Restringida", "Suspendida"]
     )
 
-    registros_por_pagina = 50
-
-    total_registros = len(rutas_filtradas)
-
-    total_paginas = (
-        total_registros + registros_por_pagina - 1
-    ) // registros_por_pagina
-
-
-    if total_paginas == 0:
-        total_paginas = 1
-
-
-    if pagina < 1:
-        pagina = 1
-
-
-    if pagina > total_paginas:
-        pagina = total_paginas
-
-
-    inicio = (
-        pagina - 1
-    ) * registros_por_pagina
-
-    fin = inicio + registros_por_pagina
-
-
-    # =========================
-    # DATOS DE LA PÁGINA
-    # =========================
-
-    datos_rutas = rutas_filtradas.iloc[
-        inicio:fin
-    ].copy()
-
-
-    datos_rutas = datos_rutas.to_dict(
-        orient="records"
-    )
-
-
-    # =========================
-    # ESTADOS
-    # =========================
-
-    estados_rutas = (
-        rutas_df["estado"]
-        .value_counts()
-        .to_dict()
-    )
-
-
-    # =========================
-    # ENVIAR DATOS
-    # =========================
+    datos_rutas, pagina, total_paginas = paginar(rutas_filtradas)
 
     return render_template(
         "rutas.html",
-        rutas=datos_rutas,
+        rutas=datos_rutas.to_dict(orient="records"),
         pagina=pagina,
         total_paginas=total_paginas,
-        total_registros=total_registros,
+        total_registros=len(rutas_filtradas),
         total_rutas=len(rutas_df),
-        estados_rutas=estados_rutas,
+        estados_rutas=rutas_df["estado"].value_counts().to_dict(),
         estado_filtro=estado_filtro
     )
+
 
 # =========================
 # MANTENCIONES
@@ -681,76 +396,24 @@ def rutas():
 @app.route("/mantenciones")
 def mantenciones():
 
-    pagina = request.args.get("pagina", 1, type=int)
+    datos_mantenciones, pagina, total_paginas = paginar(mantenciones_df)
 
-    por_pagina = 50
-
-    total_registros = len(mantenciones_df)
-
-    total_paginas = (
-        (total_registros + por_pagina - 1)
-        // por_pagina
-    )
-
-    if pagina < 1:
-        pagina = 1
-
-    if pagina > total_paginas:
-        pagina = total_paginas
-
-    inicio = (pagina - 1) * por_pagina
-    fin = inicio + por_pagina
-
-    # Datos de la página actual
-    datos_mantenciones = mantenciones_df.iloc[inicio:fin].copy()
-
-    # Formatear fecha
-    datos_mantenciones["fecha_mantencion_id"] = (
+    datos_mantenciones["fecha_mantencion_id"] = fecha_guiones(
         datos_mantenciones["fecha_mantencion_id"]
-        .astype(str)
-        .str.replace(r"(\d{4})(\d{2})(\d{2})", r"\1-\2-\3", regex=True)
-    )
-
-    # Relacionar vehiculo_id con patente
-    mapa_patentes = (
-        vehiculos_df
-        .set_index("vehiculo_id")["patente"]
-        .to_dict()
     )
 
     datos_mantenciones["patente"] = (
-        datos_mantenciones["vehiculo_id"]
-        .map(mapa_patentes)
-    )
-
-    # Convertir NaN a texto vacío por seguridad
-    datos_mantenciones["patente"] = (
-        datos_mantenciones["patente"]
-        .fillna("")
-    )
-
-    mantenciones = datos_mantenciones.to_dict("records")
-
-    # Vehículos únicos con mantenciones
-    vehiculos_mantencion = (
-        mantenciones_df["vehiculo_id"]
-        .nunique()
-    )
-
-    # Costo total
-    costo_total = (
-        mantenciones_df["costo"]
-        .sum()
+        datos_mantenciones["vehiculo_id"].map(mapa_patentes).fillna("")
     )
 
     return render_template(
         "mantenciones.html",
-        mantenciones=mantenciones,
+        mantenciones=datos_mantenciones.to_dict("records"),
         pagina=pagina,
         total_paginas=total_paginas,
-        total_registros=total_registros,
-        vehiculos_mantencion=vehiculos_mantencion,
-        costo_total=costo_total
+        total_registros=len(mantenciones_df),
+        vehiculos_mantencion=mantenciones_df["vehiculo_id"].nunique(),
+        costo_total=mantenciones_df["costo"].sum()
     )
 
 
@@ -761,301 +424,78 @@ def mantenciones():
 @app.route("/combustible")
 def combustible():
 
-    pagina = request.args.get("pagina", 1, type=int)
+    datos_combustible, pagina, total_paginas = paginar(combustible_df)
 
-    por_pagina = 50
-
-    total_registros = len(combustible_df)
-
-    total_paginas = (
-        (total_registros + por_pagina - 1)
-        // por_pagina
-    )
-
-    if pagina < 1:
-        pagina = 1
-
-    if pagina > total_paginas:
-        pagina = total_paginas
-
-    inicio = (pagina - 1) * por_pagina
-    fin = inicio + por_pagina
-
-    # Datos de la página actual
-    datos_combustible = combustible_df.iloc[inicio:fin].copy()
-
-    # Formatear fecha
-    datos_combustible["fecha_id"] = (
+    datos_combustible["fecha_id"] = fecha_guiones(
         datos_combustible["fecha_id"]
-        .astype(str)
-        .str.replace(
-            r"(\d{4})(\d{2})(\d{2})",
-            r"\1-\2-\3",
-            regex=True
-        )
-    )
-
-    # Relacionar vehiculo_id con patente
-    mapa_patentes = (
-        vehiculos_df
-        .set_index("vehiculo_id")["patente"]
-        .to_dict()
     )
 
     datos_combustible["patente"] = (
-        datos_combustible["vehiculo_id"]
-        .map(mapa_patentes)
-    )
-
-    # Seguridad por si algún vehículo no tiene coincidencia
-    datos_combustible["patente"] = (
-        datos_combustible["patente"]
-        .fillna("")
-    )
-
-    combustible = datos_combustible.to_dict("records")
-
-    # Vehículos registrados
-    vehiculos_registrados = (
-        combustible_df["vehiculo_id"]
-        .nunique()
-    )
-
-    # Gasto total
-    gasto_total = (
-        combustible_df["costo_total"]
-        .sum()
+        datos_combustible["vehiculo_id"].map(mapa_patentes).fillna("")
     )
 
     return render_template(
         "combustible.html",
-        combustible=combustible,
+        combustible=datos_combustible.to_dict("records"),
         pagina=pagina,
         total_paginas=total_paginas,
-        total_registros=total_registros,
-        vehiculos_registrados=vehiculos_registrados,
-        gasto_total=gasto_total
+        total_registros=len(combustible_df),
+        vehiculos_registrados=combustible_df["vehiculo_id"].nunique(),
+        gasto_total=combustible_df["costo_total"].sum()
     )
+
 
 # =========================
 # INCIDENTES
 # =========================
 
+# Convertir la columna "resuelto" a un estado visible
+incidentes_df["estado_incidente"] = (
+    incidentes_df["resuelto"]
+    .astype(str)
+    .str.strip()
+    .str.lower()
+    .map({
+        "true": "Resuelto",
+        "1": "Resuelto",
+        "si": "Resuelto",
+        "sí": "Resuelto",
+        "false": "Abierto",
+        "0": "Abierto",
+        "no": "Abierto"
+    })
+    .fillna("Abierto")
+)
+
+
 @app.route("/incidentes")
 def incidentes():
 
-    pagina = request.args.get("pagina", 1, type=int)
-
-    estado_filtro = request.args.get("estado", "Todos")
-
-    estados_validos = [
-        "Todos",
-        "Abierto",
-        "Resuelto"
-    ]
-
-    if estado_filtro not in estados_validos:
-        estado_filtro = "Todos"
-
-    por_pagina = 50
-
-    # Crear una copia para trabajar con el estado
-    incidentes_base = incidentes_df.copy()
-
-    # Convertir resuelto a estado visible
-    incidentes_base["estado_incidente"] = (
-        incidentes_base["resuelto"]
-        .astype(str)
-        .str.lower()
-        .map({
-            "true": "Resuelto",
-            "1": "Resuelto",
-            "si": "Resuelto",
-            "sí": "Resuelto",
-            "false": "Abierto",
-            "0": "Abierto",
-            "no": "Abierto"
-        })
-        .fillna("Abierto")
+    incidentes_filtrados, estado_filtro = filtrar_por_estado(
+        incidentes_df,
+        "estado_incidente",
+        ["Todos", "Abierto", "Resuelto"]
     )
 
-    # Contadores generales
-    incidentes_abiertos = (
-        incidentes_base["estado_incidente"]
-        .eq("Abierto")
-        .sum()
-    )
+    datos_incidentes, pagina, total_paginas = paginar(incidentes_filtrados)
 
-    incidentes_resueltos = (
-        incidentes_base["estado_incidente"]
-        .eq("Resuelto")
-        .sum()
-    )
-
-    # Aplicar filtro de tarjeta
-    if estado_filtro != "Todos":
-
-        incidentes_filtrados = incidentes_base[
-            incidentes_base["estado_incidente"] == estado_filtro
-        ].copy()
-
-    else:
-
-        incidentes_filtrados = incidentes_base.copy()
-
-    # Total según filtro
-    total_registros = len(incidentes_filtrados)
-
-    # Paginación
-    total_paginas = max(
-        1,
-        (total_registros + por_pagina - 1) // por_pagina
-    )
-
-    if pagina < 1:
-        pagina = 1
-
-    if pagina > total_paginas:
-        pagina = total_paginas
-
-    inicio = (pagina - 1) * por_pagina
-    fin = inicio + por_pagina
-
-    datos_incidentes = incidentes_filtrados.iloc[inicio:fin].copy()
-
-    # Formatear fecha
-    datos_incidentes["fecha_incidente_id"] = (
+    datos_incidentes["fecha_incidente_id"] = fecha_guiones(
         datos_incidentes["fecha_incidente_id"]
-        .astype(str)
-        .str.replace(
-            r"(\d{4})(\d{2})(\d{2})",
-            r"\1-\2-\3",
-            regex=True
-        )
-    )
-
-    # Relacionar vehiculo_id con patente
-    mapa_patentes = (
-        vehiculos_df
-        .set_index("vehiculo_id")["patente"]
-        .to_dict()
     )
 
     datos_incidentes["patente"] = (
-        datos_incidentes["vehiculo_id"]
-        .map(mapa_patentes)
-        .fillna("")
+        datos_incidentes["vehiculo_id"].map(mapa_patentes).fillna("")
     )
-
-    incidentes = datos_incidentes.to_dict("records")
 
     return render_template(
         "incidentes.html",
-        incidentes=incidentes,
+        incidentes=datos_incidentes.to_dict("records"),
         pagina=pagina,
         total_paginas=total_paginas,
-        total_registros=total_registros,
-        incidentes_abiertos=incidentes_abiertos,
-        incidentes_resueltos=incidentes_resueltos,
+        total_registros=len(incidentes_filtrados),
+        incidentes_abiertos=int(incidentes_df["estado_incidente"].eq("Abierto").sum()),
+        incidentes_resueltos=int(incidentes_df["estado_incidente"].eq("Resuelto").sum()),
         estado_filtro=estado_filtro
-    )
-
-    # =========================
-    # CONVERTIR ESTADO
-    # =========================
-
-    def convertir_resuelto(valor):
-
-        texto = (
-            str(valor)
-            .strip()
-            .lower()
-        )
-
-        if texto in [
-            "true",
-            "1",
-            "si",
-            "sí",
-            "yes",
-            "resuelto",
-            "cerrado"
-        ]:
-
-            return "Resuelto"
-
-        return "Abierto"
-
-
-    datos_incidentes[
-        "estado_incidente"
-    ] = (
-        datos_incidentes[
-            "resuelto"
-        ]
-        .apply(
-            convertir_resuelto
-        )
-    )
-
-
-    datos_incidentes = (
-        datos_incidentes
-        .to_dict(
-            orient="records"
-        )
-    )
-
-
-    estados = (
-        incidentes_df["resuelto"]
-        .apply(
-            convertir_resuelto
-        )
-    )
-
-
-    incidentes_resueltos = (
-        estados == "Resuelto"
-    ).sum()
-
-
-    incidentes_abiertos = (
-        estados == "Abierto"
-    ).sum()
-
-
-    costo_total = (
-        incidentes_df[
-            "costo_estimado"
-        ]
-        .sum()
-    )
-
-
-    return render_template(
-
-        "incidentes.html",
-
-        incidentes=
-            datos_incidentes,
-
-        pagina=pagina,
-
-        total_paginas=
-            total_paginas,
-
-        total_registros=
-            total_registros,
-
-        incidentes_resueltos=
-            incidentes_resueltos,
-
-        incidentes_abiertos=
-            incidentes_abiertos,
-
-        costo_total=
-            costo_total
     )
 
 
@@ -1066,7 +506,7 @@ def incidentes():
 if __name__ == "__main__":
 
     app.run(
-        host="0.0.0.0",
+        host="127.0.0.1",
         port=5000,
-        debug=True
+        debug=os.environ.get("FLASK_DEBUG") == "1"
     )
