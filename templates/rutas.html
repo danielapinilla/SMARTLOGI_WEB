@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "iconos.html" import icono, insignia %}
 
 {% block title %}Rutas - SMARTLOGIC{% endblock %}
 
@@ -141,7 +142,7 @@
 </style>
 
 
-<h1>🗺️ Rutas</h1>
+<h1>{{ insignia("ruta", "azul") }} Rutas</h1>
 
 
 <!-- =========================
@@ -154,7 +155,7 @@
         href="{{ url_for('rutas', estado='Todos', pagina=1) }}"
         class="card card-filtro {% if estado_filtro == 'Todos' %}activa{% endif %}"
     >
-        <h3>🗺️ Total rutas</h3>
+        <h3>{{ insignia("ruta", "azul") }} Total rutas</h3>
         <p>{{ total_rutas|miles }}</p>
     </a>
 
@@ -163,7 +164,7 @@
         href="{{ url_for('rutas', estado='Activa', pagina=1) }}"
         class="card card-filtro {% if estado_filtro == 'Activa' %}activa{% endif %}"
     >
-        <h3>🟢 Activas</h3>
+        <h3>{{ insignia("check", "verde") }} Activas</h3>
         <p>{{ estados_rutas.get("Activa", 0)|miles }}</p>
     </a>
 
@@ -172,7 +173,7 @@
         href="{{ url_for('rutas', estado='Restringida', pagina=1) }}"
         class="card card-filtro {% if estado_filtro == 'Restringida' %}activa{% endif %}"
     >
-        <h3>🟡 Restringidas</h3>
+        <h3>{{ insignia("alerta", "ambar") }} Restringidas</h3>
         <p>{{ estados_rutas.get("Restringida", 0)|miles }}</p>
     </a>
 
@@ -181,7 +182,7 @@
         href="{{ url_for('rutas', estado='Suspendida', pagina=1) }}"
         class="card card-filtro {% if estado_filtro == 'Suspendida' %}activa{% endif %}"
     >
-        <h3>🔴 Suspendidas</h3>
+        <h3>{{ insignia("pausa", "rojo") }} Suspendidas</h3>
         <p>{{ estados_rutas.get("Suspendida", 0)|miles }}</p>
     </a>
 
@@ -196,7 +197,7 @@
     type="text"
     id="buscadorRutas"
     class="buscador"
-    placeholder="🔎 Buscar por ID, ruta, origen, destino, tráfico o estado..."
+    placeholder="Buscar por ID, ruta, origen, destino, tráfico o estado..."
 >
 
 

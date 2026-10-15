@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "iconos.html" import icono, insignia %}
 
 {% block title %}Mantenciones - SMARTLOGIC{% endblock %}
 
@@ -119,7 +120,7 @@
 </style>
 
 
-<h1>🔧 Mantenciones</h1>
+<h1>{{ insignia("llave", "azul") }} Mantenciones</h1>
 
 
 <!-- =========================
@@ -129,17 +130,17 @@
 <div class="cards">
 
     <div class="card">
-        <h3>🔧 Total mantenciones</h3>
+        <h3>{{ insignia("llave", "azul") }} Total mantenciones</h3>
         <p>{{ total_registros|miles }}</p>
     </div>
 
     <div class="card">
-        <h3>🚚 Vehículos con mantenciones</h3>
+        <h3>{{ insignia("camion", "azul") }} Vehículos con mantenciones</h3>
         <p>{{ vehiculos_mantencion|miles }}</p>
     </div>
 
     <div class="card">
-        <h3>💰 Costo total</h3>
+        <h3>{{ insignia("dinero", "ambar") }} Costo total</h3>
         <p>
             ${{ "{:,.0f}".format(costo_total).replace(",", ".") }}
         </p>
@@ -156,7 +157,7 @@
     type="text"
     id="buscadorMantenciones"
     class="buscador"
-    placeholder="🔎 Buscar por ID, patente, tipo, fecha, taller o resultado..."
+    placeholder="Buscar por ID, patente, tipo, fecha, taller o resultado..."
 >
 
 

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "iconos.html" import icono, insignia %}
 
 {% block title %}Dashboard - SMARTLOGIC{% endblock %}
 
@@ -103,8 +104,13 @@
         align-items: center;
         justify-content: center;
         border-radius: 9px;
-        background: var(--azul-claro);
-        font-size: 19px;
+        background: var(--marino);
+        color: var(--acento);
+    }
+
+    .dash-kpi-icono svg {
+        width: 19px;
+        height: 19px;
     }
 
     .dash-kpi-etiqueta,
@@ -137,8 +143,25 @@
     }
 
     .dash-costo-icono {
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         margin-bottom: 11px;
-        font-size: 20px;
+        border-radius: 9px;
+        background: var(--acento-suave);
+        color: #b37410;
+    }
+
+    .dash-costo-icono svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .dash-costo-total .dash-costo-icono {
+        background: var(--marino);
+        color: var(--acento);
     }
 
     .dash-costo-valor {
@@ -192,8 +215,12 @@
     }
 
     .dash-grafico-marca {
-        color: #c9c2b0;
-        font-size: 17px;
+        color: #b8b09c;
+    }
+
+    .dash-grafico-marca svg {
+        width: 18px;
+        height: 18px;
     }
 
     .dash-grafico-contenedor {
@@ -269,7 +296,7 @@
 
         <article class="dash-kpi">
             <div class="dash-kpi-superior">
-                <div class="dash-kpi-icono">📦</div>
+                <div class="dash-kpi-icono">{{ icono("caja") }}</div>
             </div>
             <p class="dash-kpi-etiqueta">Total de pedidos</p>
             <p class="dash-kpi-valor">{{ total_pedidos | miles }}</p>
@@ -278,7 +305,7 @@
 
         <article class="dash-kpi">
             <div class="dash-kpi-superior">
-                <div class="dash-kpi-icono">⏱️</div>
+                <div class="dash-kpi-icono">{{ icono("reloj") }}</div>
             </div>
             <p class="dash-kpi-etiqueta">Entregas a tiempo</p>
             <p class="dash-kpi-valor">{{ porcentaje_a_tiempo | round(1) }}%</p>
@@ -287,7 +314,7 @@
 
         <article class="dash-kpi">
             <div class="dash-kpi-superior">
-                <div class="dash-kpi-icono">🚚</div>
+                <div class="dash-kpi-icono">{{ icono("camion") }}</div>
             </div>
             <p class="dash-kpi-etiqueta">Vehículos disponibles</p>
             <p class="dash-kpi-valor">{{ vehiculos_disponibles | miles }}</p>
@@ -296,7 +323,7 @@
 
         <article class="dash-kpi">
             <div class="dash-kpi-superior">
-                <div class="dash-kpi-icono">👨‍✈️</div>
+                <div class="dash-kpi-icono">{{ icono("persona") }}</div>
             </div>
             <p class="dash-kpi-etiqueta">Conductores activos</p>
             <p class="dash-kpi-valor">{{ conductores_activos | miles }}</p>
@@ -310,25 +337,25 @@
     <section class="dash-costos">
 
         <article class="dash-costo">
-            <div class="dash-costo-icono">⛽</div>
+            <div class="dash-costo-icono">{{ icono("combustible") }}</div>
             <p class="dash-costo-etiqueta">Combustible</p>
             <p class="dash-costo-valor">${{ gasto_combustible | int | miles }}</p>
         </article>
 
         <article class="dash-costo">
-            <div class="dash-costo-icono">🔧</div>
+            <div class="dash-costo-icono">{{ icono("llave") }}</div>
             <p class="dash-costo-etiqueta">Mantenciones</p>
             <p class="dash-costo-valor">${{ costo_mantenciones | int | miles }}</p>
         </article>
 
         <article class="dash-costo">
-            <div class="dash-costo-icono">⚠️</div>
+            <div class="dash-costo-icono">{{ icono("alerta") }}</div>
             <p class="dash-costo-etiqueta">Incidentes</p>
             <p class="dash-costo-valor">${{ costo_incidentes | int | miles }}</p>
         </article>
 
         <article class="dash-costo dash-costo-total">
-            <div class="dash-costo-icono">📊</div>
+            <div class="dash-costo-icono">{{ icono("grafico") }}</div>
             <p class="dash-costo-etiqueta">Costo operacional total</p>
             <p class="dash-costo-valor">${{ costo_operacional | int | miles }}</p>
         </article>
@@ -345,7 +372,7 @@
                     <h3>Distribución de pedidos</h3>
                     <p>Pedidos agrupados según su estado</p>
                 </div>
-                <span class="dash-grafico-marca">◉</span>
+                <span class="dash-grafico-marca">{{ icono("dona") }}</span>
             </div>
             <div class="dash-grafico-contenedor">
                 <canvas id="graficoPedidos"></canvas>
@@ -358,7 +385,7 @@
                     <h3>Estado de la flota</h3>
                     <p>Cantidad de vehículos por estado</p>
                 </div>
-                <span class="dash-grafico-marca">▥</span>
+                <span class="dash-grafico-marca">{{ icono("grafico") }}</span>
             </div>
             <div class="dash-grafico-contenedor">
                 <canvas id="graficoVehiculos"></canvas>
@@ -371,7 +398,7 @@
                     <h3>Comparación de costos</h3>
                     <p>Principales gastos operacionales</p>
                 </div>
-                <span class="dash-grafico-marca">↗</span>
+                <span class="dash-grafico-marca">{{ icono("tendencia") }}</span>
             </div>
             <div class="dash-grafico-contenedor">
                 <canvas id="graficoCostos"></canvas>
@@ -384,7 +411,7 @@
                     <h3>Mantenciones e incidentes</h3>
                     <p>Comparación de costos registrados</p>
                 </div>
-                <span class="dash-grafico-marca">◉</span>
+                <span class="dash-grafico-marca">{{ icono("dona") }}</span>
             </div>
             <div class="dash-grafico-contenedor">
                 <canvas id="graficoMantencionesIncidentes"></canvas>

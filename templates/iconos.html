@@ -21,8 +21,35 @@
     <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
 {%- elif nombre == "escudo" -%}
     <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>
+{%- elif nombre == "reloj" -%}
+    <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+{%- elif nombre == "dinero" -%}
+    <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>
+{%- elif nombre == "check" -%}
+    <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
+{%- elif nombre == "equis" -%}
+    <circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>
+{%- elif nombre == "pausa" -%}
+    <circle cx="12" cy="12" r="10"/><path d="M10 15V9"/><path d="M14 15V9"/>
+{%- elif nombre == "salud" -%}
+    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/>
+{%- elif nombre == "sol" -%}
+    <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+{%- elif nombre == "preparacion" -%}
+    <rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>
+{%- elif nombre == "grafico" -%}
+    <path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
+{%- elif nombre == "dona" -%}
+    <path d="M21 12c.552 0 1.005-.449.95-.998a10 10 0 0 0-8.953-8.951c-.55-.055-.998.398-.998.95v8a1 1 0 0 0 1 1z"/><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
+{%- elif nombre == "tendencia" -%}
+    <path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/>
 {%- endif -%}
 </svg>
+{%- endmacro %}
+
+{# Ícono dentro de un cuadrito de color. color: azul | verde | rojo | ambar #}
+{% macro insignia(nombre, color="azul") -%}
+<span class="ico ico-{{ color }}">{{ icono(nombre) }}</span>
 {%- endmacro %}
 
 {# Símbolo "SL" de circuito del logo SmartLogic #}

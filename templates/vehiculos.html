@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "iconos.html" import icono, insignia %}
 
 {% block title %}Vehículos - SMARTLOGIC{% endblock %}
 
@@ -171,7 +172,7 @@
 </style>
 
 
-<h1>🚚 Vehículos</h1>
+<h1>{{ insignia("camion", "azul") }} Vehículos</h1>
 
 
 <!-- =========================
@@ -188,7 +189,7 @@
        data-url="{{ url_for('vehiculos', estado='...', pagina=1) }}"
         onclick="window.location.href=this.dataset.url"
 
-        <h3>🚚 Total vehículos</h3>
+        <h3>{{ insignia("camion", "azul") }} Total vehículos</h3>
 
         <p>{{ total_vehiculos|miles }}</p>
 
@@ -203,7 +204,7 @@
         onclick="window.location.href=this.dataset.url"
     >
 
-        <h3>✅ Disponibles</h3>
+        <h3>{{ insignia("check", "verde") }} Disponibles</h3>
 
         <p>
             {{ estados_vehiculos.get("Disponible", 0)|miles }}
@@ -220,7 +221,7 @@
         onclick="window.location.href=this.dataset.url"
     >
 
-        <h3>🛣️ En ruta</h3>
+        <h3>{{ insignia("ruta", "azul") }} En ruta</h3>
 
         <p>
             {{ estados_vehiculos.get("En ruta", 0)|miles }}
@@ -237,7 +238,7 @@
         onclick="window.location.href=this.dataset.url"
     >
 
-        <h3>🔧 En mantención</h3>
+        <h3>{{ insignia("llave", "ambar") }} En mantención</h3>
 
         <p>
             {{ estados_vehiculos.get("Mantención", 0)|miles }}
@@ -256,7 +257,7 @@
     type="text"
     id="buscadorVehiculos"
     class="buscador"
-    placeholder="🔎 Buscar por ID, patente, marca, modelo o estado..."
+    placeholder="Buscar por ID, patente, marca, modelo o estado..."
 >
 
 

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "iconos.html" import icono, insignia %}
 
 {% block title %}Incidentes - SMARTLOGIC{% endblock %}
 
@@ -167,7 +168,7 @@
 </style>
 
 
-<h1>🚨 Incidentes</h1>
+<h1>{{ insignia("alerta", "azul") }} Incidentes</h1>
 
 
 <!-- =========================
@@ -184,7 +185,7 @@
         style="text-decoration: none; color: inherit;"
     >
 
-        <h3>🚨 Total incidentes</h3>
+        <h3>{{ insignia("alerta", "azul") }} Total incidentes</h3>
 
         <p>
             {{ (incidentes_abiertos + incidentes_resueltos)|miles }}
@@ -201,7 +202,7 @@
         style="text-decoration: none; color: inherit;"
     >
 
-        <h3>⚠️ Incidentes abiertos</h3>
+        <h3>{{ insignia("reloj", "ambar") }} Incidentes abiertos</h3>
 
         <p>
             {{ incidentes_abiertos|miles }}
@@ -218,7 +219,7 @@
         style="text-decoration: none; color: inherit;"
     >
 
-        <h3>✅ Incidentes resueltos</h3>
+        <h3>{{ insignia("check", "verde") }} Incidentes resueltos</h3>
 
         <p>
             {{ incidentes_resueltos|miles }}
@@ -237,7 +238,7 @@
     type="text"
     id="buscadorIncidentes"
     class="buscador"
-    placeholder="🔎 Buscar por ID, entrega, patente, conductor, tipo, gravedad o estado..."
+    placeholder="Buscar por ID, entrega, patente, conductor, tipo, gravedad o estado..."
 >
 
 

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "iconos.html" import icono, insignia %}
 
 {% block title %}Pedidos - SMARTLOGIC{% endblock %}
 
@@ -213,7 +214,7 @@
 </style>
 
 
-<h1>📦 Pedidos</h1>
+<h1>{{ insignia("caja", "azul") }} Pedidos</h1>
 
 
 <!-- =========================
@@ -230,7 +231,7 @@
         onclick="filtrarPorEstado('Todos')"
     >
 
-        <h3>📦 Total pedidos</h3>
+        <h3>{{ insignia("caja", "azul") }} Total pedidos</h3>
 
         <p>
             {{ total_pedidos|miles }}
@@ -247,7 +248,7 @@
         onclick="filtrarPorEstado('Entregado')"
     >
 
-        <h3>✅ Entregados</h3>
+        <h3>{{ insignia("check", "verde") }} Entregados</h3>
 
         <p>
             {{ estados_pedidos.get("Entregado", 0)|miles }}
@@ -264,7 +265,7 @@
         onclick="filtrarPorEstado('En ruta')"
     >
 
-        <h3>🚚 En ruta</h3>
+        <h3>{{ insignia("camion", "azul") }} En ruta</h3>
 
         <p>
             {{ estados_pedidos.get("En ruta", 0)|miles }}
@@ -281,7 +282,7 @@
         onclick="filtrarPorEstado('En preparación')"
     >
 
-        <h3>🧺 En preparación</h3>
+        <h3>{{ insignia("preparacion", "ambar") }} En preparación</h3>
 
         <p>
             {{ estados_pedidos.get("En preparación", 0)|miles }}
@@ -298,7 +299,7 @@
         onclick="filtrarPorEstado('Pendiente')"
     >
 
-        <h3>⏳ Pendientes</h3>
+        <h3>{{ insignia("reloj", "ambar") }} Pendientes</h3>
 
         <p>
             {{ estados_pedidos.get("Pendiente", 0)|miles }}
@@ -315,7 +316,7 @@
         onclick="filtrarPorEstado('Cancelado')"
     >
 
-        <h3>✖️ Cancelados</h3>
+        <h3>{{ insignia("equis", "rojo") }} Cancelados</h3>
 
         <p>
             {{ estados_pedidos.get("Cancelado", 0)|miles }}
@@ -339,7 +340,7 @@
         type="text"
         id="buscador"
         class="buscador"
-        placeholder="🔎 Buscar pedido, cliente, comuna o estado..."
+        placeholder="Buscar pedido, cliente, comuna o estado..."
     >
 
 

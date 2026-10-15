@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "iconos.html" import icono, insignia %}
 
 {% block title %}Conductores - SMARTLOGIC{% endblock %}
 
@@ -121,7 +122,7 @@
 </style>
 
 
-<h1>👨‍✈️ Conductores</h1>
+<h1>{{ insignia("persona", "azul") }} Conductores</h1>
 
 
 <!-- =========================
@@ -134,7 +135,7 @@
         href="{{ url_for('conductores', estado='Todos', pagina=1) }}"
         class="card card-filtro {% if estado_filtro == 'Todos' %}activa{% endif %}"
     >
-        <h3>👨‍✈️ Total conductores</h3>
+        <h3>{{ insignia("persona", "azul") }} Total conductores</h3>
         <p>{{ total_conductores|miles }}</p>
     </a>
 
@@ -143,7 +144,7 @@
         href="{{ url_for('conductores', estado='Activo', pagina=1) }}"
         class="card card-filtro {% if estado_filtro == 'Activo' %}activa{% endif %}"
     >
-        <h3>🟢 Activos</h3>
+        <h3>{{ insignia("check", "verde") }} Activos</h3>
         <p>{{ estados_conductores.get("Activo", 0)|miles }}</p>
     </a>
 
@@ -152,7 +153,7 @@
         href="{{ url_for('conductores', estado='Inactivo', pagina=1) }}"
         class="card card-filtro {% if estado_filtro == 'Inactivo' %}activa{% endif %}"
     >
-        <h3>🔴 Inactivos</h3>
+        <h3>{{ insignia("equis", "rojo") }} Inactivos</h3>
         <p>{{ estados_conductores.get("Inactivo", 0)|miles }}</p>
     </a>
 
@@ -161,7 +162,7 @@
         href="{{ url_for('conductores', estado='Licencia médica', pagina=1) }}"
         class="card card-filtro {% if estado_filtro == 'Licencia médica' %}activa{% endif %}"
     >
-        <h3>🩺 Licencia médica</h3>
+        <h3>{{ insignia("salud", "rojo") }} Licencia médica</h3>
         <p>{{ estados_conductores.get("Licencia médica", 0)|miles }}</p>
     </a>
 
@@ -170,7 +171,7 @@
         href="{{ url_for('conductores', estado='Vacaciones', pagina=1) }}"
         class="card card-filtro {% if estado_filtro == 'Vacaciones' %}activa{% endif %}"
     >
-        <h3>🌴 Vacaciones</h3>
+        <h3>{{ insignia("sol", "ambar") }} Vacaciones</h3>
         <p>{{ estados_conductores.get("Vacaciones", 0)|miles }}</p>
     </a>
 
@@ -185,7 +186,7 @@
     type="text"
     id="buscadorConductores"
     class="buscador"
-    placeholder="🔎 Buscar por ID, nombre, licencia o estado..."
+    placeholder="Buscar por ID, nombre, licencia o estado..."
 >
 
 
