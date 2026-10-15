@@ -6,7 +6,7 @@ CARPETA = Path("data")
 archivos = sorted(CARPETA.glob("*.csv"))
 
 print("=" * 60)
-print("        COMPROBACIÓN DE CSV - SMARTLOGI")
+print("        COMPROBACIÓN DE CSV - SMARTLOGIC")
 print("=" * 60)
 
 for archivo in archivos:
