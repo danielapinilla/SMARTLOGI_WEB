@@ -116,41 +116,37 @@ canvas {
     text-decoration: none;
 }
 
-.logo-icono {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
+/* Símbolo "SL" de circuito (templates/iconos.html) */
+.logo-simbolo {
+    width: 48px;
+    height: auto;
     flex-shrink: 0;
-    border-radius: 10px;
-    background: var(--acento);
-    color: var(--marino);
+    overflow: visible;
 }
 
-.logo-icono svg {
-    width: 21px;
-    height: 21px;
+.logo-simbolo .trazo {
+    stroke: #f4f2ea;
+}
+
+.logo-simbolo .nodo {
+    stroke: var(--acento);
 }
 
 .logo-texto {
     display: flex;
     flex-direction: column;
-    gap: 3px;
-    font-family: var(--fuente-titulos);
-    font-size: 19px;
-    font-weight: 800;
+    gap: 5px;
+    font-family: "Montserrat", var(--fuente-titulos);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: .04em;
     line-height: 1;
-}
-
-.logo-texto .punto-marca {
-    color: var(--acento);
 }
 
 .logo-texto small {
     color: #9fb0c8;
     font-family: var(--fuente-texto);
-    font-size: 9px;
+    font-size: 8.5px;
     font-weight: 700;
     letter-spacing: 1.6px;
 }
@@ -525,6 +521,19 @@ textarea:focus {
         font-size: 12px;
     }
 
+    .logo {
+        gap: 8px;
+        padding: 0 4px;
+    }
+
+    .logo-simbolo {
+        width: 40px;
+    }
+
+    .logo-texto {
+        font-size: 14px;
+    }
+
     main {
         padding: 20px;
     }
@@ -664,6 +673,15 @@ textarea:focus {
 
 .login-marca .logo {
     padding: 0;
+    gap: 14px;
+}
+
+.login-marca .logo-simbolo {
+    width: 64px;
+}
+
+.login-marca .logo-texto {
+    font-size: 20px;
 }
 
 .login-texto {

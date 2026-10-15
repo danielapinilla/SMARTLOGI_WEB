@@ -25,11 +25,31 @@
 </svg>
 {%- endmacro %}
 
+{# Símbolo "SL" de circuito del logo SmartLogic #}
+{% macro simbolo(clase="logo-simbolo") -%}
+<svg class="{{ clase }}" viewBox="0 0 98 50" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <g class="trazo" stroke="currentColor">
+        <path d="M9.2 17H22L31 5H86.8"/>
+        <path d="M22 17L32 33H50.8"/>
+        <path d="M41.2 18H59L71 31L61 44H19.2"/>
+        <path d="M79 14V43H89.3"/>
+    </g>
+    <g class="nodo" stroke="currentColor">
+        <circle cx="6" cy="17" r="3.2"/>
+        <circle cx="90" cy="5" r="3.2"/>
+        <circle cx="38" cy="18" r="3.2"/>
+        <circle cx="54" cy="33" r="3.2"/>
+        <circle cx="16" cy="44" r="3.2"/>
+        <circle cx="92.5" cy="43" r="3.2"/>
+    </g>
+</svg>
+{%- endmacro %}
+
 {% macro logo(subtitulo="GESTIÓN DE FLOTA") -%}
-<a class="logo" href="/">
-    <span class="logo-icono">{{ icono("camion") }}</span>
+<a class="logo" href="/" aria-label="SmartLogic, ir al inicio">
+    {{ simbolo() }}
     <span class="logo-texto">
-        <span>smartlogic<span class="punto-marca">.</span></span>
+        <span>SMARTLOGIC</span>
         <small>{{ subtitulo }}</small>
     </span>
 </a>
