@@ -3,3 +3,4 @@ pandas
 gunicorn
 python-dotenv
 openai
+xlsxwriter

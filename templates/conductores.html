@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "iconos.html" import icono, insignia %}
+{% from "iconos.html" import icono, insignia, boton_excel %}
 
 {% block title %}Conductores - SMARTLOGIC{% endblock %}
 
@@ -193,6 +193,8 @@
 <!-- =========================
      INFORMACIÓN
      ========================= -->
+
+{{ boton_excel("conductores", estado_filtro, total_registros) }}
 
 <div class="info-conductores">
 

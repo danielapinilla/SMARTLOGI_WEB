@@ -5,18 +5,20 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
-from datetime import timedelta
+from datetime import datetime, timedelta
 from functools import lru_cache
 from pathlib import Path
 
 import pandas as pd
 from dotenv import load_dotenv
 from flask import (
-    Flask, flash, jsonify, redirect, render_template, request, session, url_for
+    Flask, abort, flash, jsonify, redirect, render_template, request,
+    send_file, session, url_for,
 )
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from asistente import Asistente, construir_tablas
+from exportar import crear_excel, nombre_archivo
 
 # Cargar variables privadas desde .env (en Vercel se configuran en el panel)
 load_dotenv()
@@ -59,6 +61,16 @@ ADMIN_EMAILS = {
 }
 
 REGISTROS_POR_PAGINA = 50
+
+# Filtro por estado de cada sección: (columna, estados que se pueden elegir).
+# Lo usan las páginas y la exportación a Excel, así siempre coinciden.
+FILTROS_ESTADO = {
+    "pedidos": ("estado_pedido", ["Todos", "Entregado", "En ruta", "En preparación", "Pendiente", "Cancelado"]),
+    "vehiculos": ("estado", ["Todos", "Disponible", "En ruta", "Mantención", "Fuera de servicio"]),
+    "conductores": ("estado", ["Todos", "Activo", "Inactivo", "Licencia médica", "Vacaciones"]),
+    "rutas": ("estado", ["Todos", "Activa", "Restringida", "Suspendida"]),
+    "incidentes": ("estado_incidente", ["Todos", "Abierto", "Resuelto"]),
+}
 
 
 @app.template_filter("miles")
@@ -432,8 +444,7 @@ def pedidos():
 
     pedidos_filtrados, estado_filtro = filtrar_por_estado(
         pedidos_df,
-        "estado_pedido",
-        ["Todos", "Entregado", "En ruta", "En preparación", "Pendiente", "Cancelado"]
+        *FILTROS_ESTADO["pedidos"]
     )
 
     datos_pedidos, pagina, total_paginas = paginar(pedidos_filtrados)
@@ -466,8 +477,7 @@ def vehiculos():
 
     vehiculos_filtrados, estado_filtro = filtrar_por_estado(
         vehiculos_df,
-        "estado",
-        ["Todos", "Disponible", "En ruta", "Mantención", "Fuera de servicio"]
+        *FILTROS_ESTADO["vehiculos"]
     )
 
     datos_vehiculos, pagina, total_paginas = paginar(vehiculos_filtrados)
@@ -493,8 +503,7 @@ def conductores():
 
     conductores_filtrados, estado_filtro = filtrar_por_estado(
         conductores_df,
-        "estado",
-        ["Todos", "Activo", "Inactivo", "Licencia médica", "Vacaciones"]
+        *FILTROS_ESTADO["conductores"]
     )
 
     datos_conductores, pagina, total_paginas = paginar(conductores_filtrados)
@@ -520,8 +529,7 @@ def rutas():
 
     rutas_filtradas, estado_filtro = filtrar_por_estado(
         rutas_df,
-        "estado",
-        ["Todos", "Activa", "Restringida", "Suspendida"]
+        *FILTROS_ESTADO["rutas"]
     )
 
     datos_rutas, pagina, total_paginas = paginar(rutas_filtradas)
@@ -622,8 +630,7 @@ def incidentes():
 
     incidentes_filtrados, estado_filtro = filtrar_por_estado(
         incidentes_df,
-        "estado_incidente",
-        ["Todos", "Abierto", "Resuelto"]
+        *FILTROS_ESTADO["incidentes"]
     )
 
     datos_incidentes, pagina, total_paginas = paginar(incidentes_filtrados)
@@ -645,6 +652,73 @@ def incidentes():
         incidentes_abiertos=int(incidentes_df["estado_incidente"].eq("Abierto").sum()),
         incidentes_resueltos=int(incidentes_df["estado_incidente"].eq("Resuelto").sum()),
         estado_filtro=estado_filtro
+    )
+
+
+# =========================
+# EXPORTAR A EXCEL
+# =========================
+
+def datos_para_exportar(seccion):
+    """Tabla completa de la sección, con nombres legibles agregados."""
+
+    if seccion == "pedidos":
+        df = pedidos_df.copy()
+        df["nombre_cliente"] = df["cliente_id"].map(
+            clientes_df.set_index("cliente_id")["nombre_cliente"]
+        )
+        return df
+
+    if seccion == "incidentes":
+        df = incidentes_df.copy()
+        df["patente"] = df["vehiculo_id"].map(mapa_patentes)
+        df["nombre_conductor"] = df["conductor_id"].map(
+            conductores_df.set_index("conductor_id")["nombre_conductor"]
+        )
+        return df
+
+    if seccion in ("mantenciones", "combustible"):
+        df = (mantenciones_df if seccion == "mantenciones" else combustible_df).copy()
+        df["patente"] = df["vehiculo_id"].map(mapa_patentes)
+        return df
+
+    return {
+        "vehiculos": vehiculos_df,
+        "conductores": conductores_df,
+        "rutas": rutas_df,
+    }[seccion].copy()
+
+
+def hora_chile():
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.now(ZoneInfo("America/Santiago"))
+    except Exception:  # sin base de zonas horarias en el equipo
+        return datetime.now()
+
+
+@app.route("/exportar/<seccion>")
+def exportar(seccion):
+
+    secciones = ("pedidos", "vehiculos", "conductores", "rutas",
+                 "mantenciones", "combustible", "incidentes")
+
+    if seccion not in secciones:
+        abort(404)
+
+    df = datos_para_exportar(seccion)
+    filtro = None
+
+    if seccion in FILTROS_ESTADO:
+        df, filtro = filtrar_por_estado(df, *FILTROS_ESTADO[seccion])
+
+    fecha = hora_chile()
+
+    return send_file(
+        crear_excel(df, seccion, filtro, fecha),
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        as_attachment=True,
+        download_name=nombre_archivo(seccion, filtro, fecha),
     )
 
 

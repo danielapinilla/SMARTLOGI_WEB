@@ -944,3 +944,55 @@ textarea:focus {
         display: none;
     }
 }
+
+/* =====================================================
+   BOTÓN DESCARGAR EXCEL
+   ===================================================== */
+
+.acciones-tabla {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 0 10px;
+}
+
+.boton-excel {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background: var(--superficie);
+    color: var(--texto);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background .15s, border-color .15s;
+}
+
+.boton-excel:hover {
+    border-color: #1f9d63;
+    background: #edf7f1;
+}
+
+.boton-excel svg {
+    width: 16px;
+    height: 16px;
+    color: #1f9d63;
+}
+
+.boton-excel span {
+    color: var(--secundario);
+    font-weight: 500;
+}
+
+@media (max-width: 650px) {
+    .acciones-tabla {
+        justify-content: stretch;
+    }
+
+    .boton-excel {
+        width: 100%;
+        justify-content: center;
+    }
+}

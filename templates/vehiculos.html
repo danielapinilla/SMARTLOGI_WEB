@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "iconos.html" import icono, insignia %}
+{% from "iconos.html" import icono, insignia, boton_excel %}
 
 {% block title %}Vehículos - SMARTLOGIC{% endblock %}
 
@@ -264,6 +264,8 @@
 <!-- =========================
      INFORMACIÓN
      ========================= -->
+
+{{ boton_excel("vehiculos", estado_filtro, total_registros) }}
 
 <div class="info-vehiculos">
 

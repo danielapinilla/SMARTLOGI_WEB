@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "iconos.html" import icono, insignia %}
+{% from "iconos.html" import icono, insignia, boton_excel %}
 
 {% block title %}Combustible - SMARTLOGIC{% endblock %}
 
@@ -167,6 +167,8 @@
 <!-- =========================
      INFORMACIÓN
      ========================= -->
+
+{{ boton_excel("combustible", None, total_registros) }}
 
 <div class="info-combustible">
 
