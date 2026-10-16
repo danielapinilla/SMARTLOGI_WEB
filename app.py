@@ -702,7 +702,8 @@ def preguntar_asistente():
         respuesta = asistente.responder(pregunta, historial)
 
     except Exception as error:
-        app.logger.exception("Error del asistente")
+        # Queda en los registros (Logs) de Vercel con el detalle completo
+        app.logger.exception("Error del asistente: %s", getattr(error, "message", error))
         return jsonify(error=mensaje_error_ia(error)), 502
 
     return jsonify(respuesta=respuesta)
@@ -729,7 +730,10 @@ def mensaje_error_ia(error):
     if nombre in ("APIConnectionError", "APITimeoutError"):
         return "No se pudo conectar con el servicio de IA. Intenta de nuevo."
 
-    return "Ocurrió un error al consultar la IA. Intenta de nuevo."
+    # Se muestra el tipo y código del error (sin datos privados) para diagnosticar
+    codigo = getattr(error, "status_code", None)
+    detalle = f"{nombre} {codigo}" if codigo else nombre
+    return f"Ocurrió un error al consultar la IA ({detalle}). Intenta de nuevo."
 
 
 # =========================

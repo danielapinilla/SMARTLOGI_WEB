@@ -444,18 +444,14 @@ class Asistente:
             if not mensaje.tool_calls:
                 return (mensaje.content or "").strip() or "No pude generar una respuesta. Intenta de nuevo."
 
+            # Cada llamada se devuelve completa, tal como llegó: incluye campos extra
+            # como extra_content.google.thought_signature, que Gemini 3 exige
+            # recibir de vuelta al usar herramientas (si falta, responde error 400).
             mensajes.append({
                 "role": "assistant",
                 "content": mensaje.content,
                 "tool_calls": [
-                    {
-                        "id": llamada.id,
-                        "type": "function",
-                        "function": {
-                            "name": llamada.function.name,
-                            "arguments": llamada.function.arguments,
-                        },
-                    }
+                    llamada.model_dump(exclude_none=True)
                     for llamada in mensaje.tool_calls
                 ],
             })
