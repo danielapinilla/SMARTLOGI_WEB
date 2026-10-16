@@ -78,15 +78,13 @@
 
     #tablaRutas {
         width: 100%;
-        table-layout: fixed;
+        table-layout: auto;
     }
 
     #tablaRutas th,
     #tablaRutas td {
         padding: 9px 7px;
         font-size: 13px;
-        overflow: hidden;
-        text-overflow: ellipsis;
         white-space: nowrap;
     }
 
@@ -95,45 +93,6 @@
         user-select: none;
     }
 
-    #tablaRutas th:nth-child(1) {
-        width: 9%;
-    }
-
-    #tablaRutas th:nth-child(2) {
-        width: 16%;
-    }
-
-    #tablaRutas th:nth-child(3) {
-        width: 11%;
-    }
-
-    #tablaRutas th:nth-child(4) {
-        width: 11%;
-    }
-
-    #tablaRutas th:nth-child(5) {
-        width: 9%;
-    }
-
-    #tablaRutas th:nth-child(6) {
-        width: 11%;
-    }
-
-    #tablaRutas th:nth-child(7) {
-        width: 11%;
-    }
-
-    #tablaRutas th:nth-child(8) {
-        width: 9%;
-    }
-
-    #tablaRutas th:nth-child(9) {
-        width: 6%;
-    }
-
-    #tablaRutas th:nth-child(10) {
-        width: 7%;
-    }
 
     .orden {
         font-size: 12px;
@@ -238,7 +197,7 @@
      TABLA
      ========================= -->
 
-<div style="overflow-x: auto;">
+<div class="tabla-scroll">
 
     <table id="tablaRutas">
 
@@ -309,7 +268,7 @@
 
                 <td>{{ ruta.ruta_id }}</td>
 
-                <td>{{ ruta.nombre_ruta }}</td>
+                <td class="texto-largo">{{ ruta.nombre_ruta }}</td>
 
                 <td>{{ ruta.comuna_origen }}</td>
 

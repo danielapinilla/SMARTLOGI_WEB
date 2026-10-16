@@ -64,7 +64,7 @@
 
     #tablaPedidos {
         width: 100%;
-        table-layout: fixed;
+        table-layout: auto;
         font-size: 13px;
     }
 
@@ -86,63 +86,6 @@
 
     #tablaPedidos td {
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-
-    /* =========================
-       ANCHOS DE COLUMNAS
-       ========================= */
-
-    #tablaPedidos th:nth-child(1),
-    #tablaPedidos td:nth-child(1) {
-        width: 8%;
-    }
-
-    #tablaPedidos th:nth-child(2),
-    #tablaPedidos td:nth-child(2) {
-        width: 9%;
-    }
-
-    #tablaPedidos th:nth-child(3),
-    #tablaPedidos td:nth-child(3) {
-        width: 10%;
-    }
-
-    #tablaPedidos th:nth-child(4),
-    #tablaPedidos td:nth-child(4) {
-        width: 9%;
-    }
-
-    #tablaPedidos th:nth-child(5),
-    #tablaPedidos td:nth-child(5) {
-        width: 7%;
-    }
-
-    #tablaPedidos th:nth-child(6),
-    #tablaPedidos td:nth-child(6) {
-        width: 8%;
-    }
-
-    #tablaPedidos th:nth-child(7),
-    #tablaPedidos td:nth-child(7) {
-        width: 9%;
-    }
-
-    #tablaPedidos th:nth-child(8),
-    #tablaPedidos td:nth-child(8) {
-        width: 10%;
-    }
-
-    #tablaPedidos th:nth-child(9),
-    #tablaPedidos td:nth-child(9) {
-        width: 16%;
-    }
-
-    #tablaPedidos th:nth-child(10),
-    #tablaPedidos td:nth-child(10) {
-        width: 14%;
     }
 
 
@@ -391,7 +334,7 @@
          TABLA
          ========================= -->
 
-    <div style="overflow-x: auto;">
+    <div class="tabla-scroll">
 
         <table id="tablaPedidos">
 

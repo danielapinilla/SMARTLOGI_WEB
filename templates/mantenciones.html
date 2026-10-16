@@ -61,15 +61,13 @@
     /* Tabla compacta */
     #tablaMantenciones {
         width: 100%;
-        table-layout: fixed;
+        table-layout: auto;
     }
 
     #tablaMantenciones th,
     #tablaMantenciones td {
         padding: 9px 7px;
         font-size: 13px;
-        overflow: hidden;
-        text-overflow: ellipsis;
         white-space: nowrap;
     }
 
@@ -78,41 +76,6 @@
         user-select: none;
     }
 
-    #tablaMantenciones th:nth-child(1) {
-        width: 10%;
-    }
-
-    #tablaMantenciones th:nth-child(2) {
-        width: 10%;
-    }
-
-    #tablaMantenciones th:nth-child(3) {
-        width: 16%;
-    }
-
-    #tablaMantenciones th:nth-child(4) {
-        width: 11%;
-    }
-
-    #tablaMantenciones th:nth-child(5) {
-        width: 12%;
-    }
-
-    #tablaMantenciones th:nth-child(6) {
-        width: 12%;
-    }
-
-    #tablaMantenciones th:nth-child(7) {
-        width: 13%;
-    }
-
-    #tablaMantenciones th:nth-child(8) {
-        width: 9%;
-    }
-
-    #tablaMantenciones th:nth-child(9) {
-        width: 7%;
-    }
 
     .orden {
         font-size: 12px;
@@ -187,7 +150,7 @@
      TABLA
      ========================= -->
 
-<div style="overflow-x: auto;">
+<div class="tabla-scroll">
 
     <table id="tablaMantenciones">
 

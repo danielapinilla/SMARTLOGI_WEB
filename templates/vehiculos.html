@@ -43,15 +43,13 @@
 
     #tablaVehiculos {
         width: 100%;
-        table-layout: fixed;
+        table-layout: auto;
     }
 
     #tablaVehiculos th,
     #tablaVehiculos td {
         padding: 10px 8px;
         font-size: 13px;
-        overflow: hidden;
-        text-overflow: ellipsis;
         white-space: nowrap;
     }
 
@@ -68,56 +66,6 @@
         margin-left: 4px;
         color: var(--texto);
         font-weight: bold;
-    }
-
-
-    /* =========================
-       ANCHOS DE COLUMNAS
-       ========================= */
-
-    #tablaVehiculos th:nth-child(1),
-    #tablaVehiculos td:nth-child(1) {
-        width: 10%;
-    }
-
-    #tablaVehiculos th:nth-child(2),
-    #tablaVehiculos td:nth-child(2) {
-        width: 11%;
-    }
-
-    #tablaVehiculos th:nth-child(3),
-    #tablaVehiculos td:nth-child(3) {
-        width: 12%;
-    }
-
-    #tablaVehiculos th:nth-child(4),
-    #tablaVehiculos td:nth-child(4) {
-        width: 12%;
-    }
-
-    #tablaVehiculos th:nth-child(5),
-    #tablaVehiculos td:nth-child(5) {
-        width: 12%;
-    }
-
-    #tablaVehiculos th:nth-child(6),
-    #tablaVehiculos td:nth-child(6) {
-        width: 9%;
-    }
-
-    #tablaVehiculos th:nth-child(7),
-    #tablaVehiculos td:nth-child(7) {
-        width: 13%;
-    }
-
-    #tablaVehiculos th:nth-child(8),
-    #tablaVehiculos td:nth-child(8) {
-        width: 11%;
-    }
-
-    #tablaVehiculos th:nth-child(9),
-    #tablaVehiculos td:nth-child(9) {
-        width: 10%;
     }
 
 
@@ -306,7 +254,7 @@
      TABLA
      ========================= -->
 
-<div style="overflow-x: auto;">
+<div class="tabla-scroll">
 
     <table id="tablaVehiculos">
 

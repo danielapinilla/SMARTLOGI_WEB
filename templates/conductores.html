@@ -74,15 +74,13 @@
 
     #tablaConductores {
         width: 100%;
-        table-layout: fixed;
+        table-layout: auto;
     }
 
     #tablaConductores th,
     #tablaConductores td {
         padding: 10px 8px;
         font-size: 14px;
-        overflow: hidden;
-        text-overflow: ellipsis;
         white-space: nowrap;
     }
 
@@ -91,29 +89,6 @@
         user-select: none;
     }
 
-    #tablaConductores th:nth-child(1) {
-        width: 14%;
-    }
-
-    #tablaConductores th:nth-child(2) {
-        width: 25%;
-    }
-
-    #tablaConductores th:nth-child(3) {
-        width: 18%;
-    }
-
-    #tablaConductores th:nth-child(4) {
-        width: 17%;
-    }
-
-    #tablaConductores th:nth-child(5) {
-        width: 13%;
-    }
-
-    #tablaConductores th:nth-child(6) {
-        width: 13%;
-    }
 
     .orden {
         font-size: 12px;
@@ -227,7 +202,7 @@
      TABLA
      ========================= -->
 
-<div style="overflow-x: auto;">
+<div class="tabla-scroll">
 
     <table id="tablaConductores">
 

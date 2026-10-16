@@ -1649,3 +1649,52 @@ textarea:focus {
         width: 100%;
     }
 }
+
+/* =====================================================
+   TABLAS DE LAS SECCIONES
+   Cada columna toma el ancho de su contenido (no se corta con "…").
+   Si la tabla no cabe, se desliza hacia el lado y aparece una
+   sombra en el borde que indica que hay más columnas.
+   ===================================================== */
+
+.tabla-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Sombras en los bordes: las capas "local" tapan la sombra cuando
+       se llega al inicio o al final del desplazamiento */
+    background:
+        linear-gradient(to right, var(--superficie) 30%, transparent) left center / 40px 100% no-repeat local,
+        linear-gradient(to left, var(--superficie) 30%, transparent) right center / 40px 100% no-repeat local,
+        radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, .14), transparent) left center / 14px 100% no-repeat scroll,
+        radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, .14), transparent) right center / 14px 100% no-repeat scroll;
+}
+
+.tabla-scroll table {
+    background: transparent;
+}
+
+/* Los encabezados largos pueden ocupar 2 líneas; los datos, nunca se cortan */
+.tabla-scroll th {
+    min-width: 60px;
+}
+
+.tabla-scroll td {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Textos largos (descripción de incidentes, nombre de ruta): pueden usar
+   2 líneas en vez de ensanchar toda la tabla */
+.tabla-scroll td.texto-largo {
+    min-width: 160px;
+    max-width: 230px;
+    white-space: normal;
+    line-height: 1.35;
+}
+
+@media (max-width: 650px) {
+    .tabla-scroll table {
+        min-width: 0;
+    }
+}

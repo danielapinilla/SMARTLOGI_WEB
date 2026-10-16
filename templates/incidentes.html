@@ -90,15 +90,13 @@
 
     #tablaIncidentes {
         width: 100%;
-        table-layout: fixed;
+        table-layout: auto;
     }
 
     #tablaIncidentes th,
     #tablaIncidentes td {
         padding: 9px 7px;
         font-size: 13px;
-        overflow: hidden;
-        text-overflow: ellipsis;
         white-space: nowrap;
     }
 
@@ -109,55 +107,6 @@
 
     #tablaIncidentes th:hover {
         background: var(--marino-2);
-    }
-
-
-    /* =========================
-       ANCHOS DE COLUMNAS
-       ========================= */
-
-    #tablaIncidentes th:nth-child(1) {
-        width: 8%;
-    }
-
-    #tablaIncidentes th:nth-child(2) {
-        width: 8%;
-    }
-
-    #tablaIncidentes th:nth-child(3) {
-        width: 11%;
-    }
-
-    #tablaIncidentes th:nth-child(4) {
-        width: 9%;
-    }
-
-    #tablaIncidentes th:nth-child(5) {
-        width: 9%;
-    }
-
-    #tablaIncidentes th:nth-child(6) {
-        width: 11%;
-    }
-
-    #tablaIncidentes th:nth-child(7) {
-        width: 9%;
-    }
-
-    #tablaIncidentes th:nth-child(8) {
-        width: 16%;
-    }
-
-    #tablaIncidentes th:nth-child(9) {
-        width: 8%;
-    }
-
-    #tablaIncidentes th:nth-child(10) {
-        width: 9%;
-    }
-
-    #tablaIncidentes th:nth-child(11) {
-        width: 8%;
     }
 
 
@@ -280,7 +229,7 @@
      TABLA
      ========================= -->
 
-<div style="overflow-x: auto;">
+<div class="tabla-scroll">
 
     <table id="tablaIncidentes">
 
@@ -371,7 +320,7 @@
                     {{ incidente.gravedad }}
                 </td>
 
-                <td>
+                <td class="texto-largo">
                     {{ incidente.descripcion }}
                 </td>
 
