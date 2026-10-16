@@ -10,7 +10,31 @@ import os
 
 import pandas as pd
 
-MODELO = os.environ.get("OPENAI_MODEL", "gpt-5-mini")
+# Proveedor de IA: Gemini (tiene plan gratis) u OpenAI (pagado).
+# Si existe GEMINI_API_KEY se usa Gemini; si no, OPENAI_API_KEY.
+# Gemini se usa a través de su API compatible con OpenAI.
+URL_GEMINI = "https://generativelanguage.googleapis.com/v1beta/openai/"
+
+
+def configuracion_ia():
+    """Devuelve (clave, url_base, modelo) o (None, None, None) si no hay clave."""
+
+    if os.environ.get("GEMINI_API_KEY"):
+        return (
+            os.environ["GEMINI_API_KEY"],
+            URL_GEMINI,
+            os.environ.get("GEMINI_MODEL", "gemini-3.8-flash"),
+        )
+
+    if os.environ.get("OPENAI_API_KEY"):
+        return (
+            os.environ["OPENAI_API_KEY"],
+            os.environ.get("OPENAI_BASE_URL") or None,
+            os.environ.get("OPENAI_MODEL", "gpt-5-mini"),
+        )
+
+    return None, None, None
+
 
 MAX_RONDAS_HERRAMIENTAS = 6
 MAX_FILAS_AGRUPAR = 50
@@ -328,7 +352,7 @@ def buscar(tablas, tabla, filtros=None, columnas=None, ordenar_por=None,
 
 
 # =========================
-# CONVERSACIÓN CON OPENAI
+# CONVERSACIÓN CON LA IA
 # =========================
 
 INSTRUCCIONES = """Eres el asistente de SmartLogic, un sistema de gestión de flota y \
@@ -361,12 +385,13 @@ class Asistente:
 
     @property
     def disponible(self):
-        return bool(os.environ.get("OPENAI_API_KEY"))
+        return configuracion_ia()[0] is not None
 
-    def _cliente_openai(self):
+    def _cliente_ia(self):
         if self._cliente is None:
             from openai import OpenAI  # se importa solo si se usa el asistente
-            self._cliente = OpenAI(timeout=40, max_retries=1)
+            clave, url_base, self.modelo = configuracion_ia()
+            self._cliente = OpenAI(api_key=clave, base_url=url_base, timeout=40, max_retries=1)
         return self._cliente
 
     def _ejecutar(self, nombre, argumentos):
@@ -394,7 +419,7 @@ class Asistente:
             return {"error": str(error)}
 
     def responder(self, pregunta, historial=()):
-        """Devuelve el texto de la respuesta. Lanza excepciones de OpenAI si fallan."""
+        """Devuelve el texto de la respuesta. Lanza las excepciones del cliente si fallan."""
 
         mensajes = [{"role": "system", "content": self.instrucciones}]
 
@@ -404,13 +429,13 @@ class Asistente:
 
         mensajes.append({"role": "user", "content": pregunta})
 
-        opciones = {"model": MODELO, "tools": self.herramientas}
+        cliente = self._cliente_ia()
+        opciones = {"model": self.modelo, "tools": self.herramientas}
 
-        # Los modelos de razonamiento (gpt-5, o3, o4...) aceptan este ajuste
-        if MODELO.startswith(("gpt-5", "o")):
+        # Los modelos que "piensan" (gpt-5, o3, gemini...) aceptan este ajuste:
+        # pensar poco = respuestas más rápidas y baratas
+        if self.modelo.startswith(("gpt-5", "o", "gemini")):
             opciones["reasoning_effort"] = "low"
-
-        cliente = self._cliente_openai()
 
         for _ in range(MAX_RONDAS_HERRAMIENTAS):
             respuesta = cliente.chat.completions.create(messages=mensajes, **opciones)

@@ -660,7 +660,7 @@ asistente = Asistente(
     resumen=indicadores_dashboard,
 )
 
-# Límite de preguntas por sesión para cuidar el saldo de OpenAI
+# Límite de preguntas por sesión (cuida el saldo o la cuota gratis de la IA)
 PREGUNTAS_POR_HORA = 40
 LARGO_MAXIMO_PREGUNTA = 500
 
@@ -674,7 +674,7 @@ def pagina_asistente():
 def preguntar_asistente():
 
     if not asistente.disponible:
-        return jsonify(error="Falta configurar OPENAI_API_KEY."), 503
+        return jsonify(error="Falta configurar GEMINI_API_KEY (o OPENAI_API_KEY)."), 503
 
     datos = request.get_json(silent=True) or {}
     pregunta = str(datos.get("pregunta", "")).strip()
@@ -703,27 +703,31 @@ def preguntar_asistente():
 
     except Exception as error:
         app.logger.exception("Error del asistente")
-        return jsonify(error=mensaje_error_openai(error)), 502
+        return jsonify(error=mensaje_error_ia(error)), 502
 
     return jsonify(respuesta=respuesta)
 
 
-def mensaje_error_openai(error):
-    """Traduce los errores de OpenAI a un mensaje entendible."""
+def mensaje_error_ia(error):
+    """Traduce los errores del proveedor de IA a un mensaje entendible."""
 
     nombre = type(error).__name__
 
     if nombre == "AuthenticationError":
-        return "La clave de OpenAI no es válida. Revisa OPENAI_API_KEY."
+        return "La clave de la IA no es válida. Revisa GEMINI_API_KEY (o OPENAI_API_KEY)."
 
     if nombre == "RateLimitError":
-        return "OpenAI no aceptó la consulta: revisa que tu cuenta tenga saldo o espera un momento."
+        return ("Se alcanzó el límite de uso de la IA. Si usas el plan gratis, "
+                "espera un minuto e intenta de nuevo.")
 
     if nombre == "NotFoundError":
-        return "El modelo de IA configurado no está disponible. Revisa OPENAI_MODEL."
+        return "El modelo de IA configurado no está disponible. Revisa GEMINI_MODEL u OPENAI_MODEL."
+
+    if nombre == "PermissionDeniedError":
+        return "La clave de la IA no tiene permiso para esta consulta."
 
     if nombre in ("APIConnectionError", "APITimeoutError"):
-        return "No se pudo conectar con OpenAI. Intenta de nuevo."
+        return "No se pudo conectar con el servicio de IA. Intenta de nuevo."
 
     return "Ocurrió un error al consultar la IA. Intenta de nuevo."
 
