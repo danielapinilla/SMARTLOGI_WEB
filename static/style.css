@@ -1652,7 +1652,8 @@ textarea:focus {
 
 /* =====================================================
    TABLAS DE LAS SECCIONES
-   Cada columna toma el ancho de su contenido (no se corta con "…").
+   Cada columna toma el ancho de su contenido (no se corta con "…")
+   y los encabezados van en una sola línea.
    Si la tabla no cabe, se desliza hacia el lado y aparece una
    sombra en el borde que indica que hay más columnas.
    ===================================================== */
@@ -1674,9 +1675,16 @@ textarea:focus {
     background: transparent;
 }
 
-/* Los encabezados largos pueden ocupar 2 líneas; los datos, nunca se cortan */
+/* Encabezados en una sola línea, con la flechita de ordenar al lado */
 .tabla-scroll th {
-    min-width: 60px;
+    white-space: nowrap !important;
+    vertical-align: middle;
+}
+
+.tabla-scroll th,
+.tabla-scroll td {
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .tabla-scroll td {
@@ -1687,9 +1695,14 @@ textarea:focus {
 /* Textos largos (descripción de incidentes, nombre de ruta): pueden usar
    2 líneas en vez de ensanchar toda la tabla */
 .tabla-scroll td.texto-largo {
-    min-width: 160px;
-    max-width: 230px;
-    white-space: normal;
+    /* En tablas, max-width solo no basta: se fija el ancho para que el texto
+       pase a una segunda línea en vez de ensanchar la columna */
+    width: 180px;
+    min-width: 180px;
+    max-width: 180px;
+    /* !important: las tablas de cada sección fijan "nowrap" con su #id */
+    white-space: normal !important;
+    overflow-wrap: break-word;
     line-height: 1.35;
 }
 
