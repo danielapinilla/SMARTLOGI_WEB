@@ -132,19 +132,24 @@ def _a_fecha(serie):
     return pd.to_datetime(texto, format="%d/%m/%Y", errors="coerce")
 
 
-def nombre_archivo(seccion, filtro, fecha):
-    """smartlogic_pedidos_cancelado_2026-10-15.xlsx (sin tildes ni espacios)."""
+def nombre_archivo(seccion, filtro, fecha, desde=None, hasta=None):
+    """smartlogic_pedidos_cancelado_2026-10-15.xlsx (sin tildes ni espacios).
+
+    Con período: smartlogic_pedidos_2026-10-01_a_2026-10-31_2026-10-16.xlsx
+    """
 
     partes = ["smartlogic", seccion]
     if filtro and filtro != "Todos":
         partes.append(filtro)
+    if desde or hasta:
+        partes.append(f"{desde or 'inicio'}_a_{hasta or 'hoy'}")
 
     texto = "_".join(partes).lower().replace(" ", "-")
     texto = unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode()
     return f"{texto}_{fecha:%Y-%m-%d}.xlsx"
 
 
-def crear_excel(df, seccion, filtro=None, fecha=None):
+def crear_excel(df, seccion, filtro=None, fecha=None, periodo=None):
     """Devuelve un archivo .xlsx en memoria (BytesIO) con la tabla formateada."""
 
     fecha = fecha or datetime.now()
@@ -180,6 +185,8 @@ def crear_excel(df, seccion, filtro=None, fecha=None):
     detalle = f"{len(datos):,} registros".replace(",", ".")
     if filtro and filtro != "Todos":
         detalle += f" · Filtro: {filtro}"
+    if periodo:
+        detalle += f" · Período: {periodo}"
     detalle += f" · Descargado el {fecha:%d-%m-%Y %H:%M}"
     hoja.write(1, 0, detalle, estilo_detalle)
 

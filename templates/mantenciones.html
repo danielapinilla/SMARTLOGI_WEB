@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% from "iconos.html" import icono, insignia, boton_excel %}
+{% from "filtros.html" import filtro_fechas %}
 
 {% block title %}Mantenciones - SMARTLOGIC{% endblock %}
 
@@ -122,6 +123,8 @@
 
 <h1>{{ insignia("llave", "azul") }} Mantenciones</h1>
 
+{{ filtro_fechas("mantenciones", fechas, {}) }}
+
 
 <!-- =========================
      TARJETAS RESUMEN
@@ -165,7 +168,7 @@
      INFORMACIÓN
      ========================= -->
 
-{{ boton_excel("mantenciones", None, total_registros) }}
+{{ boton_excel("mantenciones", filtros_url, total_registros) }}
 
 <div class="info-mantenciones">
 
@@ -278,7 +281,7 @@
 
     {% if pagina > 1 %}
 
-        <a href="{{ url_for('mantenciones', pagina=pagina-1) }}">
+        <a href="{{ url_for('mantenciones', pagina=pagina-1, **filtros_url) }}">
             ←
         </a>
 
@@ -287,7 +290,7 @@
 
     {% if pagina > 3 %}
 
-        <a href="{{ url_for('mantenciones', pagina=1) }}">
+        <a href="{{ url_for('mantenciones', pagina=1, **filtros_url) }}">
             1
         </a>
 
@@ -311,7 +314,7 @@
 
         {% else %}
 
-            <a href="{{ url_for('mantenciones', pagina=numero) }}">
+            <a href="{{ url_for('mantenciones', pagina=numero, **filtros_url) }}">
                 {{ numero }}
             </a>
 
@@ -326,7 +329,7 @@
             ...
         </span>
 
-        <a href="{{ url_for('mantenciones', pagina=total_paginas) }}">
+        <a href="{{ url_for('mantenciones', pagina=total_paginas, **filtros_url) }}">
             {{ total_paginas }}
         </a>
 
@@ -335,7 +338,7 @@
 
     {% if pagina < total_paginas %}
 
-        <a href="{{ url_for('mantenciones', pagina=pagina+1) }}">
+        <a href="{{ url_for('mantenciones', pagina=pagina+1, **filtros_url) }}">
             →
         </a>
 

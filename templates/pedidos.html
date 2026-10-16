@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% from "iconos.html" import icono, insignia, boton_excel %}
+{% from "filtros.html" import filtro_fechas %}
 
 {% block title %}Pedidos - SMARTLOGIC{% endblock %}
 
@@ -216,6 +217,8 @@
 
 <h1>{{ insignia("caja", "azul") }} Pedidos</h1>
 
+{{ filtro_fechas("pedidos", fechas, {"estado": estado_filtro}) }}
+
 
 <!-- =========================
      TARJETAS INTERACTIVAS
@@ -348,7 +351,7 @@
          INFORMACIÓN
          ========================= -->
 
-    {{ boton_excel("pedidos", estado_filtro, total_registros) }}
+    {{ boton_excel("pedidos", filtros_url, total_registros) }}
 
     <div class="info-pedidos">
 
@@ -524,7 +527,7 @@
             <a href="{{ url_for(
                 'pedidos',
                 pagina=pagina-1,
-                estado=estado_filtro
+                **filtros_url
             ) }}">
                 ←
             </a>
@@ -539,7 +542,7 @@
             <a href="{{ url_for(
                 'pedidos',
                 pagina=1,
-                estado=estado_filtro
+                **filtros_url
             ) }}">
                 1
             </a>
@@ -569,7 +572,7 @@
                 <a href="{{ url_for(
                     'pedidos',
                     pagina=numero,
-                    estado=estado_filtro
+                    **filtros_url
                 ) }}">
                     {{ numero }}
                 </a>
@@ -590,7 +593,7 @@
             <a href="{{ url_for(
                 'pedidos',
                 pagina=total_paginas,
-                estado=estado_filtro
+                **filtros_url
             ) }}">
                 {{ total_paginas }}
             </a>
@@ -605,7 +608,7 @@
             <a href="{{ url_for(
                 'pedidos',
                 pagina=pagina+1,
-                estado=estado_filtro
+                **filtros_url
             ) }}">
                 →
             </a>
@@ -658,13 +661,13 @@ buscador.addEventListener(
 
 function filtrarPorEstado(estado) {
 
-    const url =
-        "{{ url_for('pedidos') }}" +
-        "?estado=" +
-        encodeURIComponent(estado) +
-        "&pagina=1";
+    // Se conservan los demás filtros de la URL (por ejemplo, las fechas)
+    const url = new URL(window.location.href);
 
-    window.location.href = url;
+    url.searchParams.set("estado", estado);
+    url.searchParams.set("pagina", "1");
+
+    window.location.href = url.toString();
 
 }
 

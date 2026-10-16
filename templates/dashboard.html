@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% from "iconos.html" import icono, insignia %}
+{% from "filtros.html" import filtro_fechas %}
 
 {% block title %}Dashboard - SMARTLOGIC{% endblock %}
 
@@ -35,23 +36,6 @@
         font-size: 14px;
     }
 
-    .dash-periodo {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        border: 1px solid var(--borde);
-        border-radius: 8px;
-        background: var(--superficie);
-        color: var(--secundario);
-        font-size: 12px;
-        font-weight: 600;
-    }
-
-    .dash-periodo svg {
-        width: 15px;
-        height: 15px;
-    }
 
     /* ---------- Tarjetas base ---------- */
 
@@ -410,11 +394,15 @@
             <p class="dash-subtitulo">Resumen general de pedidos, flota y costos.</p>
         </div>
 
-        <span class="dash-periodo">
-            {{ icono("reloj") }}
-            {{ pedidos_mes_labels[0] }} – {{ pedidos_mes_labels[-1] }}
-        </span>
     </header>
+
+    {{ filtro_fechas("inicio", fechas) }}
+
+    {% if not total_pedidos %}
+    <p class="vacio" style="margin-bottom: 14px;">
+        No hay pedidos registrados en este período. Prueba con otro rango de fechas.
+    </p>
+    {% endif %}
 
 
     <!-- =========================
@@ -591,7 +579,7 @@
         {"nombre": "Mantenciones", "valor": {{ costo_mantenciones | tojson }}},
         {"nombre": "Incidentes", "valor": {{ costo_incidentes | tojson }}}
     ],
-    "urlPedidos": {{ url_for('pedidos') | tojson }},
+    "urlPedidos": {{ url_for('pedidos', **args_fechas) | tojson }},
     "urlVehiculos": {{ url_for('vehiculos') | tojson }}
 }
 </script>
@@ -969,7 +957,10 @@
         enlace.hidden = !hay;
         if (hay) {
             const estado = datos.estados[estadoElegido];
-            enlace.href = datos.urlPedidos + "?estado=" + encodeURIComponent(estado);
+            // La URL ya puede traer las fechas elegidas; se agrega el estado
+            const url = new URL(datos.urlPedidos, window.location.origin);
+            url.searchParams.set("estado", estado);
+            enlace.href = url.pathname + url.search;
             document.getElementById("enlaceEstadoTexto").textContent =
                 "Ver los " + numero(datos.estadosValores[estadoElegido]) + " pedidos: " + estado;
         }

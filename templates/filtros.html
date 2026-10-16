@@ -1,0 +1,55 @@
+{# =====================================================
+   FILTRO POR FECHAS
+   Uso: {{ filtro_fechas("pedidos", fechas, {"estado": estado_filtro}) }}
+   - endpoint: la página a la que vuelve el filtro
+   - fechas:   contexto armado por fechas.contexto() en app.py
+   - mantener: otros filtros que se conservan (ej. el estado elegido)
+   ===================================================== #}
+
+{% macro filtro_fechas(endpoint, fechas, mantener={}) -%}
+{% set mantener = {} if mantener is none else mantener %}
+{% set otros = {} %}
+{% for clave, valor in mantener.items() if valor and valor != "Todos" %}
+    {% set _ = otros.update({clave: valor}) %}
+{% endfor %}
+
+<section class="filtro-fechas" aria-label="Filtrar por fecha">
+
+    <div class="filtro-atajos" role="group" aria-label="Períodos rápidos">
+        {% for atajo in fechas.atajos %}
+        <a class="filtro-chip {% if atajo.activo %}activo{% endif %}"
+           href="{{ url_for(endpoint, **dict(otros, **atajo.args)) }}"
+           {% if atajo.activo %}aria-current="true"{% endif %}>
+            {{ atajo.nombre }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <form class="filtro-rango" method="get" action="{{ url_for(endpoint) }}">
+        {% for clave, valor in otros.items() %}
+        <input type="hidden" name="{{ clave }}" value="{{ valor }}">
+        {% endfor %}
+
+        <label>
+            <span>Desde</span>
+            <input type="date" name="desde" value="{{ fechas.desde }}"
+                   {% if fechas.minimo %}min="{{ fechas.minimo }}"{% endif %}
+                   {% if fechas.maximo %}max="{{ fechas.maximo }}"{% endif %}>
+        </label>
+
+        <label>
+            <span>Hasta</span>
+            <input type="date" name="hasta" value="{{ fechas.hasta }}"
+                   {% if fechas.minimo %}min="{{ fechas.minimo }}"{% endif %}
+                   {% if fechas.maximo %}max="{{ fechas.maximo }}"{% endif %}>
+        </label>
+
+        <button type="submit" class="filtro-aplicar {% if fechas.personalizado %}activo{% endif %}">Aplicar</button>
+    </form>
+
+    <p class="filtro-descripcion" aria-live="polite">
+        Mostrando <strong>{{ fechas.descripcion }}</strong>
+    </p>
+
+</section>
+{%- endmacro %}

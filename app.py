@@ -18,6 +18,7 @@ from flask import (
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 import detalle
+import fechas
 from asistente import Asistente, construir_tablas
 from exportar import crear_excel, nombre_archivo
 
@@ -71,6 +72,14 @@ FILTROS_ESTADO = {
     "conductores": ("estado", ["Todos", "Activo", "Inactivo", "Licencia médica", "Vacaciones"]),
     "rutas": ("estado", ["Todos", "Activa", "Restringida", "Suspendida"]),
     "incidentes": ("estado_incidente", ["Todos", "Abierto", "Resuelto"]),
+}
+
+# Columna de fecha (AAAAMMDD) de las secciones que se pueden filtrar por fecha.
+COLUMNAS_FECHA = {
+    "pedidos": "fecha_pedido_id",
+    "mantenciones": "fecha_mantencion_id",
+    "combustible": "fecha_id",
+    "incidentes": "fecha_incidente_id",
 }
 
 
@@ -153,6 +162,27 @@ def filtrar_por_estado(df, columna, estados_validos):
         return df.copy(), estado_filtro
 
     return df[df[columna] == estado_filtro].copy(), estado_filtro
+
+
+def filtro_de_fechas(df, columna, **otros_args):
+    """Aplica ?desde=&hasta= a df y prepara lo que necesita la página.
+
+    Devuelve (df filtrado, contexto para el componente, args para url_for).
+    """
+
+    desde, hasta = fechas.leer_rango(request.args)
+    filtrado = fechas.filtrar_por_fecha(df, columna, desde, hasta)
+
+    def _a_fecha(numero):
+        return fechas.leer_fecha(f"{numero // 10000:04d}-{numero // 100 % 100:02d}-{numero % 100:02d}")
+
+    contexto = fechas.contexto(
+        desde, hasta, hora_chile().date(),
+        minimo=_a_fecha(int(df[columna].min())) if len(df) else None,
+        maximo=_a_fecha(int(df[columna].max())) if len(df) else None,
+    )
+
+    return filtrado, contexto, fechas.args_url(desde, hasta, **otros_args)
 
 
 def fecha_guiones(serie):
@@ -380,23 +410,33 @@ MESES_CORTOS = ["Ene", "Feb", "Mar", "Abr", "May", "Jun",
                 "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
 
 
-@lru_cache(maxsize=1)
-def indicadores_dashboard():
-    """Los CSV no cambian mientras la app corre, así que se calcula una vez."""
+@lru_cache(maxsize=32)
+def indicadores_dashboard(desde=None, hasta=None):
+    """Indicadores del período (fechas como date o None = sin límite).
 
-    estados_pedidos = pedidos_df["estado_pedido"].value_counts().to_dict()
+    Los CSV no cambian mientras la app corre, así que cada período se calcula
+    una sola vez y se guarda.
+    """
+
+    pedidos = fechas.filtrar_por_fecha(pedidos_df, "fecha_pedido_id", desde, hasta)
+    entregas = fechas.filtrar_por_fecha(entregas_df, "fecha_salida_id", desde, hasta)
+    combustible = fechas.filtrar_por_fecha(combustible_df, "fecha_id", desde, hasta)
+    mantenciones = fechas.filtrar_por_fecha(mantenciones_df, "fecha_mantencion_id", desde, hasta)
+    incidentes = fechas.filtrar_por_fecha(incidentes_df, "fecha_incidente_id", desde, hasta)
+
+    estados_pedidos = pedidos["estado_pedido"].value_counts().to_dict()
     estados_vehiculos = vehiculos_df["estado"].value_counts().to_dict()
 
     # Entregas realizadas a tiempo
     a_tiempo = (
-        entregas_df["entrega_a_tiempo"]
+        entregas["entrega_a_tiempo"]
         .astype(str)
         .str.strip()
         .str.lower()
         .isin(["true", "1", "si", "sí", "yes", "a tiempo"])
     )
 
-    total_entregas = len(entregas_df)
+    total_entregas = len(entregas)
     entregas_a_tiempo = int(a_tiempo.sum())
 
     porcentaje_a_tiempo = (
@@ -405,7 +445,7 @@ def indicadores_dashboard():
     )
 
     # Pedidos por mes (fecha_pedido_id = AAAAMMDD)
-    por_mes = (pedidos_df["fecha_pedido_id"] // 100).value_counts().sort_index()
+    por_mes = (pedidos["fecha_pedido_id"] // 100).value_counts().sort_index()
 
     pedidos_mes_labels = [
         f"{MESES_CORTOS[int(mes) % 100 - 1]} {int(mes) // 100}"
@@ -413,12 +453,12 @@ def indicadores_dashboard():
     ]
 
     # Costos operacionales
-    gasto_combustible = float(combustible_df["costo_total"].sum())
-    costo_mantenciones = float(mantenciones_df["costo"].sum())
-    costo_incidentes = float(incidentes_df["costo_estimado"].sum())
+    gasto_combustible = float(combustible["costo_total"].sum())
+    costo_mantenciones = float(mantenciones["costo"].sum())
+    costo_incidentes = float(incidentes["costo_estimado"].sum())
 
     return dict(
-        total_pedidos=len(pedidos_df),
+        total_pedidos=len(pedidos),
         total_vehiculos=len(vehiculos_df),
         total_conductores=len(conductores_df),
         total_rutas=len(rutas_df),
@@ -445,7 +485,16 @@ def indicadores_dashboard():
 
 @app.route("/")
 def inicio():
-    return render_template("dashboard.html", **indicadores_dashboard())
+
+    _, contexto_fechas, args_fechas = filtro_de_fechas(pedidos_df, "fecha_pedido_id")
+    desde, hasta = fechas.leer_rango(request.args)
+
+    return render_template(
+        "dashboard.html",
+        fechas=contexto_fechas,
+        args_fechas=args_fechas,
+        **indicadores_dashboard(desde, hasta),
+    )
 
 
 # =========================
@@ -455,8 +504,10 @@ def inicio():
 @app.route("/pedidos")
 def pedidos():
 
+    pedidos_periodo, contexto_fechas, _ = filtro_de_fechas(pedidos_df, "fecha_pedido_id")
+
     pedidos_filtrados, estado_filtro = filtrar_por_estado(
-        pedidos_df,
+        pedidos_periodo,
         *FILTROS_ESTADO["pedidos"]
     )
 
@@ -475,9 +526,11 @@ def pedidos():
         pagina=pagina,
         total_paginas=total_paginas,
         total_registros=len(pedidos_filtrados),
-        estados_pedidos=pedidos_df["estado_pedido"].value_counts().to_dict(),
+        estados_pedidos=pedidos_periodo["estado_pedido"].value_counts().to_dict(),
         estado_filtro=estado_filtro,
-        total_pedidos=len(pedidos_df)
+        total_pedidos=len(pedidos_periodo),
+        fechas=contexto_fechas,
+        filtros_url=fechas.args_url(*fechas.leer_rango(request.args), estado=estado_filtro),
     )
 
 
@@ -497,6 +550,7 @@ def vehiculos():
 
     return render_template(
         "vehiculos.html",
+        filtros_url=fechas.args_url(None, None, estado=estado_filtro),
         vehiculos=datos_vehiculos.to_dict(orient="records"),
         pagina=pagina,
         total_paginas=total_paginas,
@@ -523,6 +577,7 @@ def conductores():
 
     return render_template(
         "conductores.html",
+        filtros_url=fechas.args_url(None, None, estado=estado_filtro),
         conductores=datos_conductores.to_dict(orient="records"),
         pagina=pagina,
         total_paginas=total_paginas,
@@ -549,6 +604,7 @@ def rutas():
 
     return render_template(
         "rutas.html",
+        filtros_url=fechas.args_url(None, None, estado=estado_filtro),
         rutas=datos_rutas.to_dict(orient="records"),
         pagina=pagina,
         total_paginas=total_paginas,
@@ -566,7 +622,11 @@ def rutas():
 @app.route("/mantenciones")
 def mantenciones():
 
-    datos_mantenciones, pagina, total_paginas = paginar(mantenciones_df)
+    mantenciones_periodo, contexto_fechas, filtros_url = filtro_de_fechas(
+        mantenciones_df, "fecha_mantencion_id"
+    )
+
+    datos_mantenciones, pagina, total_paginas = paginar(mantenciones_periodo)
 
     datos_mantenciones["fecha_mantencion_id"] = fecha_guiones(
         datos_mantenciones["fecha_mantencion_id"]
@@ -581,9 +641,11 @@ def mantenciones():
         mantenciones=datos_mantenciones.to_dict("records"),
         pagina=pagina,
         total_paginas=total_paginas,
-        total_registros=len(mantenciones_df),
-        vehiculos_mantencion=mantenciones_df["vehiculo_id"].nunique(),
-        costo_total=mantenciones_df["costo"].sum()
+        total_registros=len(mantenciones_periodo),
+        vehiculos_mantencion=mantenciones_periodo["vehiculo_id"].nunique(),
+        costo_total=mantenciones_periodo["costo"].sum(),
+        fechas=contexto_fechas,
+        filtros_url=filtros_url,
     )
 
 
@@ -594,7 +656,11 @@ def mantenciones():
 @app.route("/combustible")
 def combustible():
 
-    datos_combustible, pagina, total_paginas = paginar(combustible_df)
+    combustible_periodo, contexto_fechas, filtros_url = filtro_de_fechas(
+        combustible_df, "fecha_id"
+    )
+
+    datos_combustible, pagina, total_paginas = paginar(combustible_periodo)
 
     datos_combustible["fecha_id"] = fecha_guiones(
         datos_combustible["fecha_id"]
@@ -609,9 +675,11 @@ def combustible():
         combustible=datos_combustible.to_dict("records"),
         pagina=pagina,
         total_paginas=total_paginas,
-        total_registros=len(combustible_df),
-        vehiculos_registrados=combustible_df["vehiculo_id"].nunique(),
-        gasto_total=combustible_df["costo_total"].sum()
+        total_registros=len(combustible_periodo),
+        vehiculos_registrados=combustible_periodo["vehiculo_id"].nunique(),
+        gasto_total=combustible_periodo["costo_total"].sum(),
+        fechas=contexto_fechas,
+        filtros_url=filtros_url,
     )
 
 
@@ -641,8 +709,10 @@ incidentes_df["estado_incidente"] = (
 @app.route("/incidentes")
 def incidentes():
 
+    incidentes_periodo, contexto_fechas, _ = filtro_de_fechas(incidentes_df, "fecha_incidente_id")
+
     incidentes_filtrados, estado_filtro = filtrar_por_estado(
-        incidentes_df,
+        incidentes_periodo,
         *FILTROS_ESTADO["incidentes"]
     )
 
@@ -668,9 +738,12 @@ def incidentes():
         pagina=pagina,
         total_paginas=total_paginas,
         total_registros=len(incidentes_filtrados),
-        incidentes_abiertos=int(incidentes_df["estado_incidente"].eq("Abierto").sum()),
-        incidentes_resueltos=int(incidentes_df["estado_incidente"].eq("Resuelto").sum()),
-        estado_filtro=estado_filtro
+        incidentes_abiertos=int(incidentes_periodo["estado_incidente"].eq("Abierto").sum()),
+        incidentes_resueltos=int(incidentes_periodo["estado_incidente"].eq("Resuelto").sum()),
+        total_incidentes=len(incidentes_periodo),
+        estado_filtro=estado_filtro,
+        fechas=contexto_fechas,
+        filtros_url=fechas.args_url(*fechas.leer_rango(request.args), estado=estado_filtro),
     )
 
 
@@ -764,16 +837,23 @@ def exportar(seccion):
     df = datos_para_exportar(seccion)
     filtro = None
 
+    if seccion in COLUMNAS_FECHA:
+        desde, hasta = fechas.leer_rango(request.args)
+        df = fechas.filtrar_por_fecha(df, COLUMNAS_FECHA[seccion], desde, hasta)
+    else:
+        desde = hasta = None
+
     if seccion in FILTROS_ESTADO:
         df, filtro = filtrar_por_estado(df, *FILTROS_ESTADO[seccion])
 
     fecha = hora_chile()
+    periodo = fechas.describir(desde, hasta) if (desde or hasta) else None
 
     return send_file(
-        crear_excel(df, seccion, filtro, fecha),
+        crear_excel(df, seccion, filtro, fecha, periodo),
         mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         as_attachment=True,
-        download_name=nombre_archivo(seccion, filtro, fecha),
+        download_name=nombre_archivo(seccion, filtro, fecha, desde, hasta),
     )
 
 

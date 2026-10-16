@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% from "iconos.html" import icono, insignia, boton_excel %}
+{% from "filtros.html" import filtro_fechas %}
 
 {% block title %}Incidentes - SMARTLOGIC{% endblock %}
 
@@ -170,6 +171,8 @@
 
 <h1>{{ insignia("alerta", "azul") }} Incidentes</h1>
 
+{{ filtro_fechas("incidentes", fechas, {"estado": estado_filtro}) }}
+
 
 <!-- =========================
      TARJETAS INTERACTIVAS
@@ -180,7 +183,7 @@
     <!-- TOTAL -->
 
     <a
-        href="{{ url_for('incidentes', estado='Todos', pagina=1) }}"
+        href="{{ url_for('incidentes', **dict(filtros_url, estado='Todos', pagina=1)) }}"
         class="card card-filtro {% if estado_filtro == 'Todos' %}seleccionada{% endif %}"
         style="text-decoration: none; color: inherit;"
     >
@@ -197,7 +200,7 @@
     <!-- ABIERTOS -->
 
     <a
-        href="{{ url_for('incidentes', estado='Abierto', pagina=1) }}"
+        href="{{ url_for('incidentes', **dict(filtros_url, estado='Abierto', pagina=1)) }}"
         class="card card-filtro {% if estado_filtro == 'Abierto' %}seleccionada{% endif %}"
         style="text-decoration: none; color: inherit;"
     >
@@ -214,7 +217,7 @@
     <!-- RESUELTOS -->
 
     <a
-        href="{{ url_for('incidentes', estado='Resuelto', pagina=1) }}"
+        href="{{ url_for('incidentes', **dict(filtros_url, estado='Resuelto', pagina=1)) }}"
         class="card card-filtro {% if estado_filtro == 'Resuelto' %}seleccionada{% endif %}"
         style="text-decoration: none; color: inherit;"
     >
@@ -246,7 +249,7 @@
      INFORMACIÓN
      ========================= -->
 
-{{ boton_excel("incidentes", estado_filtro, total_registros) }}
+{{ boton_excel("incidentes", filtros_url, total_registros) }}
 
 <div class="info-incidentes">
 
@@ -407,8 +410,8 @@
 
         <a href="{{ url_for(
             'incidentes',
-            estado=estado_filtro,
-            pagina=pagina-1
+            pagina=pagina-1,
+            **filtros_url
         ) }}">
             ←
         </a>
@@ -420,8 +423,8 @@
 
         <a href="{{ url_for(
             'incidentes',
-            estado=estado_filtro,
-            pagina=1
+            pagina=1,
+            **filtros_url
         ) }}">
             1
         </a>
@@ -448,8 +451,8 @@
 
             <a href="{{ url_for(
                 'incidentes',
-                estado=estado_filtro,
-                pagina=numero
+                pagina=numero,
+                **filtros_url
             ) }}">
                 {{ numero }}
             </a>
@@ -467,8 +470,8 @@
 
         <a href="{{ url_for(
             'incidentes',
-            estado=estado_filtro,
-            pagina=total_paginas
+            pagina=total_paginas,
+            **filtros_url
         ) }}">
             {{ total_paginas }}
         </a>
@@ -480,8 +483,8 @@
 
         <a href="{{ url_for(
             'incidentes',
-            estado=estado_filtro,
-            pagina=pagina+1
+            pagina=pagina+1,
+            **filtros_url
         ) }}">
             →
         </a>

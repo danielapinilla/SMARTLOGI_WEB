@@ -1542,3 +1542,110 @@ textarea:focus {
     top: 20px;
     right: 20px;
 }
+
+/* =====================================================
+   FILTRO POR FECHAS (templates/filtros.html)
+   ===================================================== */
+
+.filtro-fechas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    background: var(--superficie);
+}
+
+.filtro-atajos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.filtro-chip {
+    padding: 7px 12px;
+    border: 1px solid var(--borde);
+    border-radius: 999px;
+    color: var(--texto);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background .15s, border-color .15s;
+}
+
+.filtro-chip:hover {
+    background: var(--superficie-2);
+    border-color: var(--texto-suave);
+}
+
+.filtro-chip.activo {
+    border-color: var(--marino);
+    background: var(--marino);
+    color: #fff;
+}
+
+.filtro-rango {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.filtro-rango label {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    color: var(--secundario);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.filtro-rango input[type="date"] {
+    padding: 6px 8px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background: var(--campo);
+    color: var(--texto);
+    font-size: 13px;
+}
+
+.filtro-aplicar {
+    padding: 7px 14px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background: var(--superficie-2);
+    color: var(--texto);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.filtro-aplicar:hover,
+.filtro-aplicar.activo {
+    border-color: var(--marino);
+    background: var(--marino);
+    color: #fff;
+}
+
+.filtro-descripcion {
+    flex-basis: 100%;
+    margin: 0;
+    color: var(--secundario);
+    font-size: 12px;
+}
+
+.filtro-descripcion strong {
+    color: var(--texto);
+}
+
+@media (max-width: 650px) {
+    .filtro-atajos {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        width: 100%;
+    }
+}

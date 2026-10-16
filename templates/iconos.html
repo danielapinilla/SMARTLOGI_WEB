@@ -88,11 +88,11 @@
 </a>
 {%- endmacro %}
 
-{# Botón para descargar la tabla (con el filtro actual) en Excel #}
-{% macro boton_excel(seccion, estado=None, cantidad=None) -%}
+{# Botón para descargar la tabla en Excel, con los filtros actuales (estado y fechas) #}
+{% macro boton_excel(seccion, filtros={}, cantidad=None) -%}
 <div class="acciones-tabla">
     <a class="boton-excel"
-       href="{{ url_for('exportar', seccion=seccion, estado=estado) if estado and estado != 'Todos' else url_for('exportar', seccion=seccion) }}"
+       href="{{ url_for('exportar', seccion=seccion, **filtros) }}"
        download>
         {{ icono("descarga") }}
         Descargar Excel
