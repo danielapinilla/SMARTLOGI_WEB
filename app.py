@@ -727,6 +727,10 @@ def mensaje_error_ia(error):
     if nombre == "PermissionDeniedError":
         return "La clave de la IA no tiene permiso para esta consulta."
 
+    if nombre == "InternalServerError":
+        return ("El servicio de IA está saturado en este momento (es común en el plan gratis). "
+                "Intenta de nuevo en unos segundos.")
+
     if nombre in ("APIConnectionError", "APITimeoutError"):
         return "No se pudo conectar con el servicio de IA. Intenta de nuevo."
 

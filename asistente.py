@@ -16,24 +16,32 @@ import pandas as pd
 URL_GEMINI = "https://generativelanguage.googleapis.com/v1beta/openai/"
 
 
+# Si el modelo principal de Gemini está saturado (error 503), se prueba este,
+# que también es gratis y suele tener menos demanda.
+MODELO_RESPALDO_GEMINI = "gemini-2.5-flash"
+
+
 def configuracion_ia():
-    """Devuelve (clave, url_base, modelo) o (None, None, None) si no hay clave."""
+    """Devuelve (clave, url_base, modelos) o (None, None, []) si no hay clave.
+
+    modelos es la lista de modelos a probar en orden.
+    """
 
     if os.environ.get("GEMINI_API_KEY"):
-        return (
-            os.environ["GEMINI_API_KEY"],
-            URL_GEMINI,
-            os.environ.get("GEMINI_MODEL", "gemini-3.8-flash"),
-        )
+        principal = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
+        modelos = [principal]
+        if principal != MODELO_RESPALDO_GEMINI:
+            modelos.append(MODELO_RESPALDO_GEMINI)
+        return os.environ["GEMINI_API_KEY"], URL_GEMINI, modelos
 
     if os.environ.get("OPENAI_API_KEY"):
         return (
             os.environ["OPENAI_API_KEY"],
             os.environ.get("OPENAI_BASE_URL") or None,
-            os.environ.get("OPENAI_MODEL", "gpt-5-mini"),
+            [os.environ.get("OPENAI_MODEL", "gpt-5-mini")],
         )
 
-    return None, None, None
+    return None, None, []
 
 
 MAX_RONDAS_HERRAMIENTAS = 6
@@ -390,8 +398,9 @@ class Asistente:
     def _cliente_ia(self):
         if self._cliente is None:
             from openai import OpenAI  # se importa solo si se usa el asistente
-            clave, url_base, self.modelo = configuracion_ia()
-            self._cliente = OpenAI(api_key=clave, base_url=url_base, timeout=40, max_retries=1)
+            clave, url_base, self.modelos = configuracion_ia()
+            # max_retries: el cliente reintenta solo ante errores 5xx y 429
+            self._cliente = OpenAI(api_key=clave, base_url=url_base, timeout=30, max_retries=2)
         return self._cliente
 
     def _ejecutar(self, nombre, argumentos):
@@ -430,11 +439,29 @@ class Asistente:
         mensajes.append({"role": "user", "content": pregunta})
 
         cliente = self._cliente_ia()
-        opciones = {"model": self.modelo, "tools": self.herramientas}
+        ultimo_error = None
+
+        # Probar cada modelo en orden; si uno está saturado o no existe,
+        # se empieza de nuevo con el siguiente.
+        for modelo in self.modelos:
+            try:
+                return self._conversar(cliente, list(mensajes), modelo)
+
+            except Exception as error:
+                codigo = getattr(error, "status_code", None) or 0
+                if codigo >= 500 or type(error).__name__ == "NotFoundError":
+                    ultimo_error = error
+                    continue
+                raise
+
+        raise ultimo_error
+
+    def _conversar(self, cliente, mensajes, modelo):
+        opciones = {"model": modelo, "tools": self.herramientas}
 
         # Los modelos que "piensan" (gpt-5, o3, gemini...) aceptan este ajuste:
         # pensar poco = respuestas más rápidas y baratas
-        if self.modelo.startswith(("gpt-5", "o", "gemini")):
+        if modelo.startswith(("gpt-5", "o", "gemini")):
             opciones["reasoning_effort"] = "low"
 
         for _ in range(MAX_RONDAS_HERRAMIENTAS):
