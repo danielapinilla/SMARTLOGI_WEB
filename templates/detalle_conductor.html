@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+{% from "iconos.html" import icono, insignia %}
+
+{% block title %}{{ info.nombre_conductor }} - SMARTLOGIC{% endblock %}
+
+{% block content %}
+
+{% set color_estado = {
+    "Activo": "verde", "Inactivo": "rojo", "Licencia médica": "rojo", "Vacaciones": "ambar"
+}.get(info.estado, "azul") %}
+
+{% set color_gravedad = {"Baja": "azul", "Media": "ambar", "Alta": "rojo", "Crítica": "rojo"} %}
+
+<a class="volver" href="{{ url_for('conductores') }}">← Volver a conductores</a>
+
+
+<!-- =========================
+     FICHA
+     ========================= -->
+
+<section class="panel ficha">
+    <span class="ficha-avatar" aria-hidden="true">
+        {{ info.nombre_conductor.split()[0][:1] }}{{ info.nombre_conductor.split()[-1][:1] }}
+    </span>
+
+    <div>
+        <h1>{{ info.nombre_conductor }} <span class="pastilla pastilla-{{ color_estado }}">{{ info.estado }}</span></h1>
+        <ul class="ficha-datos">
+            <li>ID <strong>{{ info.conductor_id }}</strong></li>
+            <li>Licencia <strong>{{ info.tipo_licencia }}</strong></li>
+            <li>Experiencia <strong>{{ info.experiencia_anios }} año{{ "s" if info.experiencia_anios != 1 }}</strong></li>
+            <li>Ingreso <strong>{{ info.fecha_ingreso | replace("/", "-") }}</strong></li>
+        </ul>
+    </div>
+</section>
+
+
+<!-- =========================
+     INDICADORES
+     ========================= -->
+
+<section class="detalle-kpis" aria-label="Indicadores del conductor">
+
+    <article class="panel">
+        <div class="detalle-kpi-etiqueta">{{ insignia("caja") }} Entregas</div>
+        <p class="detalle-kpi-valor">{{ total_entregas | miles }}</p>
+        <p class="detalle-kpi-nota">
+            {% if total_entregas %}{{ entregas_a_tiempo | miles }} llegaron a tiempo{% else %}Sin entregas registradas{% endif %}
+        </p>
+    </article>
+
+    <article class="panel">
+        <div class="detalle-kpi-etiqueta">{{ insignia("reloj", "verde" if puntualidad and puntualidad >= puntualidad_general else "rojo") }} Puntualidad</div>
+        {% if puntualidad is not none %}
+            <p class="detalle-kpi-valor">{{ puntualidad | porcentaje }}</p>
+            <div class="medidor-detalle" role="img" aria-label="{{ puntualidad }}% de entregas a tiempo">
+                <span style="width: {{ puntualidad }}%"></span>
+            </div>
+            <p class="detalle-kpi-nota">
+                Promedio de la flota: {{ puntualidad_general | porcentaje }} ·
+                <span class="{{ 'comparacion-buena' if puntualidad >= puntualidad_general else 'comparacion-mala' }}">
+                    Puesto {{ puesto }} de {{ total_ranking }}
+                </span>
+            </p>
+        {% else %}
+            <p class="detalle-kpi-valor">—</p>
+            <p class="detalle-kpi-nota">Sin entregas para calcularla</p>
+        {% endif %}
+    </article>
+
+    <article class="panel">
+        <div class="detalle-kpi-etiqueta">{{ insignia("tendencia", "ambar") }} Retraso promedio</div>
+        {% if retraso_promedio is not none %}
+            <p class="detalle-kpi-valor">{{ retraso_promedio | replace(".", ",") }} <small>min</small></p>
+            <p class="detalle-kpi-nota">
+                Promedio de la flota: {{ retraso_general | replace(".", ",") }} min
+                {% if retraso_promedio < retraso_general %}
+                    · <span class="comparacion-buena">menos que el promedio</span>
+                {% elif retraso_promedio > retraso_general %}
+                    · <span class="comparacion-mala">más que el promedio</span>
+                {% endif %}
+            </p>
+        {% else %}
+            <p class="detalle-kpi-valor">—</p>
+            <p class="detalle-kpi-nota">Sin entregas para calcularlo</p>
+        {% endif %}
+    </article>
+
+    <article class="panel">
+        <div class="detalle-kpi-etiqueta">{{ insignia("alerta", "rojo" if incidentes_abiertos else "azul") }} Incidentes</div>
+        <p class="detalle-kpi-valor">{{ total_incidentes }}</p>
+        <p class="detalle-kpi-nota">
+            {% if total_incidentes %}
+                {{ incidentes_abiertos }} abierto{{ "s" if incidentes_abiertos != 1 }} ·
+                {{ tiempo_perdido | miles }} min perdidos
+            {% else %}
+                Sin incidentes registrados
+            {% endif %}
+        </p>
+    </article>
+
+</section>
+
+
+{% if total_entregas %}
+
+<!-- =========================
+     GRÁFICO + FRECUENTES
+     ========================= -->
+
+<section class="detalle-fila">
+
+    <article class="panel">
+        <div class="panel-encabezado">
+            <div>
+                <h2>Entregas por mes</h2>
+                <p class="panel-subtitulo">Haz clic en un mes para ver su cantidad.</p>
+            </div>
+            <div class="lectura" aria-live="polite">
+                <strong id="lecturaValor">{{ total_entregas | miles }}</strong>
+                <span id="lecturaTexto">Entregas en total</span>
+            </div>
+        </div>
+
+        <div class="grafico-detalle">
+            <canvas id="graficoMeses" role="img" aria-label="Gráfico de entregas por mes"></canvas>
+        </div>
+    </article>
+
+    <div class="detalle-lateral">
+
+        <article class="panel">
+            <h2>Rutas más frecuentes</h2>
+            <p class="panel-subtitulo">Cantidad de entregas por ruta.</p>
+
+            {% set maximo = rutas_frecuentes[0].cantidad %}
+            <ul class="lista-barras">
+                {% for ruta in rutas_frecuentes %}
+                <li>
+                    <div class="fila-texto"><span>{{ ruta.nombre }}</span><strong>{{ ruta.cantidad }}</strong></div>
+                    <div class="barrita"><span style="width: {{ (ruta.cantidad / maximo * 100) | round(1) }}%"></span></div>
+                </li>
+                {% endfor %}
+            </ul>
+        </article>
+
+        <article class="panel">
+            <h2>Vehículos que más usa</h2>
+            <p class="panel-subtitulo">Haz clic en una patente para ver el vehículo.</p>
+
+            {% set maximo = vehiculos_frecuentes[0].cantidad %}
+            <ul class="lista-barras">
+                {% for vehiculo in vehiculos_frecuentes %}
+                <li>
+                    <div class="fila-texto">
+                        <a href="{{ url_for('pagina_vehiculo', vehiculo_id=vehiculo.vehiculo_id) }}">{{ vehiculo.patente }}</a>
+                        <strong>{{ vehiculo.cantidad }}</strong>
+                    </div>
+                    <div class="barrita"><span style="width: {{ (vehiculo.cantidad / maximo * 100) | round(1) }}%"></span></div>
+                </li>
+                {% endfor %}
+            </ul>
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     ÚLTIMAS ENTREGAS
+     ========================= -->
+
+<section class="panel detalle-seccion">
+    <h2>Últimas entregas</h2>
+    <p class="panel-subtitulo">Las 10 más recientes.</p>
+
+    <div class="tabla-detalle">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Ruta</th>
+                    <th>Vehículo</th>
+                    <th class="numero">Estimado</th>
+                    <th class="numero">Real</th>
+                    <th class="numero">Retraso</th>
+                    <th>Resultado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in ultimas_entregas %}
+                <tr>
+                    <td>{{ e.fecha }}</td>
+                    <td>{{ e.ruta }}</td>
+                    <td><a href="{{ url_for('pagina_vehiculo', vehiculo_id=e.vehiculo_id) }}">{{ e.patente }}</a></td>
+                    <td class="numero">{{ e.tiempo_estimado }} min</td>
+                    <td class="numero">{{ e.tiempo_real }} min</td>
+                    <td class="numero">{{ e.retraso }} min</td>
+                    <td>
+                        {% if e.a_tiempo %}
+                            <span class="pastilla pastilla-verde">A tiempo</span>
+                        {% else %}
+                            <span class="pastilla pastilla-rojo">Atrasada</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% else %}
+
+<section class="panel detalle-seccion">
+    <p class="vacio">
+        {{ info.nombre_conductor }} no tiene entregas registradas en el período.
+        Su estado actual es <strong>{{ info.estado | lower }}</strong>.
+    </p>
+</section>
+
+{% endif %}
+
+
+<!-- =========================
+     INCIDENTES
+     ========================= -->
+
+<section class="panel detalle-seccion">
+    <h2>Incidentes</h2>
+    <p class="panel-subtitulo">
+        {% if total_incidentes > incidentes | length %}Los {{ incidentes | length }} más recientes de {{ total_incidentes }}.{% else %}Todos los incidentes del conductor.{% endif %}
+    </p>
+
+    {% if incidentes %}
+    <div class="tabla-detalle">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Tipo</th>
+                    <th>Gravedad</th>
+                    <th>Vehículo</th>
+                    <th class="numero">Costo</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in incidentes %}
+                <tr>
+                    <td>{{ i.fecha }}</td>
+                    <td>{{ i.tipo }}</td>
+                    <td><span class="pastilla pastilla-{{ color_gravedad.get(i.gravedad, 'azul') }}">{{ i.gravedad }}</span></td>
+                    <td><a href="{{ url_for('pagina_vehiculo', vehiculo_id=i.vehiculo_id) }}">{{ i.patente }}</a></td>
+                    <td class="numero">{{ i.costo | pesos }}</td>
+                    <td>
+                        <span class="pastilla pastilla-{{ 'verde' if i.estado == 'Resuelto' else 'ambar' }}">{{ i.estado }}</span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="vacio">Sin incidentes registrados.</p>
+    {% endif %}
+</section>
+
+
+{% if total_entregas %}
+<script type="application/json" id="datos-detalle">
+{
+    "meses": {{ por_mes_labels | tojson }},
+    "valores": {{ por_mes_valores | tojson }},
+    "total": {{ total_entregas | tojson }}
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+<script>
+(() => {
+    if (typeof Chart === "undefined") return;
+
+    const datos = JSON.parse(document.getElementById("datos-detalle").textContent);
+    const AZUL = "#2563c4";
+    const numero = n => Number(n || 0).toLocaleString("es-CL");
+    const transparente = (hex, alfa) => hex + Math.round(alfa * 255).toString(16).padStart(2, "0");
+
+    Chart.defaults.font.family = "'DM Sans', system-ui, sans-serif";
+    Chart.defaults.color = "#6b7585";
+
+    let elegido = null;
+
+    const grafico = new Chart(document.getElementById("graficoMeses"), {
+        type: "bar",
+        data: {
+            labels: datos.meses,
+            datasets: [{
+                label: "Entregas",
+                data: datos.valores,
+                backgroundColor: datos.valores.map(() => AZUL),
+                borderRadius: 4,
+                borderSkipped: "start",
+                maxBarThickness: 24
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: "#15253f",
+                    titleColor: "#c4cddb",
+                    bodyColor: "#ffffff",
+                    bodyFont: { weight: "700" },
+                    padding: 10,
+                    cornerRadius: 8,
+                    displayColors: false,
+                    callbacks: { label: item => numero(item.raw) + " entregas" }
+                }
+            },
+            scales: {
+                x: { grid: { display: false }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
+                y: { beginAtZero: true, grid: { color: "#eeeae0" }, border: { display: false }, ticks: { precision: 0 } }
+            },
+            onClick(evento, elementos) {
+                if (elementos.length) elegir(elementos[0].index);
+            },
+            onHover(evento, elementos) {
+                evento.native.target.style.cursor = elementos.length ? "pointer" : "default";
+            }
+        }
+    });
+
+    function elegir(indice) {
+        elegido = elegido === indice ? null : indice;
+        const hay = elegido !== null;
+
+        grafico.data.datasets[0].backgroundColor = datos.valores.map(
+            (_, i) => !hay || i === elegido ? AZUL : transparente(AZUL, 0.25)
+        );
+        grafico.update();
+
+        document.getElementById("lecturaValor").textContent =
+            numero(hay ? datos.valores[elegido] : datos.total);
+        document.getElementById("lecturaTexto").textContent =
+            hay ? "Entregas en " + datos.meses[elegido] : "Entregas en total";
+    }
+})();
+</script>
+{% endif %}
+
+{% endblock %}

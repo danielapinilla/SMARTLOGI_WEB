@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% from "iconos.html" import icono %}
+
+{% block title %}Página no encontrada - SMARTLOGIC{% endblock %}
+
+{% block content %}
+
+<section class="panel" style="max-width: 520px; margin: 40px auto; text-align: center;">
+    <p class="detalle-kpi-valor" style="font-size: 48px;">404</p>
+    <h1 style="margin: 8px 0; font-size: 22px;">No encontramos esta página</h1>
+    <p class="panel-subtitulo">Puede que el conductor, vehículo o sección que buscas no exista.</p>
+
+    <a class="boton-principal" href="{{ url_for('inicio') }}" style="max-width: 260px; margin: 18px auto 0;">
+        Ir al dashboard
+        {{ icono("flecha") }}
+    </a>
+</section>
+
+{% endblock %}

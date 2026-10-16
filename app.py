@@ -17,6 +17,7 @@ from flask import (
 )
 from werkzeug.middleware.proxy_fix import ProxyFix
 
+import detalle
 from asistente import Asistente, construir_tablas
 from exportar import crear_excel, nombre_archivo
 
@@ -76,6 +77,18 @@ FILTROS_ESTADO = {
 @app.template_filter("miles")
 def formato_miles(valor):
     return f"{valor:,}".replace(",", ".")
+
+
+@app.template_filter("pesos")
+def formato_pesos(valor):
+    """250280365.0 -> $250.280.365"""
+    return "$" + f"{round(valor or 0):,}".replace(",", ".")
+
+
+@app.template_filter("porcentaje")
+def formato_porcentaje(valor, decimales=1):
+    """12.94 -> 12,9%"""
+    return f"{valor:.{decimales}f}".replace(".", ",") + "%"
 
 
 # =========================
@@ -643,6 +656,12 @@ def incidentes():
         datos_incidentes["vehiculo_id"].map(mapa_patentes).fillna("")
     )
 
+    datos_incidentes["nombre_conductor"] = (
+        datos_incidentes["conductor_id"]
+        .map(conductores_df.set_index("conductor_id")["nombre_conductor"])
+        .fillna(datos_incidentes["conductor_id"].astype(str))
+    )
+
     return render_template(
         "incidentes.html",
         incidentes=datos_incidentes.to_dict("records"),
@@ -653,6 +672,42 @@ def incidentes():
         incidentes_resueltos=int(incidentes_df["estado_incidente"].eq("Resuelto").sum()),
         estado_filtro=estado_filtro
     )
+
+
+@app.errorhandler(404)
+def pagina_no_encontrada(error):
+    return render_template("404.html"), 404
+
+
+# =========================
+# DETALLE DE CONDUCTOR Y VEHÍCULO
+# =========================
+
+@app.route("/conductores/<int:conductor_id>")
+def pagina_conductor(conductor_id):
+
+    datos = detalle.detalle_conductor(
+        conductor_id, conductores_df, entregas_df, incidentes_df, rutas_df, vehiculos_df
+    )
+
+    if datos is None:
+        abort(404)
+
+    return render_template("detalle_conductor.html", **datos)
+
+
+@app.route("/vehiculos/<int:vehiculo_id>")
+def pagina_vehiculo(vehiculo_id):
+
+    datos = detalle.detalle_vehiculo(
+        vehiculo_id, vehiculos_df, entregas_df, mantenciones_df,
+        combustible_df, incidentes_df, conductores_df
+    )
+
+    if datos is None:
+        abort(404)
+
+    return render_template("detalle_vehiculo.html", **datos)
 
 
 # =========================

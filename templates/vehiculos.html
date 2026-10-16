@@ -428,7 +428,7 @@
                 </td>
 
                 <td>
-                    {{ vehiculo.patente }}
+                    <a class="enlace-detalle" href="{{ url_for('pagina_vehiculo', vehiculo_id=vehiculo.vehiculo_id) }}">{{ vehiculo.patente }}</a>
                 </td>
 
                 <td>

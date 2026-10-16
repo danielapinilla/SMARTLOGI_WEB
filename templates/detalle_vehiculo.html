@@ -1,0 +1,385 @@
+{% extends "base.html" %}
+{% from "iconos.html" import icono, insignia %}
+
+{% block title %}{{ info.patente }} - SMARTLOGIC{% endblock %}
+
+{% block content %}
+
+{% set color_estado = {
+    "Disponible": "verde", "En ruta": "azul", "Mantención": "ambar", "Fuera de servicio": "rojo"
+}.get(info.estado, "azul") %}
+
+{% set color_gravedad = {"Baja": "azul", "Media": "ambar", "Alta": "rojo", "Crítica": "rojo"} %}
+
+<a class="volver" href="{{ url_for('vehiculos') }}">← Volver a vehículos</a>
+
+
+<!-- =========================
+     FICHA
+     ========================= -->
+
+<section class="panel ficha">
+    <span class="placa">{{ info.patente }}</span>
+
+    <div>
+        <h1>{{ info.marca }} {{ info.modelo }} <span class="pastilla pastilla-{{ color_estado }}">{{ info.estado }}</span></h1>
+        <ul class="ficha-datos">
+            <li>Tipo <strong>{{ info.tipo_vehiculo }}</strong></li>
+            <li>Año <strong>{{ info.anio }}</strong></li>
+            <li>Capacidad <strong>{{ info.capacidad_kg | miles }} kg</strong></li>
+            <li>Combustible <strong>{{ info.combustible }}</strong></li>
+            <li>En la flota desde <strong>{{ info.fecha_alta | replace("/", "-") }}</strong></li>
+        </ul>
+    </div>
+</section>
+
+
+<!-- =========================
+     INDICADORES
+     ========================= -->
+
+<section class="detalle-kpis" aria-label="Indicadores del vehículo">
+
+    <article class="panel">
+        <div class="detalle-kpi-etiqueta">{{ insignia("dinero", "ambar") }} Costo total</div>
+        <p class="detalle-kpi-valor">{{ costo_total | pesos }}</p>
+        <p class="detalle-kpi-nota">Combustible, mantenciones e incidentes</p>
+    </article>
+
+    <article class="panel">
+        <div class="detalle-kpi-etiqueta">{{ insignia("caja") }} Entregas</div>
+        <p class="detalle-kpi-valor">{{ total_entregas | miles }}</p>
+        <p class="detalle-kpi-nota">
+            {% if total_entregas %}Entregas realizadas con este vehículo{% else %}Sin entregas registradas{% endif %}
+        </p>
+    </article>
+
+    <article class="panel">
+        <div class="detalle-kpi-etiqueta">{{ insignia("llave", "ambar") }} Mantenciones</div>
+        <p class="detalle-kpi-valor">{{ total_mantenciones }}</p>
+        <p class="detalle-kpi-nota">
+            {{ costo_mantenciones | pesos }} · {{ dias_fuera_servicio }} día{{ "s" if dias_fuera_servicio != 1 }} fuera de servicio
+        </p>
+    </article>
+
+    <article class="panel">
+        <div class="detalle-kpi-etiqueta">{{ insignia("alerta", "rojo" if incidentes_abiertos else "azul") }} Incidentes</div>
+        <p class="detalle-kpi-valor">{{ total_incidentes }}</p>
+        <p class="detalle-kpi-nota">
+            {% if total_incidentes %}
+                {{ incidentes_abiertos }} abierto{{ "s" if incidentes_abiertos != 1 }} · {{ costo_incidentes | pesos }}
+            {% else %}
+                Sin incidentes registrados
+            {% endif %}
+        </p>
+    </article>
+
+</section>
+
+
+<!-- =========================
+     GRÁFICO + LATERAL
+     ========================= -->
+
+<section class="detalle-fila">
+
+    <article class="panel">
+        <div class="panel-encabezado">
+            <div>
+                <h2>Costos por mes</h2>
+                <p class="panel-subtitulo">Combustible y mantenciones. Haz clic en un mes para ver el detalle.</p>
+            </div>
+            <div class="lectura" aria-live="polite">
+                <strong id="lecturaValor">{{ (gasto_combustible + costo_mantenciones) | pesos }}</strong>
+                <span id="lecturaTexto">Total del período</span>
+            </div>
+        </div>
+
+        <div class="grafico-detalle">
+            <canvas id="graficoCostos" role="img" aria-label="Gráfico de costos por mes"></canvas>
+        </div>
+    </article>
+
+    <div class="detalle-lateral">
+
+        <article class="panel">
+            <h2>Combustible</h2>
+            <p class="panel-subtitulo">Resumen de las cargas del período.</p>
+
+            <ul class="lista-barras">
+                <li><div class="fila-texto"><span>Gasto total</span><strong>{{ gasto_combustible | pesos }}</strong></div></li>
+                <li><div class="fila-texto"><span>Litros cargados</span><strong>{{ litros | round | int | miles }} L</strong></div></li>
+                <li><div class="fila-texto"><span>Cargas</span><strong>{{ total_cargas }}</strong></div></li>
+                {% if litros %}
+                <li><div class="fila-texto"><span>Precio promedio por litro</span><strong>{{ (gasto_combustible / litros) | pesos }}</strong></div></li>
+                {% endif %}
+            </ul>
+        </article>
+
+        <article class="panel">
+            <h2>Conductores que más lo usan</h2>
+            <p class="panel-subtitulo">Haz clic en un nombre para ver al conductor.</p>
+
+            {% if conductores_frecuentes %}
+                {% set maximo = conductores_frecuentes[0].cantidad %}
+                <ul class="lista-barras">
+                    {% for conductor in conductores_frecuentes %}
+                    <li>
+                        <div class="fila-texto">
+                            <a href="{{ url_for('pagina_conductor', conductor_id=conductor.conductor_id) }}">{{ conductor.nombre }}</a>
+                            <strong>{{ conductor.cantidad }}</strong>
+                        </div>
+                        <div class="barrita"><span style="width: {{ (conductor.cantidad / maximo * 100) | round(1) }}%"></span></div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="vacio">Este vehículo no tiene entregas registradas.</p>
+            {% endif %}
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     MANTENCIONES
+     ========================= -->
+
+<section class="panel detalle-seccion">
+    <h2>Últimas mantenciones</h2>
+    <p class="panel-subtitulo">Las 10 más recientes de {{ total_mantenciones }}.</p>
+
+    {% if ultimas_mantenciones %}
+    <div class="tabla-detalle">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Tipo</th>
+                    <th>Descripción</th>
+                    <th>Taller</th>
+                    <th class="numero">Días fuera</th>
+                    <th class="numero">Costo</th>
+                    <th>Resultado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in ultimas_mantenciones %}
+                <tr>
+                    <td>{{ m.fecha }}</td>
+                    <td>{{ m.tipo }}</td>
+                    <td class="texto-largo">{{ m.descripcion }}</td>
+                    <td>{{ m.taller }}</td>
+                    <td class="numero">{{ m.dias }}</td>
+                    <td class="numero">{{ m.costo | pesos }}</td>
+                    <td>
+                        <span class="pastilla pastilla-{{ {'Reparado': 'verde', 'No reparado': 'rojo'}.get(m.resultado, 'ambar') }}">{{ m.resultado }}</span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="vacio">Sin mantenciones registradas.</p>
+    {% endif %}
+</section>
+
+
+<!-- =========================
+     COMBUSTIBLE
+     ========================= -->
+
+<section class="panel detalle-seccion">
+    <h2>Últimas cargas de combustible</h2>
+    <p class="panel-subtitulo">Las 10 más recientes de {{ total_cargas }}.</p>
+
+    {% if ultimas_cargas %}
+    <div class="tabla-detalle">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Estación</th>
+                    <th class="numero">Litros</th>
+                    <th class="numero">Precio litro</th>
+                    <th class="numero">Costo</th>
+                    <th class="numero">Kilometraje</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in ultimas_cargas %}
+                <tr>
+                    <td>{{ c.fecha }}</td>
+                    <td>{{ c.estacion }}</td>
+                    <td class="numero">{{ "%.1f" | format(c.litros) | replace(".", ",") }}</td>
+                    <td class="numero">{{ c.precio_litro | pesos }}</td>
+                    <td class="numero">{{ c.costo | pesos }}</td>
+                    <td class="numero">{{ c.kilometraje | miles }} km</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="vacio">Sin cargas registradas.</p>
+    {% endif %}
+</section>
+
+
+<!-- =========================
+     INCIDENTES
+     ========================= -->
+
+<section class="panel detalle-seccion">
+    <h2>Incidentes</h2>
+    <p class="panel-subtitulo">
+        {% if total_incidentes > incidentes | length %}Los {{ incidentes | length }} más recientes de {{ total_incidentes }}.{% else %}Todos los incidentes del vehículo.{% endif %}
+    </p>
+
+    {% if incidentes %}
+    <div class="tabla-detalle">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Tipo</th>
+                    <th>Gravedad</th>
+                    <th>Conductor</th>
+                    <th class="numero">Costo</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in incidentes %}
+                <tr>
+                    <td>{{ i.fecha }}</td>
+                    <td>{{ i.tipo }}</td>
+                    <td><span class="pastilla pastilla-{{ color_gravedad.get(i.gravedad, 'azul') }}">{{ i.gravedad }}</span></td>
+                    <td><a href="{{ url_for('pagina_conductor', conductor_id=i.conductor_id) }}">{{ i.conductor }}</a></td>
+                    <td class="numero">{{ i.costo | pesos }}</td>
+                    <td>
+                        <span class="pastilla pastilla-{{ 'verde' if i.estado == 'Resuelto' else 'ambar' }}">{{ i.estado }}</span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="vacio">Sin incidentes registrados.</p>
+    {% endif %}
+</section>
+
+
+<script type="application/json" id="datos-detalle">
+{
+    "meses": {{ costos_mes_labels | tojson }},
+    "combustible": {{ costos_mes_combustible | tojson }},
+    "mantencion": {{ costos_mes_mantencion | tojson }}
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+<script>
+(() => {
+    if (typeof Chart === "undefined") return;
+
+    const datos = JSON.parse(document.getElementById("datos-detalle").textContent);
+
+    // Mismos colores que el gráfico de costos del dashboard
+    const AZUL = "#2563c4";
+    const AMBAR = "#f0a20a";
+    const pesos = n => "$" + Number(n || 0).toLocaleString("es-CL", { maximumFractionDigits: 0 });
+    const transparente = (hex, alfa) => hex + Math.round(alfa * 255).toString(16).padStart(2, "0");
+    const totalPeriodo = datos.combustible.reduce((a, b) => a + b, 0) + datos.mantencion.reduce((a, b) => a + b, 0);
+
+    Chart.defaults.font.family = "'DM Sans', system-ui, sans-serif";
+    Chart.defaults.color = "#6b7585";
+
+    let elegido = null;
+    const colores = (base) => datos.meses.map(
+        (_, i) => elegido === null || i === elegido ? base : transparente(base, 0.25)
+    );
+
+    const grafico = new Chart(document.getElementById("graficoCostos"), {
+        type: "bar",
+        data: {
+            labels: datos.meses,
+            datasets: [
+                { label: "Combustible", data: datos.combustible, backgroundColor: colores(AZUL), maxBarThickness: 24 },
+                {
+                    label: "Mantenciones", data: datos.mantencion, backgroundColor: colores(AMBAR), maxBarThickness: 24,
+                    // Separación de 2 px entre los dos colores de cada barra
+                    borderColor: "#fffefa", borderWidth: { bottom: 2, top: 0, left: 0, right: 0 }, borderSkipped: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: "index", intersect: false },
+            plugins: {
+                legend: {
+                    position: "top",
+                    align: "start",
+                    labels: { color: "#1d2a3d", boxWidth: 12, boxHeight: 12, useBorderRadius: true, borderRadius: 3 }
+                },
+                tooltip: {
+                    backgroundColor: "#15253f",
+                    titleColor: "#c4cddb",
+                    bodyColor: "#ffffff",
+                    padding: 10,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: item => item.dataset.label + ": " + pesos(item.raw),
+                        footer: items => "Total: " + pesos(items.reduce((s, i) => s + i.raw, 0))
+                    }
+                }
+            },
+            scales: {
+                x: { stacked: true, grid: { display: false }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
+                y: {
+                    stacked: true,
+                    beginAtZero: true,
+                    grid: { color: "#eeeae0" },
+                    border: { display: false },
+                    ticks: { callback: valor => pesos(valor), maxTicksLimit: 5 }
+                }
+            },
+            onClick(evento) {
+                const puntos = grafico.getElementsAtEventForMode(evento, "index", { intersect: false }, true);
+                if (puntos.length) elegir(puntos[0].index);
+            },
+            onHover(evento) {
+                evento.native.target.style.cursor = "pointer";
+            }
+        }
+    });
+
+    function elegir(indice) {
+        elegido = elegido === indice ? null : indice;
+
+        grafico.data.datasets[0].backgroundColor = colores(AZUL);
+        grafico.data.datasets[1].backgroundColor = colores(AMBAR);
+        grafico.update();
+
+        const valor = document.getElementById("lecturaValor");
+        const texto = document.getElementById("lecturaTexto");
+
+        if (elegido === null) {
+            valor.textContent = pesos(totalPeriodo);
+            texto.textContent = "Total del período";
+        } else {
+            valor.textContent = pesos(datos.combustible[elegido] + datos.mantencion[elegido]);
+            texto.textContent = datos.meses[elegido] + " · combustible " + pesos(datos.combustible[elegido]) +
+                ", mantenciones " + pesos(datos.mantencion[elegido]);
+        }
+    }
+})();
+</script>
+
+{% endblock %}

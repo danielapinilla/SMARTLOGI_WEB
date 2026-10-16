@@ -278,7 +278,7 @@
 
                 <td>{{ conductor.conductor_id }}</td>
 
-                <td>{{ conductor.nombre_conductor }}</td>
+                <td><a class="enlace-detalle" href="{{ url_for('pagina_conductor', conductor_id=conductor.conductor_id) }}">{{ conductor.nombre_conductor }}</a></td>
 
                 <td>{{ conductor.fecha_ingreso }}</td>
 

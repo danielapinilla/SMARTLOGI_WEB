@@ -241,7 +241,7 @@
 
                 <td>{{ mantencion.mantencion_id }}</td>
 
-                <td>{{ mantencion.patente }}</td>
+                <td><a class="enlace-detalle" href="{{ url_for('pagina_vehiculo', vehiculo_id=mantencion.vehiculo_id) }}">{{ mantencion.patente }}</a></td>
 
                 <td>{{ mantencion.tipo_mantencion }}</td>
 

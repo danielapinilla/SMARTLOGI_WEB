@@ -353,11 +353,11 @@
                 </td>
 
                 <td>
-                    {{ incidente.patente }}
+                    <a class="enlace-detalle" href="{{ url_for('pagina_vehiculo', vehiculo_id=incidente.vehiculo_id) }}">{{ incidente.patente }}</a>
                 </td>
 
                 <td>
-                    {{ incidente.conductor_id }}
+                    <a class="enlace-detalle" href="{{ url_for('pagina_conductor', conductor_id=incidente.conductor_id) }}">{{ incidente.nombre_conductor }}</a>
                 </td>
 
                 <td>

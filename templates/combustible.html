@@ -244,7 +244,7 @@
 
                 <td>{{ registro.combustible_id }}</td>
 
-                <td>{{ registro.patente }}</td>
+                <td><a class="enlace-detalle" href="{{ url_for('pagina_vehiculo', vehiculo_id=registro.vehiculo_id) }}">{{ registro.patente }}</a></td>
 
                 <td>{{ registro.fecha_id }}</td>
 
