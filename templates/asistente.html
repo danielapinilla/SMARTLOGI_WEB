@@ -1,0 +1,498 @@
+{% extends "base.html" %}
+{% from "iconos.html" import icono, insignia %}
+
+{% block title %}Asistente IA - SMARTLOGIC{% endblock %}
+
+{% block content %}
+
+<style>
+    .chat {
+        display: flex;
+        flex-direction: column;
+        max-width: 860px;
+        height: calc(100vh - 62px - 56px - 56px);
+        min-height: 480px;
+        margin: 0 auto;
+        overflow: hidden;
+        border: 1px solid var(--borde);
+        border-radius: var(--radio);
+        background: var(--superficie);
+        box-shadow: var(--sombra);
+    }
+
+    .chat-encabezado {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--borde);
+    }
+
+    .chat-encabezado h1 {
+        margin: 0;
+        font-size: 18px;
+    }
+
+    .chat-encabezado h1 .ico {
+        width: 32px;
+        height: 32px;
+        top: 0;
+    }
+
+    .chat-encabezado p {
+        margin: 2px 0 0;
+        color: var(--secundario);
+        font-size: 12px;
+    }
+
+    /* ---------- Mensajes ---------- */
+
+    .mensajes {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .mensaje {
+        max-width: 85%;
+        padding: 12px 15px;
+        border-radius: 14px;
+        font-size: 14px;
+        line-height: 1.55;
+        overflow-wrap: anywhere;
+    }
+
+    .mensaje p {
+        margin: 0 0 6px;
+    }
+
+    .mensaje p:last-child,
+    .mensaje ul:last-child {
+        margin-bottom: 0;
+    }
+
+    .mensaje ul {
+        margin: 4px 0 6px;
+        padding-left: 20px;
+    }
+
+    .mensaje-usuario {
+        align-self: flex-end;
+        border-bottom-right-radius: 4px;
+        background: var(--marino);
+        color: #fff;
+    }
+
+    .mensaje-asistente {
+        align-self: flex-start;
+        border: 1px solid var(--borde);
+        border-bottom-left-radius: 4px;
+        background: #fff;
+    }
+
+    .mensaje-error {
+        align-self: flex-start;
+        border: 1px solid #f0c9c0;
+        background: #fdf0ec;
+        color: var(--alerta);
+    }
+
+    /* Puntitos de "pensando..." */
+    .pensando {
+        display: inline-flex;
+        gap: 4px;
+    }
+
+    .pensando span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--texto-suave);
+        animation: rebote 1.2s infinite ease-in-out;
+    }
+
+    .pensando span:nth-child(2) { animation-delay: .15s; }
+    .pensando span:nth-child(3) { animation-delay: .3s; }
+
+    @keyframes rebote {
+        0%, 80%, 100% { opacity: .3; transform: translateY(0); }
+        40% { opacity: 1; transform: translateY(-3px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .pensando span { animation: none; opacity: .6; }
+    }
+
+    /* ---------- Bienvenida y sugerencias ---------- */
+
+    .bienvenida {
+        margin: auto 0;
+        text-align: center;
+    }
+
+    .bienvenida h2 {
+        margin: 12px 0 6px;
+        font-size: 20px;
+    }
+
+    .bienvenida > p {
+        margin: 0 auto 20px;
+        max-width: 440px;
+        color: var(--secundario);
+        font-size: 14px;
+    }
+
+    .bienvenida .ico {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        background: var(--marino);
+        color: var(--acento);
+    }
+
+    .bienvenida .ico svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .sugerencias {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .sugerencias button {
+        padding: 9px 13px;
+        border: 1px solid var(--borde);
+        border-radius: 999px;
+        background: #fff;
+        color: var(--texto);
+        font-size: 13px;
+        transition: border-color .15s, background .15s;
+    }
+
+    .sugerencias button:hover {
+        border-color: var(--marino-3);
+        background: var(--fila-hover);
+    }
+
+    /* ---------- Caja para escribir ---------- */
+
+    .chat-formulario {
+        display: flex;
+        gap: 10px;
+        padding: 14px 16px;
+        border-top: 1px solid var(--borde);
+        background: var(--superficie);
+    }
+
+    .chat-formulario textarea {
+        flex: 1;
+        min-height: 46px;
+        max-height: 140px;
+        padding: 12px 14px;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        background: #fff;
+        color: var(--texto);
+        font-size: 14px;
+        line-height: 1.4;
+        resize: none;
+    }
+
+    .chat-formulario button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 46px;
+        height: 46px;
+        flex-shrink: 0;
+        border: none;
+        border-radius: 10px;
+        background: var(--marino);
+        color: #fff;
+        transition: background .15s;
+    }
+
+    .chat-formulario button:hover {
+        background: var(--marino-2);
+    }
+
+    .chat-formulario button:disabled {
+        opacity: .5;
+        cursor: not-allowed;
+    }
+
+    .chat-formulario button svg {
+        width: 19px;
+        height: 19px;
+    }
+
+    .chat-aviso {
+        margin: 0;
+        padding: 0 16px 12px;
+        color: var(--texto-suave);
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .no-disponible {
+        max-width: 520px;
+        margin: 0 auto;
+        text-align: left;
+    }
+
+    .no-disponible code {
+        padding: 2px 6px;
+        border-radius: 5px;
+        background: var(--superficie-2);
+        font-size: 13px;
+    }
+
+    @media (max-width: 650px) {
+        .chat {
+            height: calc(100vh - 210px);
+        }
+
+        .mensaje {
+            max-width: 92%;
+        }
+    }
+</style>
+
+<section class="chat">
+
+    <header class="chat-encabezado">
+        <div>
+            <h1>{{ insignia("chispa") }} Asistente IA</h1>
+            <p>Pregúntale a tus datos de pedidos, flota, conductores y costos.</p>
+        </div>
+    </header>
+
+    <div class="mensajes" id="mensajes" aria-live="polite">
+
+        {% if disponible %}
+
+        <div class="bienvenida" id="bienvenida">
+            <span class="ico">{{ icono("chispa") }}</span>
+            <h2>¿En qué te ayudo hoy?</h2>
+            <p>Escribe una pregunta o elige una de estas para empezar.</p>
+
+            <div class="sugerencias">
+                <button type="button">¿Qué conductor tiene más minutos de retraso?</button>
+                <button type="button">¿Cuál fue el mes con más pedidos?</button>
+                <button type="button">¿Qué vehículo gastó más en mantenciones?</button>
+                <button type="button">¿Cuántos incidentes graves siguen abiertos?</button>
+                <button type="button">¿En qué comunas se cancelan más pedidos?</button>
+            </div>
+        </div>
+
+        {% else %}
+
+        <div class="bienvenida no-disponible">
+            <p class="login-error">
+                El asistente todavía no está configurado. Falta agregar la variable
+                <code>OPENAI_API_KEY</code> con tu clave de OpenAI en Vercel
+                (Settings → Environment Variables) y luego hacer <strong>Redeploy</strong>.
+            </p>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    <form class="chat-formulario" id="formulario">
+        <textarea
+            id="pregunta"
+            aria-label="Tu pregunta"
+            rows="1"
+            maxlength="500"
+            placeholder="Escribe tu pregunta… (Enter para enviar)"
+            {% if not disponible %}disabled{% endif %}
+        ></textarea>
+
+        <button type="submit" id="enviar" aria-label="Enviar pregunta" {% if not disponible %}disabled{% endif %}>
+            {{ icono("enviar") }}
+        </button>
+    </form>
+
+    <p class="chat-aviso">La IA puede equivocarse. Revisa los datos importantes en cada sección.</p>
+
+</section>
+
+
+<script>
+(() => {
+    const URL_PREGUNTAR = {{ url_for("preguntar_asistente") | tojson }};
+
+    const mensajes = document.getElementById("mensajes");
+    const formulario = document.getElementById("formulario");
+    const campo = document.getElementById("pregunta");
+    const botonEnviar = document.getElementById("enviar");
+
+    // Conversación que se envía al servidor (el servidor no la guarda)
+    const historial = [];
+    let ocupado = false;
+
+
+    /* ---------- Mostrar texto con **negritas** y listas, sin innerHTML ---------- */
+
+    function agregarConNegritas(destino, texto) {
+        texto.split(/(\*\*[^*]+\*\*)/g).forEach(parte => {
+            if (parte.startsWith("**") && parte.endsWith("**") && parte.length > 4) {
+                const fuerte = document.createElement("strong");
+                fuerte.textContent = parte.slice(2, -2);
+                destino.append(fuerte);
+            } else if (parte) {
+                destino.append(document.createTextNode(parte));
+            }
+        });
+    }
+
+    function formatear(texto) {
+        const fragmento = document.createDocumentFragment();
+        let lista = null;
+
+        texto.split("\n").forEach(linea => {
+            const limpia = linea.trim();
+            const esItem = /^([-*•]|\d+[.)])\s+/.test(limpia);
+
+            if (esItem) {
+                if (!lista) {
+                    lista = document.createElement("ul");
+                    fragmento.append(lista);
+                }
+                const item = document.createElement("li");
+                agregarConNegritas(item, limpia.replace(/^([-*•]|\d+[.)])\s+/, ""));
+                lista.append(item);
+                return;
+            }
+
+            lista = null;
+            if (!limpia) return;
+
+            const parrafo = document.createElement("p");
+            agregarConNegritas(parrafo, limpia);
+            fragmento.append(parrafo);
+        });
+
+        return fragmento;
+    }
+
+    function agregarMensaje(tipo, texto) {
+        document.getElementById("bienvenida")?.remove();
+
+        const burbuja = document.createElement("div");
+        burbuja.className = "mensaje mensaje-" + tipo;
+
+        if (tipo === "asistente") {
+            burbuja.append(formatear(texto));
+        } else {
+            burbuja.textContent = texto;
+        }
+
+        mensajes.append(burbuja);
+        mensajes.scrollTop = mensajes.scrollHeight;
+        return burbuja;
+    }
+
+    function mostrarPensando() {
+        const burbuja = document.createElement("div");
+        burbuja.className = "mensaje mensaje-asistente";
+        burbuja.setAttribute("aria-label", "El asistente está pensando");
+
+        const puntos = document.createElement("span");
+        puntos.className = "pensando";
+        puntos.append(
+            document.createElement("span"),
+            document.createElement("span"),
+            document.createElement("span")
+        );
+
+        burbuja.append(puntos);
+        mensajes.append(burbuja);
+        mensajes.scrollTop = mensajes.scrollHeight;
+        return burbuja;
+    }
+
+
+    /* ---------- Enviar pregunta ---------- */
+
+    async function enviar(pregunta) {
+        pregunta = pregunta.trim();
+        if (!pregunta || ocupado) return;
+
+        ocupado = true;
+        botonEnviar.disabled = true;
+        campo.value = "";
+        ajustarAltura();
+
+        agregarMensaje("usuario", pregunta);
+        const pensando = mostrarPensando();
+
+        try {
+            const respuesta = await fetch(URL_PREGUNTAR, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ pregunta, historial: historial.slice(-8) })
+            });
+
+            // Si la sesión venció, el servidor redirige al login
+            if (respuesta.redirected || respuesta.url.includes("/login")) {
+                window.location.href = respuesta.url;
+                return;
+            }
+
+            const datos = await respuesta.json().catch(() => ({}));
+            pensando.remove();
+
+            if (!respuesta.ok || datos.error) {
+                agregarMensaje("error", datos.error || "Ocurrió un error. Intenta de nuevo.");
+                return;
+            }
+
+            agregarMensaje("asistente", datos.respuesta);
+            historial.push({ rol: "usuario", texto: pregunta }, { rol: "asistente", texto: datos.respuesta });
+
+        } catch (error) {
+            pensando.remove();
+            agregarMensaje("error", "No se pudo conectar. Revisa tu internet e intenta de nuevo.");
+
+        } finally {
+            ocupado = false;
+            botonEnviar.disabled = false;
+            campo.focus();
+        }
+    }
+
+    formulario.addEventListener("submit", evento => {
+        evento.preventDefault();
+        enviar(campo.value);
+    });
+
+    // Enter envía; Shift + Enter hace salto de línea
+    campo.addEventListener("keydown", evento => {
+        if (evento.key === "Enter" && !evento.shiftKey) {
+            evento.preventDefault();
+            enviar(campo.value);
+        }
+    });
+
+    // La caja crece con el texto
+    function ajustarAltura() {
+        campo.style.height = "auto";
+        campo.style.height = Math.min(campo.scrollHeight, 140) + "px";
+    }
+    campo.addEventListener("input", ajustarAltura);
+
+    document.querySelectorAll(".sugerencias button").forEach(boton => {
+        boton.addEventListener("click", () => enviar(boton.textContent));
+    });
+})();
+</script>
+
+{% endblock %}

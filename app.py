@@ -1,6 +1,7 @@
 import json
 import os
 import secrets
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -11,9 +12,11 @@ from pathlib import Path
 import pandas as pd
 from dotenv import load_dotenv
 from flask import (
-    Flask, flash, redirect, render_template, request, session, url_for
+    Flask, flash, jsonify, redirect, render_template, request, session, url_for
 )
 from werkzeug.middleware.proxy_fix import ProxyFix
+
+from asistente import Asistente, construir_tablas
 
 # Cargar variables privadas desde .env (en Vercel se configuran en el panel)
 load_dotenv()
@@ -82,6 +85,7 @@ mantenciones_df = leer_csv("fact_mantenciones_1000.csv")
 combustible_df = leer_csv("fact_combustible_3000.csv")
 incidentes_df = leer_csv("fact_incidentes_500.csv")
 entregas_df = leer_csv("fact_entregas.csv")
+clientes_df = leer_csv("dim_clientes_500.csv")
 
 mapa_patentes = (
     vehiculos_df
@@ -642,6 +646,86 @@ def incidentes():
         incidentes_resueltos=int(incidentes_df["estado_incidente"].eq("Resuelto").sum()),
         estado_filtro=estado_filtro
     )
+
+
+# =========================
+# ASISTENTE CON IA
+# =========================
+
+asistente = Asistente(
+    construir_tablas(
+        pedidos_df, entregas_df, vehiculos_df, conductores_df, rutas_df,
+        clientes_df, mantenciones_df, combustible_df, incidentes_df,
+    ),
+    resumen=indicadores_dashboard,
+)
+
+# Límite de preguntas por sesión para cuidar el saldo de OpenAI
+PREGUNTAS_POR_HORA = 40
+LARGO_MAXIMO_PREGUNTA = 500
+
+
+@app.route("/asistente")
+def pagina_asistente():
+    return render_template("asistente.html", disponible=asistente.disponible)
+
+
+@app.route("/asistente/preguntar", methods=["POST"])
+def preguntar_asistente():
+
+    if not asistente.disponible:
+        return jsonify(error="Falta configurar OPENAI_API_KEY."), 503
+
+    datos = request.get_json(silent=True) or {}
+    pregunta = str(datos.get("pregunta", "")).strip()
+    historial = datos.get("historial") or []
+
+    if not pregunta:
+        return jsonify(error="Escribe una pregunta."), 400
+
+    if len(pregunta) > LARGO_MAXIMO_PREGUNTA:
+        return jsonify(error=f"La pregunta puede tener hasta {LARGO_MAXIMO_PREGUNTA} caracteres."), 400
+
+    # Contar preguntas de la última hora
+    ahora = time.time()
+    usos = [t for t in session.get("usos_ia", []) if ahora - t < 3600]
+
+    if len(usos) >= PREGUNTAS_POR_HORA:
+        return jsonify(error="Llegaste al límite de preguntas por hora. Intenta más tarde."), 429
+
+    session["usos_ia"] = usos + [ahora]
+
+    # Solo los últimos mensajes, para que la consulta sea corta y barata
+    historial = [m for m in historial if isinstance(m, dict)][-8:]
+
+    try:
+        respuesta = asistente.responder(pregunta, historial)
+
+    except Exception as error:
+        app.logger.exception("Error del asistente")
+        return jsonify(error=mensaje_error_openai(error)), 502
+
+    return jsonify(respuesta=respuesta)
+
+
+def mensaje_error_openai(error):
+    """Traduce los errores de OpenAI a un mensaje entendible."""
+
+    nombre = type(error).__name__
+
+    if nombre == "AuthenticationError":
+        return "La clave de OpenAI no es válida. Revisa OPENAI_API_KEY."
+
+    if nombre == "RateLimitError":
+        return "OpenAI no aceptó la consulta: revisa que tu cuenta tenga saldo o espera un momento."
+
+    if nombre == "NotFoundError":
+        return "El modelo de IA configurado no está disponible. Revisa OPENAI_MODEL."
+
+    if nombre in ("APIConnectionError", "APITimeoutError"):
+        return "No se pudo conectar con OpenAI. Intenta de nuevo."
+
+    return "Ocurrió un error al consultar la IA. Intenta de nuevo."
 
 
 # =========================
