@@ -347,6 +347,10 @@ def logout():
 # DASHBOARD
 # =========================
 
+MESES_CORTOS = ["Ene", "Feb", "Mar", "Abr", "May", "Jun",
+                "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+
+
 @lru_cache(maxsize=1)
 def indicadores_dashboard():
     """Los CSV no cambian mientras la app corre, así que se calcula una vez."""
@@ -370,6 +374,14 @@ def indicadores_dashboard():
         round(entregas_a_tiempo / total_entregas * 100, 1)
         if total_entregas > 0 else 0
     )
+
+    # Pedidos por mes (fecha_pedido_id = AAAAMMDD)
+    por_mes = (pedidos_df["fecha_pedido_id"] // 100).value_counts().sort_index()
+
+    pedidos_mes_labels = [
+        f"{MESES_CORTOS[int(mes) % 100 - 1]} {int(mes) // 100}"
+        for mes in por_mes.index
+    ]
 
     # Costos operacionales
     gasto_combustible = float(combustible_df["costo_total"].sum())
@@ -396,6 +408,9 @@ def indicadores_dashboard():
         costo_mantenciones=costo_mantenciones,
         costo_incidentes=costo_incidentes,
         costo_operacional=gasto_combustible + costo_mantenciones + costo_incidentes,
+        pedidos_mes_labels=pedidos_mes_labels,
+        pedidos_mes_valores=[int(valor) for valor in por_mes.values],
+        promedio_pedidos_mes=round(float(por_mes.mean())) if len(por_mes) else 0,
     )
 
 
@@ -448,7 +463,7 @@ def vehiculos():
     vehiculos_filtrados, estado_filtro = filtrar_por_estado(
         vehiculos_df,
         "estado",
-        ["Todos", "Disponible", "En ruta", "Mantención"]
+        ["Todos", "Disponible", "En ruta", "Mantención", "Fuera de servicio"]
     )
 
     datos_vehiculos, pagina, total_paginas = paginar(vehiculos_filtrados)
