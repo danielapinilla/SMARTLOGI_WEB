@@ -284,64 +284,76 @@
     if (typeof Chart === "undefined") return;
 
     const datos = JSON.parse(document.getElementById("datos-detalle").textContent);
-    const AZUL = "#2563c4";
     const numero = n => Number(n || 0).toLocaleString("es-CL");
     const transparente = (hex, alfa) => hex + Math.round(alfa * 255).toString(16).padStart(2, "0");
 
-    Chart.defaults.font.family = "'DM Sans', system-ui, sans-serif";
-    Chart.defaults.color = "#6b7585";
+    // Colores según el modo claro/oscuro (variables de style.css)
+    let C;
+    function leerColores() {
+        const c = window.colorTema;
+        C = { azul: c("--g-azul"), grilla: c("--linea"), tooltip: c("--tooltip"), textoSuave: c("--secundario") };
+    }
 
     let elegido = null;
+    let grafico;
 
-    const grafico = new Chart(document.getElementById("graficoMeses"), {
-        type: "bar",
-        data: {
-            labels: datos.meses,
-            datasets: [{
-                label: "Entregas",
-                data: datos.valores,
-                backgroundColor: datos.valores.map(() => AZUL),
-                borderRadius: 4,
-                borderSkipped: "start",
-                maxBarThickness: 24
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: "#15253f",
-                    titleColor: "#c4cddb",
-                    bodyColor: "#ffffff",
-                    bodyFont: { weight: "700" },
-                    padding: 10,
-                    cornerRadius: 8,
-                    displayColors: false,
-                    callbacks: { label: item => numero(item.raw) + " entregas" }
+    const colores = () => datos.valores.map(
+        (_, i) => elegido === null || i === elegido ? C.azul : transparente(C.azul, 0.25)
+    );
+
+    function crearGrafico() {
+        leerColores();
+        Chart.defaults.font.family = "'DM Sans', system-ui, sans-serif";
+        Chart.defaults.color = C.textoSuave;
+
+        grafico = new Chart(document.getElementById("graficoMeses"), {
+            type: "bar",
+            data: {
+                labels: datos.meses,
+                datasets: [{
+                    label: "Entregas",
+                    data: datos.valores,
+                    backgroundColor: colores(),
+                    borderRadius: 4,
+                    borderSkipped: "start",
+                    maxBarThickness: 24
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: C.tooltip,
+                        titleColor: "#c4cddb",
+                        bodyColor: "#ffffff",
+                        bodyFont: { weight: "700" },
+                        padding: 10,
+                        cornerRadius: 8,
+                        displayColors: false,
+                        callbacks: { label: item => numero(item.raw) + " entregas" }
+                    }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
+                    y: { beginAtZero: true, grid: { color: C.grilla }, border: { display: false }, ticks: { precision: 0 } }
+                },
+                onClick(evento, elementos) {
+                    if (elementos.length) elegir(elementos[0].index);
+                },
+                onHover(evento, elementos) {
+                    evento.native.target.style.cursor = elementos.length ? "pointer" : "default";
                 }
-            },
-            scales: {
-                x: { grid: { display: false }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
-                y: { beginAtZero: true, grid: { color: "#eeeae0" }, border: { display: false }, ticks: { precision: 0 } }
-            },
-            onClick(evento, elementos) {
-                if (elementos.length) elegir(elementos[0].index);
-            },
-            onHover(evento, elementos) {
-                evento.native.target.style.cursor = elementos.length ? "pointer" : "default";
             }
-        }
-    });
+        });
+    }
 
     function elegir(indice) {
         elegido = elegido === indice ? null : indice;
         const hay = elegido !== null;
 
-        grafico.data.datasets[0].backgroundColor = datos.valores.map(
-            (_, i) => !hay || i === elegido ? AZUL : transparente(AZUL, 0.25)
-        );
+        grafico.data.datasets[0].backgroundColor = colores();
         grafico.update();
 
         document.getElementById("lecturaValor").textContent =
@@ -349,6 +361,14 @@
         document.getElementById("lecturaTexto").textContent =
             hay ? "Entregas en " + datos.meses[elegido] : "Entregas en total";
     }
+
+    crearGrafico();
+
+    // Al cambiar claro/oscuro se vuelve a dibujar con los colores nuevos
+    document.addEventListener("temacambiado", () => {
+        grafico.destroy();
+        crearGrafico();
+    });
 })();
 </script>
 {% endif %}

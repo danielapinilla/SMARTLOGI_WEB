@@ -38,6 +38,137 @@
     --fuente-texto: "DM Sans", system-ui, sans-serif;
     --radio: 12px;
     --sombra: 0 1px 2px rgba(21, 37, 63, .04), 0 4px 14px rgba(21, 37, 63, .04);
+    --sombra-elevada: 0 8px 20px rgba(21, 37, 63, .08);
+
+    /* Fondos y líneas */
+    --barra-lateral: #15253f;   /* menú y panel del login (siempre oscuros) */
+    --campo: #ffffff;           /* cajas de texto, burbujas, placa */
+    --linea: #eeeae0;           /* líneas de tablas y grillas de gráficos */
+    --pista: #ebe7dc;           /* fondo de las barras de avance */
+    --tooltip: #15253f;
+
+    /* Fondos suaves para íconos y etiquetas */
+    --suave-azul: #e8edf5;
+    --suave-verde: #e3f2ea;
+    --suave-rojo: #fbe7e2;
+    --texto-ambar: #9a6408;
+    --error-borde: #f0c9c0;
+    --error-fondo: #fdf0ec;
+    --exito-borde: #bfdccb;
+    --exito-fondo: #edf7f1;
+
+    /* Colores de gráficos (validados para daltonismo en ambos modos) */
+    --g-entregado: #1f9d63;
+    --g-ruta: #2563c4;
+    --g-preparacion: #c74f86;
+    --g-pendiente: #f0a20a;
+    --g-cancelado: #b8352b;
+    --g-azul: #2563c4;          /* gráficos de una sola serie */
+
+    color-scheme: light;
+}
+
+/* =====================================================
+   MODO OSCURO
+   Se aplica si el equipo está en modo oscuro (y la persona no eligió
+   "claro" con el botón), o si eligió "oscuro" con el botón.
+   Las dos listas son iguales a propósito.
+   ===================================================== */
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --marino: #2c4b7d;
+        --marino-2: #375a92;
+        --marino-3: #8fb4ec;
+        --acento-suave: #3a3221;
+
+        --fondo: #0e1625;
+        --superficie: #152031;
+        --superficie-2: #1b2940;
+        --borde: #273752;
+        --fila-hover: #1a273b;
+
+        --texto: #e7ecf4;
+        --secundario: #a6b2c4;
+        --texto-suave: #7c899d;
+
+        --ok: #4cc38a;
+        --alerta: #f07a68;
+
+        --sombra: 0 1px 2px rgba(0, 0, 0, .25);
+        --sombra-elevada: 0 8px 20px rgba(0, 0, 0, .35);
+
+        --barra-lateral: #0a111d;
+        --campo: #0f1828;
+        --linea: #223049;
+        --pista: #24324a;
+        --tooltip: #050a12;
+
+        --suave-azul: #1e2d47;
+        --suave-verde: #16352a;
+        --suave-rojo: #3d2124;
+        --texto-ambar: #f2b84b;
+        --error-borde: #5a2a2a;
+        --error-fondo: #331c1f;
+        --exito-borde: #1f4a35;
+        --exito-fondo: #14301f;
+
+        --g-entregado: #008300;
+        --g-ruta: #3987e5;
+        --g-preparacion: #d55181;
+        --g-pendiente: #c98500;
+        --g-cancelado: #c94a4a;
+        --g-azul: #3987e5;
+
+        color-scheme: dark;
+    }
+}
+
+:root[data-theme="dark"] {
+    --marino: #2c4b7d;
+    --marino-2: #375a92;
+    --marino-3: #8fb4ec;
+    --acento-suave: #3a3221;
+
+    --fondo: #0e1625;
+    --superficie: #152031;
+    --superficie-2: #1b2940;
+    --borde: #273752;
+    --fila-hover: #1a273b;
+
+    --texto: #e7ecf4;
+    --secundario: #a6b2c4;
+    --texto-suave: #7c899d;
+
+    --ok: #4cc38a;
+    --alerta: #f07a68;
+
+    --sombra: 0 1px 2px rgba(0, 0, 0, .25);
+    --sombra-elevada: 0 8px 20px rgba(0, 0, 0, .35);
+
+    --barra-lateral: #0a111d;
+    --campo: #0f1828;
+    --linea: #223049;
+    --pista: #24324a;
+    --tooltip: #050a12;
+
+    --suave-azul: #1e2d47;
+    --suave-verde: #16352a;
+    --suave-rojo: #3d2124;
+    --texto-ambar: #f2b84b;
+    --error-borde: #5a2a2a;
+    --error-fondo: #331c1f;
+    --exito-borde: #1f4a35;
+    --exito-fondo: #14301f;
+
+    --g-entregado: #008300;
+    --g-ruta: #3987e5;
+    --g-preparacion: #d55181;
+    --g-pendiente: #c98500;
+    --g-cancelado: #c94a4a;
+    --g-azul: #3987e5;
+
+    color-scheme: dark;
 }
 
 * {
@@ -104,7 +235,7 @@ canvas {
     background:
         linear-gradient(rgba(255, 255, 255, .025) 1px, transparent 1px) 0 0 / 28px 28px,
         linear-gradient(90deg, rgba(255, 255, 255, .025) 1px, transparent 1px) 0 0 / 28px 28px,
-        var(--marino);
+        var(--barra-lateral);
 }
 
 .logo {
@@ -292,7 +423,7 @@ canvas {
 
 .boton-salir:hover {
     background: var(--superficie-2);
-    border-color: #d3ccb9;
+    border-color: var(--texto-suave);
 }
 
 main {
@@ -355,7 +486,7 @@ a.card {
 .tarjeta-pedido:hover,
 a.card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(21, 37, 63, .08);
+    box-shadow: var(--sombra-elevada);
 }
 
 .card.activa,
@@ -381,10 +512,10 @@ a.card:hover {
     height: 16px;
 }
 
-.ico-azul  { background: #e8edf5; color: var(--marino-3); }
-.ico-verde { background: #e3f2ea; color: var(--ok); }
-.ico-rojo  { background: #fbe7e2; color: var(--alerta); }
-.ico-ambar { background: var(--acento-suave); color: #b37410; }
+.ico-azul  { background: var(--suave-azul); color: var(--marino-3); }
+.ico-verde { background: var(--suave-verde); color: var(--ok); }
+.ico-rojo  { background: var(--suave-rojo); color: var(--alerta); }
+.ico-ambar { background: var(--acento-suave); color: var(--texto-ambar); }
 
 h1 .ico {
     width: 38px;
@@ -411,7 +542,7 @@ h3 .ico {
 .tarjeta-pedido > p,
 .cards > .card > p {
     margin: 0;
-    color: var(--marino) !important;
+    color: var(--texto) !important;
     font-family: var(--fuente-titulos);
     font-size: 26px;
     font-weight: 800;
@@ -447,7 +578,7 @@ th,
 td {
     padding: 12px 15px;
     text-align: left;
-    border-bottom: 1px solid #eeeae0;
+    border-bottom: 1px solid var(--linea);
     font-size: 13px;
 }
 
@@ -479,7 +610,7 @@ tbody tr:hover {
     width: 100%;
     padding: 12px 14px 12px 40px;
     /* Lupa dibujada (mismo estilo que los íconos del menú) */
-    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2398a1ad' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E") no-repeat 14px center / 17px 17px !important;
+    background: var(--campo) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2398a1ad' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E") no-repeat 14px center / 17px 17px !important;
     margin: 4px 0 18px !important;
     border: 1px solid var(--borde) !important;
     border-radius: 8px !important;
@@ -687,7 +818,7 @@ textarea:focus {
     background:
         linear-gradient(rgba(255, 255, 255, .035) 1px, transparent 1px) 0 0 / 34px 34px,
         linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px) 0 0 / 34px 34px,
-        var(--marino);
+        var(--barra-lateral);
 }
 
 /* Círculos decorativos, como en la referencia */
@@ -838,9 +969,9 @@ textarea:focus {
 .login-error {
     margin: 0 0 18px;
     padding: 11px 13px;
-    border: 1px solid #f0c9c0;
+    border: 1px solid var(--error-borde);
     border-radius: 7px;
-    background: #fdf0ec;
+    background: var(--error-fondo);
     color: var(--alerta);
     font-size: 13px;
 }
@@ -853,9 +984,9 @@ textarea:focus {
 .login-exito {
     margin: 0 0 18px;
     padding: 11px 13px;
-    border: 1px solid #bfdccb;
+    border: 1px solid var(--exito-borde);
     border-radius: 7px;
-    background: #edf7f1;
+    background: var(--exito-fondo);
     color: var(--ok);
     font-size: 13px;
     line-height: 1.5;
@@ -971,14 +1102,14 @@ textarea:focus {
 }
 
 .boton-excel:hover {
-    border-color: #1f9d63;
-    background: #edf7f1;
+    border-color: var(--g-entregado);
+    background: var(--exito-fondo);
 }
 
 .boton-excel svg {
     width: 16px;
     height: 16px;
-    color: #1f9d63;
+    color: var(--g-entregado);
 }
 
 .boton-excel span {
@@ -1101,10 +1232,10 @@ textarea:focus {
     min-width: 120px;
     padding: 10px 14px;
     flex-shrink: 0;
-    border: 3px solid var(--marino);
+    border: 3px solid var(--texto);
     border-radius: 10px;
-    background: #fff;
-    color: var(--marino);
+    background: var(--campo);
+    color: var(--texto);
     font-family: "Montserrat", var(--fuente-titulos);
     font-size: 24px;
     font-weight: 700;
@@ -1151,10 +1282,10 @@ textarea:focus {
     background: currentColor;
 }
 
-.pastilla-verde { background: #e3f2ea; color: var(--ok); }
-.pastilla-rojo  { background: #fbe7e2; color: var(--alerta); }
-.pastilla-ambar { background: var(--acento-suave); color: #9a6408; }
-.pastilla-azul  { background: #e8edf5; color: var(--marino-3); }
+.pastilla-verde { background: var(--suave-verde); color: var(--ok); }
+.pastilla-rojo  { background: var(--suave-rojo); color: var(--alerta); }
+.pastilla-ambar { background: var(--acento-suave); color: var(--texto-ambar); }
+.pastilla-azul  { background: var(--suave-azul); color: var(--marino-3); }
 
 /* ---------- Indicadores ---------- */
 
@@ -1204,14 +1335,14 @@ textarea:focus {
     margin-top: 10px;
     overflow: hidden;
     border-radius: 999px;
-    background: #ebe7dc;
+    background: var(--pista);
 }
 
 .medidor-detalle span {
     display: block;
     height: 100%;
     border-radius: 999px;
-    background: #2563c4;
+    background: var(--g-azul);
 }
 
 /* ---------- Filas ---------- */
@@ -1269,14 +1400,14 @@ textarea:focus {
 .lista-barras .barrita {
     height: 6px;
     border-radius: 999px;
-    background: #ebe7dc;
+    background: var(--pista);
 }
 
 .lista-barras .barrita span {
     display: block;
     height: 100%;
     border-radius: 999px;
-    background: #2563c4;
+    background: var(--g-azul);
 }
 
 .lista-barras a,
@@ -1356,4 +1487,58 @@ textarea:focus {
     .ficha h1 {
         font-size: 22px;
     }
+}
+
+/* =====================================================
+   BOTÓN MODO CLARO / OSCURO
+   ===================================================== */
+
+.boton-tema {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    padding: 0;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--texto);
+    transition: background .15s, border-color .15s;
+}
+
+.boton-tema:hover {
+    background: var(--superficie-2);
+    border-color: var(--texto-suave);
+}
+
+.boton-tema:focus-visible {
+    outline: 2px solid var(--marino-3);
+    outline-offset: 2px;
+}
+
+.boton-tema svg {
+    width: 17px;
+    height: 17px;
+}
+
+/* Luna en modo claro, sol en modo oscuro */
+.boton-tema .icono-sol,
+.boton-tema.es-oscuro .icono-luna {
+    display: none;
+}
+
+.boton-tema.es-oscuro .icono-sol {
+    display: block;
+}
+
+.login-formulario {
+    position: relative;
+}
+
+.boton-tema-esquina {
+    position: absolute;
+    top: 20px;
+    right: 20px;
 }

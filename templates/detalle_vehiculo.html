@@ -290,81 +290,103 @@
 
     const datos = JSON.parse(document.getElementById("datos-detalle").textContent);
 
-    // Mismos colores que el gráfico de costos del dashboard
-    const AZUL = "#2563c4";
-    const AMBAR = "#f0a20a";
     const pesos = n => "$" + Number(n || 0).toLocaleString("es-CL", { maximumFractionDigits: 0 });
     const transparente = (hex, alfa) => hex + Math.round(alfa * 255).toString(16).padStart(2, "0");
     const totalPeriodo = datos.combustible.reduce((a, b) => a + b, 0) + datos.mantencion.reduce((a, b) => a + b, 0);
 
-    Chart.defaults.font.family = "'DM Sans', system-ui, sans-serif";
-    Chart.defaults.color = "#6b7585";
+    // Colores según el modo claro/oscuro (variables de style.css).
+    // Mismos colores que el gráfico de costos del dashboard.
+    let C;
+    function leerColores() {
+        const c = window.colorTema;
+        C = {
+            combustible: c("--g-ruta"),
+            mantencion: c("--g-pendiente"),
+            superficie: c("--superficie"),
+            grilla: c("--linea"),
+            texto: c("--texto"),
+            textoSuave: c("--secundario"),
+            tooltip: c("--tooltip")
+        };
+    }
 
     let elegido = null;
+    let grafico;
+
     const colores = (base) => datos.meses.map(
         (_, i) => elegido === null || i === elegido ? base : transparente(base, 0.25)
     );
 
-    const grafico = new Chart(document.getElementById("graficoCostos"), {
-        type: "bar",
-        data: {
-            labels: datos.meses,
-            datasets: [
-                { label: "Combustible", data: datos.combustible, backgroundColor: colores(AZUL), maxBarThickness: 24 },
-                {
-                    label: "Mantenciones", data: datos.mantencion, backgroundColor: colores(AMBAR), maxBarThickness: 24,
-                    // Separación de 2 px entre los dos colores de cada barra
-                    borderColor: "#fffefa", borderWidth: { bottom: 2, top: 0, left: 0, right: 0 }, borderSkipped: false
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: { mode: "index", intersect: false },
-            plugins: {
-                legend: {
-                    position: "top",
-                    align: "start",
-                    labels: { color: "#1d2a3d", boxWidth: 12, boxHeight: 12, useBorderRadius: true, borderRadius: 3 }
-                },
-                tooltip: {
-                    backgroundColor: "#15253f",
-                    titleColor: "#c4cddb",
-                    bodyColor: "#ffffff",
-                    padding: 10,
-                    cornerRadius: 8,
-                    callbacks: {
-                        label: item => item.dataset.label + ": " + pesos(item.raw),
-                        footer: items => "Total: " + pesos(items.reduce((s, i) => s + i.raw, 0))
+    function crearGrafico() {
+        leerColores();
+        Chart.defaults.font.family = "'DM Sans', system-ui, sans-serif";
+        Chart.defaults.color = C.textoSuave;
+
+        grafico = new Chart(document.getElementById("graficoCostos"), {
+            type: "bar",
+            data: {
+                labels: datos.meses,
+                datasets: [
+                    {
+                        label: "Combustible", data: datos.combustible,
+                        backgroundColor: colores(C.combustible), maxBarThickness: 24
+                    },
+                    {
+                        label: "Mantenciones", data: datos.mantencion,
+                        backgroundColor: colores(C.mantencion), maxBarThickness: 24,
+                        // Separación de 2 px entre los dos colores de cada barra
+                        borderColor: C.superficie, borderWidth: { bottom: 2, top: 0, left: 0, right: 0 }, borderSkipped: false
                     }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: "index", intersect: false },
+                plugins: {
+                    legend: {
+                        position: "top",
+                        align: "start",
+                        labels: { color: C.texto, boxWidth: 12, boxHeight: 12, useBorderRadius: true, borderRadius: 3 }
+                    },
+                    tooltip: {
+                        backgroundColor: C.tooltip,
+                        titleColor: "#c4cddb",
+                        bodyColor: "#ffffff",
+                        padding: 10,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: item => item.dataset.label + ": " + pesos(item.raw),
+                            footer: items => "Total: " + pesos(items.reduce((s, i) => s + i.raw, 0))
+                        }
+                    }
+                },
+                scales: {
+                    x: { stacked: true, grid: { display: false }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        grid: { color: C.grilla },
+                        border: { display: false },
+                        ticks: { callback: valor => pesos(valor), maxTicksLimit: 5 }
+                    }
+                },
+                onClick(evento) {
+                    const puntos = grafico.getElementsAtEventForMode(evento, "index", { intersect: false }, true);
+                    if (puntos.length) elegir(puntos[0].index);
+                },
+                onHover(evento) {
+                    evento.native.target.style.cursor = "pointer";
                 }
-            },
-            scales: {
-                x: { stacked: true, grid: { display: false }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
-                y: {
-                    stacked: true,
-                    beginAtZero: true,
-                    grid: { color: "#eeeae0" },
-                    border: { display: false },
-                    ticks: { callback: valor => pesos(valor), maxTicksLimit: 5 }
-                }
-            },
-            onClick(evento) {
-                const puntos = grafico.getElementsAtEventForMode(evento, "index", { intersect: false }, true);
-                if (puntos.length) elegir(puntos[0].index);
-            },
-            onHover(evento) {
-                evento.native.target.style.cursor = "pointer";
             }
-        }
-    });
+        });
+    }
 
     function elegir(indice) {
         elegido = elegido === indice ? null : indice;
 
-        grafico.data.datasets[0].backgroundColor = colores(AZUL);
-        grafico.data.datasets[1].backgroundColor = colores(AMBAR);
+        grafico.data.datasets[0].backgroundColor = colores(C.combustible);
+        grafico.data.datasets[1].backgroundColor = colores(C.mantencion);
         grafico.update();
 
         const valor = document.getElementById("lecturaValor");
@@ -379,6 +401,14 @@
                 ", mantenciones " + pesos(datos.mantencion[elegido]);
         }
     }
+
+    crearGrafico();
+
+    // Al cambiar claro/oscuro se vuelve a dibujar con los colores nuevos
+    document.addEventListener("temacambiado", () => {
+        grafico.destroy();
+        crearGrafico();
+    });
 })();
 </script>
 

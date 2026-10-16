@@ -1,0 +1,90 @@
+{# =====================================================
+   MODO CLARO / OSCURO
+   - Sin elección guardada: se usa el modo del equipo.
+   - Con el botón: se guarda la elección en este navegador.
+   ===================================================== #}
+
+{# Va en <head>: aplica el modo guardado ANTES de pintar la página,
+   para que no se vea un "parpadeo" blanco al entrar en modo oscuro. #}
+{% macro script_inicial() -%}
+<meta name="color-scheme" content="light dark">
+<script>
+    (function () {
+        try {
+            var tema = localStorage.getItem("tema");
+            if (tema === "dark" || tema === "light") {
+                document.documentElement.setAttribute("data-theme", tema);
+            }
+        } catch (error) { /* navegador sin almacenamiento: se usa el del equipo */ }
+
+        // Para los gráficos: lee un color de las variables CSS (ej. "--g-azul").
+        // Se define aquí, al inicio, para que exista antes de dibujar los gráficos.
+        window.colorTema = function (nombre) {
+            return getComputedStyle(document.documentElement).getPropertyValue(nombre).trim();
+        };
+    })();
+</script>
+{%- endmacro %}
+
+
+{% macro boton_tema(clase="boton-tema") -%}
+<button type="button" class="{{ clase }}" data-cambiar-tema aria-label="Cambiar a modo oscuro" title="Cambiar a modo oscuro">
+    {# Luna: se muestra en modo claro #}
+    <svg class="icono-luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+    </svg>
+    {# Sol: se muestra en modo oscuro #}
+    <svg class="icono-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+    </svg>
+</button>
+{%- endmacro %}
+
+
+{# Va al final de <body>. #}
+{% macro script_tema() -%}
+<script>
+    (function () {
+        var raiz = document.documentElement;
+        var sistemaOscuro = window.matchMedia("(prefers-color-scheme: dark)");
+
+        function temaActual() {
+            var elegido = raiz.getAttribute("data-theme");
+            if (elegido) return elegido;
+            return sistemaOscuro.matches ? "dark" : "light";
+        }
+
+        function actualizarBotones() {
+            var oscuro = temaActual() === "dark";
+            var texto = oscuro ? "Cambiar a modo claro" : "Cambiar a modo oscuro";
+            document.querySelectorAll("[data-cambiar-tema]").forEach(function (boton) {
+                boton.setAttribute("aria-label", texto);
+                boton.setAttribute("title", texto);
+                boton.classList.toggle("es-oscuro", oscuro);
+            });
+        }
+
+        function avisarCambio() {
+            actualizarBotones();
+            // Los gráficos escuchan este aviso para volver a dibujarse
+            document.dispatchEvent(new CustomEvent("temacambiado", { detail: temaActual() }));
+        }
+
+        document.querySelectorAll("[data-cambiar-tema]").forEach(function (boton) {
+            boton.addEventListener("click", function () {
+                var nuevo = temaActual() === "dark" ? "light" : "dark";
+                raiz.setAttribute("data-theme", nuevo);
+                try { localStorage.setItem("tema", nuevo); } catch (error) {}
+                avisarCambio();
+            });
+        });
+
+        // Si la persona no eligió con el botón, seguir al equipo cuando cambie
+        sistemaOscuro.addEventListener("change", function () {
+            if (!raiz.getAttribute("data-theme")) avisarCambio();
+        });
+
+        actualizarBotones();
+    })();
+</script>
+{%- endmacro %}

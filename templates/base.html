@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    {% from "tema.html" import script_inicial, boton_tema, script_tema %}
+    {{ script_inicial() }}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SMARTLOGIC{% endblock %}</title>
@@ -59,6 +61,7 @@
                 </div>
 
                 <div class="usuario">
+                    {{ boton_tema() }}
                     <span class="usuario-avatar">{{ session.usuario[:1] }}</span>
                     <span class="usuario-correo">{{ session.usuario }}</span>
 
@@ -79,5 +82,6 @@
 
         </div>
     </div>
+    {{ script_tema() }}
 </body>
 </html>

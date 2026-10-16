@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    {% from "tema.html" import script_inicial, boton_tema, script_tema %}
+    {{ script_inicial() }}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SMARTLOGIC | Panel del administrador{% endblock %}</title>
@@ -49,9 +51,11 @@
              ========================= -->
 
         <section class="login-formulario">
+            {{ boton_tema("boton-tema boton-tema-esquina") }}
             {% block formulario %}{% endblock %}
         </section>
 
     </div>
+    {{ script_tema() }}
 </body>
 </html>

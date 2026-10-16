@@ -8,17 +8,11 @@
 <style>
     /* =====================================================
        DASHBOARD
-       Colores de los gráficos validados para daltonismo
-       (verde, azul, celeste, ámbar y rojo oscuro).
+       Los colores de los gráficos (--g-*) están en style.css,
+       con su versión para modo oscuro.
        ===================================================== */
 
     .dash {
-        --g-entregado: #1f9d63;
-        --g-ruta: #2563c4;
-        --g-preparacion: #7fb2f0;
-        --g-pendiente: #f0a20a;
-        --g-cancelado: #b8352b;
-        --g-pista: #ebe7dc;
         padding-bottom: 12px;
     }
 
@@ -136,7 +130,7 @@
         margin-top: 12px;
         overflow: hidden;
         border-radius: 999px;
-        background: var(--g-pista);
+        background: var(--pista);
     }
 
     .medidor span {
@@ -608,21 +602,29 @@
 (() => {
     const datos = JSON.parse(document.getElementById("datos-dashboard").textContent);
 
-    /* ---------- Colores (iguales a las variables CSS de .dash) ---------- */
+    /* ---------- Colores: se leen de style.css según el modo (claro/oscuro) ---------- */
 
-    const COLOR_ESTADO = {
-        "Entregado": "#1f9d63",
-        "En ruta": "#2563c4",
-        "En preparación": "#7fb2f0",
-        "Pendiente": "#f0a20a",
-        "Cancelado": "#b8352b"
+    const VARIABLE_ESTADO = {
+        "Entregado": "--g-entregado",
+        "En ruta": "--g-ruta",
+        "En preparación": "--g-preparacion",
+        "Pendiente": "--g-pendiente",
+        "Cancelado": "--g-cancelado"
     };
-    const COLORES_COSTOS = ["#2563c4", "#f0a20a", "#7fb2f0"];
-    const AZUL = "#2563c4";
-    const SUPERFICIE = "#fffefa";
-    const GRILLA = "#eeeae0";
-    const TEXTO = "#1d2a3d";
-    const TEXTO_SUAVE = "#6b7585";
+    const VARIABLES_COSTOS = ["--g-ruta", "--g-pendiente", "--g-preparacion"];
+
+    function leerColores() {
+        const c = window.colorTema;
+        return {
+            azul: c("--g-azul"),
+            superficie: c("--superficie"),
+            grilla: c("--linea"),
+            texto: c("--texto"),
+            textoSuave: c("--secundario"),
+            tooltip: c("--tooltip"),
+            estados: datos.estados.map(e => c(VARIABLE_ESTADO[e] || "--texto-suave"))
+        };
+    }
 
     const numero = n => Number(n || 0).toLocaleString("es-CL", { maximumFractionDigits: 0 });
     const pesos = n => "$" + numero(n);
@@ -630,15 +632,16 @@
         (total ? (parte / total * 100) : 0).toLocaleString("es-CL", { maximumFractionDigits: 1 }) + "%";
     const transparente = (hex, alfa) => hex + Math.round(alfa * 255).toString(16).padStart(2, "0");
 
-    /* Crea un botón de leyenda: [muestra] nombre  cantidad  % */
-    function botonLeyenda(color, nombre, cantidad, pct) {
+    /* Crea un botón de leyenda: [muestra] nombre  cantidad  %
+       La muestra usa la variable CSS, así cambia sola con el modo. */
+    function botonLeyenda(variableColor, nombre, cantidad, pct) {
         const boton = document.createElement("button");
         boton.type = "button";
         boton.setAttribute("aria-pressed", "false");
 
         const muestra = document.createElement("span");
         muestra.className = "muestra";
-        muestra.style.background = color;
+        muestra.style.background = "var(" + variableColor + ")";
 
         const texto = document.createElement("span");
         texto.textContent = nombre;
@@ -670,7 +673,7 @@
 
     const segmentos = datos.costos.map((costo, i) => {
         const segmento = document.createElement("span");
-        segmento.style.background = COLORES_COSTOS[i];
+        segmento.style.background = "var(" + VARIABLES_COSTOS[i] + ")";
         segmento.style.flexGrow = Number(costo.valor || 0);
         segmento.title = costo.nombre + ": " + pesos(costo.valor);
         segmento.addEventListener("click", () => elegirCosto(i));
@@ -680,7 +683,7 @@
 
     const botonesCostos = datos.costos.map((costo, i) => {
         const { item, boton } = botonLeyenda(
-            COLORES_COSTOS[i], costo.nombre, pesos(costo.valor), porcentaje(costo.valor, totalCostos)
+            VARIABLES_COSTOS[i], costo.nombre, pesos(costo.valor), porcentaje(costo.valor, totalCostos)
         );
         boton.addEventListener("click", () => elegirCosto(i));
         leyendaCostos.append(item);
@@ -703,33 +706,62 @@
     }
 
 
-    if (typeof Chart === "undefined") return;
-
-    Chart.defaults.font.family = "'DM Sans', system-ui, sans-serif";
-    Chart.defaults.font.size = 12;
-    Chart.defaults.color = TEXTO_SUAVE;
-
-    const tooltipBase = {
-        backgroundColor: "#15253f",
-        titleColor: "#c4cddb",
-        bodyColor: "#ffffff",
-        titleFont: { weight: "500", size: 12 },
-        bodyFont: { weight: "700", size: 13 },
-        padding: 10,
-        cornerRadius: 8,
-        displayColors: false
-    };
-
-
     /* =====================================================
-       PEDIDOS POR ESTADO (dona + leyenda)
+       LEYENDA DE ESTADOS (HTML, se crea una sola vez)
        ===================================================== */
 
     const totalPedidos = datos.estadosValores.reduce((a, b) => a + b, 0);
-    const coloresEstados = datos.estados.map(e => COLOR_ESTADO[e] || "#98a1ad");
+    const leyendaEstados = document.getElementById("leyendaEstados");
     let estadoElegido = null;
 
-    // Escribe en el centro el total, o el estado elegido
+    const botonesEstados = datos.estados.map((estado, i) => {
+        const { item, boton } = botonLeyenda(
+            VARIABLE_ESTADO[estado] || "--texto-suave", estado,
+            numero(datos.estadosValores[i]),
+            porcentaje(datos.estadosValores[i], totalPedidos)
+        );
+        boton.addEventListener("click", () => elegirEstado(i));
+        leyendaEstados.append(item);
+        return boton;
+    });
+
+    const totalFlota = datos.flotaValores.reduce((a, b) => a + b, 0);
+    let mesElegido = null;
+    let flotaElegida = null;
+
+    if (typeof Chart === "undefined") return;
+
+
+    /* =====================================================
+       GRÁFICOS (se vuelven a crear al cambiar claro/oscuro)
+       ===================================================== */
+
+    let C = leerColores();
+    let graficoEstados, graficoMeses, graficoFlota;
+
+    function tooltipBase() {
+        return {
+            backgroundColor: C.tooltip,
+            titleColor: "#c4cddb",
+            bodyColor: "#ffffff",
+            titleFont: { weight: "500", size: 12 },
+            bodyFont: { weight: "700", size: 13 },
+            padding: 10,
+            cornerRadius: 8,
+            displayColors: false
+        };
+    }
+
+    // Colores según lo elegido (lo no elegido se atenúa)
+    const coloresEstados = () => C.estados.map(
+        (color, i) => estadoElegido === null || i === estadoElegido ? color : transparente(color, 0.22)
+    );
+    const coloresFlota = () => datos.flota.map(
+        (_, i) => flotaElegida === null || i === flotaElegida ? C.azul : transparente(C.azul, 0.22)
+    );
+    const radiosMes = () => datos.mesesValores.map((_, i) => i === mesElegido ? 6 : 0);
+
+    // Escribe en el centro de la dona el total, o el estado elegido
     const textoCentro = {
         id: "textoCentro",
         afterDraw(chart) {
@@ -740,79 +772,193 @@
             const y = (area.top + area.bottom) / 2;
             const elegido = estadoElegido !== null;
 
-            const valor = elegido ? datos.estadosValores[estadoElegido] : totalPedidos;
-            const etiqueta = elegido ? datos.estados[estadoElegido] : "Total pedidos";
-
             ctx.save();
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
-            ctx.fillStyle = TEXTO;
+            ctx.fillStyle = C.texto;
             ctx.font = "800 24px Manrope, sans-serif";
-            ctx.fillText(numero(valor), x, y - 8);
-            ctx.fillStyle = TEXTO_SUAVE;
+            ctx.fillText(numero(elegido ? datos.estadosValores[estadoElegido] : totalPedidos), x, y - 8);
+            ctx.fillStyle = C.textoSuave;
             ctx.font = "500 12px 'DM Sans', sans-serif";
-            ctx.fillText(etiqueta, x, y + 14);
+            ctx.fillText(elegido ? datos.estados[estadoElegido] : "Total pedidos", x, y + 14);
             ctx.restore();
         }
     };
 
-    const graficoEstados = new Chart(document.getElementById("graficoEstados"), {
-        type: "doughnut",
-        data: {
-            labels: datos.estados,
-            datasets: [{
-                data: datos.estadosValores,
-                backgroundColor: coloresEstados.slice(),
-                borderColor: SUPERFICIE,
-                borderWidth: 2,
-                hoverOffset: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutout: "72%",
-            layout: { padding: 6 },
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    ...tooltipBase,
-                    callbacks: {
-                        title: items => items[0].label,
-                        label: item => numero(item.raw) + " pedidos · " + porcentaje(item.raw, totalPedidos)
+    // Escribe el número al final de cada barra de la flota
+    const valorEnBarra = {
+        id: "valorEnBarra",
+        afterDatasetsDraw(chart) {
+            const { ctx } = chart;
+            ctx.save();
+            ctx.font = "700 12px 'DM Sans', sans-serif";
+            ctx.fillStyle = C.texto;
+            ctx.textBaseline = "middle";
+            chart.getDatasetMeta(0).data.forEach((barra, i) => {
+                ctx.fillText(numero(datos.flotaValores[i]), barra.x + 8, barra.y);
+            });
+            ctx.restore();
+        }
+    };
+
+    function crearGraficos() {
+        Chart.defaults.font.family = "'DM Sans', system-ui, sans-serif";
+        Chart.defaults.font.size = 12;
+        Chart.defaults.color = C.textoSuave;
+
+        /* ---------- Pedidos por estado (dona) ---------- */
+        graficoEstados = new Chart(document.getElementById("graficoEstados"), {
+            type: "doughnut",
+            data: {
+                labels: datos.estados,
+                datasets: [{
+                    data: datos.estadosValores,
+                    backgroundColor: coloresEstados(),
+                    borderColor: C.superficie,
+                    borderWidth: 2,
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: "72%",
+                layout: { padding: 6 },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        ...tooltipBase(),
+                        callbacks: {
+                            title: items => items[0].label,
+                            label: item => numero(item.raw) + " pedidos · " + porcentaje(item.raw, totalPedidos)
+                        }
                     }
+                },
+                onClick(evento, elementos) {
+                    if (elementos.length) elegirEstado(elementos[0].index);
+                },
+                onHover(evento, elementos) {
+                    evento.native.target.style.cursor = elementos.length ? "pointer" : "default";
                 }
             },
-            onClick(evento, elementos) {
-                if (elementos.length) elegirEstado(elementos[0].index);
+            plugins: [textoCentro]
+        });
+
+        /* ---------- Pedidos por mes (línea) ---------- */
+        graficoMeses = new Chart(document.getElementById("graficoMeses"), {
+            type: "line",
+            data: {
+                labels: datos.meses,
+                datasets: [{
+                    label: "Pedidos",
+                    data: datos.mesesValores,
+                    borderColor: C.azul,
+                    backgroundColor: transparente(C.azul, 0.10),
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.25,
+                    pointRadius: radiosMes(),
+                    pointHoverRadius: 5,
+                    pointBackgroundColor: C.azul,
+                    pointBorderColor: C.superficie,
+                    pointBorderWidth: 2
+                }]
             },
-            onHover(evento, elementos) {
-                evento.native.target.style.cursor = elementos.length ? "pointer" : "default";
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: "index", intersect: false },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        ...tooltipBase(),
+                        callbacks: { label: item => numero(item.raw) + " pedidos" }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        border: { color: C.grilla },
+                        ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 }
+                    },
+                    y: {
+                        // Desde 0 para no exagerar las subidas y bajadas
+                        beginAtZero: true,
+                        grid: { color: C.grilla },
+                        border: { display: false },
+                        ticks: { callback: valor => numero(valor), maxTicksLimit: 5 }
+                    }
+                },
+                onClick(evento) {
+                    const puntos = graficoMeses.getElementsAtEventForMode(evento, "index", { intersect: false }, true);
+                    if (puntos.length) elegirMes(puntos[0].index);
+                },
+                onHover(evento) {
+                    evento.native.target.style.cursor = "pointer";
+                }
             }
-        },
-        plugins: [textoCentro]
-    });
+        });
 
-    const leyendaEstados = document.getElementById("leyendaEstados");
-    const botonesEstados = datos.estados.map((estado, i) => {
-        const { item, boton } = botonLeyenda(
-            coloresEstados[i], estado,
-            numero(datos.estadosValores[i]),
-            porcentaje(datos.estadosValores[i], totalPedidos)
-        );
-        boton.addEventListener("click", () => elegirEstado(i));
-        leyendaEstados.append(item);
-        return boton;
-    });
+        /* ---------- Estado de la flota (barras horizontales) ---------- */
+        graficoFlota = new Chart(document.getElementById("graficoFlota"), {
+            type: "bar",
+            data: {
+                labels: datos.flota,
+                datasets: [{
+                    label: "Vehículos",
+                    data: datos.flotaValores,
+                    backgroundColor: coloresFlota(),
+                    borderRadius: 4,
+                    borderSkipped: "start",
+                    maxBarThickness: 24
+                }]
+            },
+            options: {
+                indexAxis: "y",
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: { padding: { right: 30 } },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        ...tooltipBase(),
+                        callbacks: {
+                            label: item => numero(item.raw) + " vehículos · " + porcentaje(item.raw, totalFlota)
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: { color: C.grilla },
+                        border: { display: false },
+                        ticks: { precision: 0 }
+                    },
+                    y: {
+                        grid: { display: false },
+                        border: { color: C.grilla },
+                        ticks: { color: C.texto, font: { size: 13 } }
+                    }
+                },
+                onClick(evento, elementos) {
+                    if (elementos.length) elegirFlota(elementos[0].index);
+                },
+                onHover(evento, elementos) {
+                    evento.native.target.style.cursor = elementos.length ? "pointer" : "default";
+                }
+            },
+            plugins: [valorEnBarra]
+        });
+    }
 
+
+    /* ---------- Clic en un estado ---------- */
     function elegirEstado(indice) {
         // Volver a hacer clic en el mismo estado lo deselecciona
         estadoElegido = estadoElegido === indice ? null : indice;
         const hay = estadoElegido !== null;
 
-        graficoEstados.data.datasets[0].backgroundColor = coloresEstados.map(
-            (color, i) => !hay || i === estadoElegido ? color : transparente(color, 0.22)
-        );
+        graficoEstados.data.datasets[0].backgroundColor = coloresEstados();
         graficoEstados.update();
 
         leyendaEstados.classList.toggle("con-seleccion", hay);
@@ -829,79 +975,17 @@
         }
     }
 
-
-    /* =====================================================
-       PEDIDOS POR MES (línea)
-       ===================================================== */
-
-    let mesElegido = null;
-
-    const graficoMeses = new Chart(document.getElementById("graficoMeses"), {
-        type: "line",
-        data: {
-            labels: datos.meses,
-            datasets: [{
-                label: "Pedidos",
-                data: datos.mesesValores,
-                borderColor: AZUL,
-                backgroundColor: transparente(AZUL, 0.10),
-                borderWidth: 2,
-                fill: true,
-                tension: 0.25,
-                pointRadius: datos.mesesValores.map(() => 0),
-                pointHoverRadius: 5,
-                pointBackgroundColor: AZUL,
-                pointBorderColor: SUPERFICIE,
-                pointBorderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: { mode: "index", intersect: false },
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    ...tooltipBase,
-                    callbacks: { label: item => numero(item.raw) + " pedidos" }
-                }
-            },
-            scales: {
-                x: {
-                    grid: { display: false },
-                    border: { color: GRILLA },
-                    ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 }
-                },
-                y: {
-                    // Desde 0 para no exagerar las subidas y bajadas
-                    beginAtZero: true,
-                    grid: { color: GRILLA },
-                    border: { display: false },
-                    ticks: { callback: valor => numero(valor), maxTicksLimit: 5 }
-                }
-            },
-            onClick(evento) {
-                const puntos = graficoMeses.getElementsAtEventForMode(evento, "index", { intersect: false }, true);
-                if (puntos.length) elegirMes(puntos[0].index);
-            },
-            onHover(evento) {
-                evento.native.target.style.cursor = "pointer";
-            }
-        }
-    });
-
+    /* ---------- Clic en un mes ---------- */
     function elegirMes(indice) {
         mesElegido = mesElegido === indice ? null : indice;
-        const hay = mesElegido !== null;
 
-        // Marcar solo el punto elegido
-        graficoMeses.data.datasets[0].pointRadius = datos.mesesValores.map((_, i) => i === mesElegido ? 6 : 0);
+        graficoMeses.data.datasets[0].pointRadius = radiosMes();
         graficoMeses.update();
 
         const valor = document.getElementById("lecturaMesValor");
         const texto = document.getElementById("lecturaMesTexto");
 
-        if (hay) {
+        if (mesElegido !== null) {
             const cantidad = datos.mesesValores[mesElegido];
             const diferencia = cantidad - datos.promedioMes;
             valor.textContent = numero(cantidad);
@@ -913,88 +997,12 @@
         }
     }
 
-
-    /* =====================================================
-       ESTADO DE LA FLOTA (barras horizontales)
-       ===================================================== */
-
-    const totalFlota = datos.flotaValores.reduce((a, b) => a + b, 0);
-    let flotaElegida = null;
-
-    // Escribe el número al final de cada barra
-    const valorEnBarra = {
-        id: "valorEnBarra",
-        afterDatasetsDraw(chart) {
-            const { ctx } = chart;
-            const meta = chart.getDatasetMeta(0);
-            ctx.save();
-            ctx.font = "700 12px 'DM Sans', sans-serif";
-            ctx.fillStyle = TEXTO;
-            ctx.textBaseline = "middle";
-            meta.data.forEach((barra, i) => {
-                ctx.fillText(numero(datos.flotaValores[i]), barra.x + 8, barra.y);
-            });
-            ctx.restore();
-        }
-    };
-
-    const graficoFlota = new Chart(document.getElementById("graficoFlota"), {
-        type: "bar",
-        data: {
-            labels: datos.flota,
-            datasets: [{
-                label: "Vehículos",
-                data: datos.flotaValores,
-                backgroundColor: datos.flota.map(() => AZUL),
-                borderRadius: 4,
-                borderSkipped: "start",
-                maxBarThickness: 24
-            }]
-        },
-        options: {
-            indexAxis: "y",
-            responsive: true,
-            maintainAspectRatio: false,
-            layout: { padding: { right: 30 } },
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    ...tooltipBase,
-                    callbacks: {
-                        label: item => numero(item.raw) + " vehículos · " + porcentaje(item.raw, totalFlota)
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    beginAtZero: true,
-                    grid: { color: GRILLA },
-                    border: { display: false },
-                    ticks: { precision: 0 }
-                },
-                y: {
-                    grid: { display: false },
-                    border: { color: GRILLA },
-                    ticks: { color: TEXTO, font: { size: 13 } }
-                }
-            },
-            onClick(evento, elementos) {
-                if (elementos.length) elegirFlota(elementos[0].index);
-            },
-            onHover(evento, elementos) {
-                evento.native.target.style.cursor = elementos.length ? "pointer" : "default";
-            }
-        },
-        plugins: [valorEnBarra]
-    });
-
+    /* ---------- Clic en una barra de la flota ---------- */
     function elegirFlota(indice) {
         flotaElegida = flotaElegida === indice ? null : indice;
         const hay = flotaElegida !== null;
 
-        graficoFlota.data.datasets[0].backgroundColor = datos.flota.map(
-            (_, i) => !hay || i === flotaElegida ? AZUL : transparente(AZUL, 0.22)
-        );
+        graficoFlota.data.datasets[0].backgroundColor = coloresFlota();
         graficoFlota.update();
 
         const valor = document.getElementById("lecturaFlotaValor");
@@ -1014,6 +1022,16 @@
             texto.textContent = "Vehículos en total";
         }
     }
+
+    crearGraficos();
+
+    // Al cambiar claro/oscuro: leer los colores nuevos y volver a dibujar
+    // (se mantiene lo que estaba elegido)
+    document.addEventListener("temacambiado", () => {
+        C = leerColores();
+        [graficoEstados, graficoMeses, graficoFlota].forEach(g => g.destroy());
+        crearGraficos();
+    });
 })();
 </script>
 
