@@ -213,7 +213,7 @@
      INFORMACIÓN
      ========================= -->
 
-{{ boton_excel("vehiculos", filtros_url, total_registros) }}
+{{ boton_excel("vehiculos", filtros_url, total_registros, agregar=not es_demo) }}
 
 <div class="info-vehiculos">
 
@@ -372,7 +372,7 @@
             <tr>
 
                 <td>
-                    {{ vehiculo.vehiculo_id }}
+                    {% if es_demo %}{{ vehiculo.vehiculo_id }}{% else %}<a class="enlace-detalle" title="Editar" href="{{ url_for('editar_registro', tabla='vehiculos', id_registro=vehiculo.vehiculo_id, volver=request.full_path) }}">{{ vehiculo.vehiculo_id }}</a>{% endif %}
                 </td>
 
                 <td>

@@ -169,7 +169,7 @@
      INFORMACIÓN
      ========================= -->
 
-{{ boton_excel("conductores", filtros_url, total_registros) }}
+{{ boton_excel("conductores", filtros_url, total_registros, agregar=not es_demo) }}
 
 <div class="info-conductores">
 
@@ -251,7 +251,7 @@
 
             <tr>
 
-                <td>{{ conductor.conductor_id }}</td>
+                <td>{% if es_demo %}{{ conductor.conductor_id }}{% else %}<a class="enlace-detalle" title="Editar" href="{{ url_for('editar_registro', tabla='conductores', id_registro=conductor.conductor_id, volver=request.full_path) }}">{{ conductor.conductor_id }}</a>{% endif %}</td>
 
                 <td><a class="enlace-detalle" href="{{ url_for('pagina_conductor', conductor_id=conductor.conductor_id) }}">{{ conductor.nombre_conductor }}</a></td>
 

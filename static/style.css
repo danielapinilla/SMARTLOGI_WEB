@@ -1793,3 +1793,112 @@ textarea:focus {
 .login-formulario {
     flex-direction: column;
 }
+
+/* =====================================================
+   AGREGAR Y EDITAR REGISTROS
+   ===================================================== */
+
+.registros-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.registros-encabezado h1 {
+    margin: 0;
+}
+
+.boton-agregar {
+    width: auto;
+    margin: 0;
+    padding: 10px 16px;
+    justify-content: center;
+}
+
+.registros-busqueda {
+    margin-bottom: 4px;
+}
+
+.formulario-id {
+    color: var(--texto-suave);
+    font-size: 18px;
+}
+
+.formulario-registro {
+    max-width: 920px;
+}
+
+.formulario-campos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 4px 18px;
+}
+
+.formulario-registro .campo input,
+.formulario-registro .campo select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--borde);
+    border-radius: 7px;
+    background: var(--campo);
+    color: var(--texto);
+    font-size: 14px;
+}
+
+.formulario-registro .campo input[readonly] {
+    background: var(--superficie-2);
+    color: var(--secundario);
+}
+
+.campo-ayuda {
+    display: block;
+    margin-top: 4px;
+    color: var(--secundario);
+    font-size: 11px;
+}
+
+.formulario-acciones {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.formulario-acciones .boton-principal {
+    width: auto;
+    margin: 0;
+    gap: 10px;
+}
+
+.formulario-eliminar {
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid var(--borde);
+}
+
+.boton-eliminar {
+    padding: 8px 12px;
+    border: 1px solid var(--error-borde);
+    border-radius: 7px;
+    background: transparent;
+    color: var(--alerta);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.boton-eliminar:hover {
+    background: var(--error-fondo);
+}
+
+.acciones-tabla .boton-excel + .boton-excel {
+    margin-left: 8px;
+}
+
+a.boton-salir {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}

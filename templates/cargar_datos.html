@@ -137,6 +137,12 @@
         height: 16px;
     }
 
+    .carga-enlaces {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 14px;
+    }
+
     .mensaje-flash {
         white-space: pre-line;
     }
@@ -186,9 +192,17 @@
 
         <p>{{ tabla.descripcion }}</p>
 
-        <a class="enlace-detalle" href="{{ url_for('descargar_plantilla', tabla=tabla.clave) }}" download>
-            {{ icono("descarga") }} Descargar plantilla
-        </a>
+        <div class="carga-enlaces">
+            <a class="enlace-detalle" href="{{ url_for('descargar_plantilla', tabla=tabla.clave) }}" download>
+                {{ icono("descarga") }} Descargar plantilla
+            </a>
+            <a class="enlace-detalle" href="{{ url_for('lista_registros', tabla=tabla.clave) }}">
+                ✎ Ver y editar
+            </a>
+            <a class="enlace-detalle" href="{{ url_for('editar_registro', tabla=tabla.clave) }}">
+                + Agregar uno
+            </a>
+        </div>
 
         <form method="post" action="{{ url_for('subir_datos', tabla=tabla.clave) }}" enctype="multipart/form-data">
             <input type="file" name="archivo" accept=".xlsx,.xls,.csv" required

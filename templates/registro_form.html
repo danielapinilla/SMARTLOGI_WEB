@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% from "iconos.html" import icono %}
+
+{% block title %}{{ "Agregar" if nuevo else "Editar" }} - {{ nombre }} - SMARTLOGIC{% endblock %}
+
+{% block content %}
+
+{% set url_volver = volver or url_for('lista_registros', tabla=tabla) %}
+
+<a class="volver" href="{{ url_volver }}">← Volver</a>
+
+<h1>{{ "Agregar" if nuevo else "Editar" }}: {{ nombre | lower }}{% if not nuevo %} <small class="formulario-id">#{{ id_registro }}</small>{% endif %}</h1>
+
+<section class="panel formulario-registro">
+
+    {% if error %}
+    <p class="login-error mensaje-flash" role="alert">{{ error }}</p>
+    {% endif %}
+
+    <form method="post" id="formRegistro">
+        <input type="hidden" name="volver" value="{{ volver }}">
+
+        <div class="formulario-campos">
+            {% for campo in campos %}
+            <div class="campo">
+                <label for="{{ campo.nombre }}">
+                    {{ campo.etiqueta }}{% if campo.obligatorio %} <span aria-hidden="true">*</span>{% endif %}
+                </label>
+
+                {% if campo.tipo == "opciones" %}
+                    <select id="{{ campo.nombre }}" name="{{ campo.nombre }}" {% if campo.obligatorio %}required{% endif %}>
+                        <option value="">— Elegir —</option>
+                        {% for valor, texto in campo.opciones %}
+                        <option value="{{ valor }}" {% if valor == campo.valor %}selected{% endif %}>{{ texto }}</option>
+                        {% endfor %}
+                    </select>
+
+                {% elif campo.tipo == "fecha" %}
+                    <input type="date" id="{{ campo.nombre }}" name="{{ campo.nombre }}" value="{{ campo.valor }}">
+
+                {% elif campo.tipo in ("entero", "decimal") %}
+                    <input type="number" id="{{ campo.nombre }}" name="{{ campo.nombre }}" value="{{ campo.valor }}"
+                           step="{{ '1' if campo.tipo == 'entero' else 'any' }}"
+                           {% if campo.obligatorio %}required{% endif %}
+                           {% if campo.obligatorio and not nuevo %}readonly{% endif %}>
+
+                {% else %}
+                    <input type="text" id="{{ campo.nombre }}" name="{{ campo.nombre }}" value="{{ campo.valor }}"
+                           maxlength="200" {% if campo.sugerencias %}list="sug-{{ campo.nombre }}"{% endif %}
+                           {% if campo.obligatorio %}required{% endif %}>
+                    {% if campo.sugerencias %}
+                    <datalist id="sug-{{ campo.nombre }}">
+                        {% for s in campo.sugerencias %}<option value="{{ s }}">{% endfor %}
+                    </datalist>
+                    {% endif %}
+                {% endif %}
+
+                {% if campo.ayuda %}<small class="campo-ayuda">{{ campo.ayuda }}</small>{% endif %}
+                {% if campo.obligatorio and not nuevo %}<small class="campo-ayuda">El ID no se puede cambiar.</small>{% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="formulario-acciones">
+            <a class="boton-salir" href="{{ url_volver }}">Cancelar</a>
+            <button type="submit" class="boton-principal">
+                {{ "Agregar" if nuevo else "Guardar cambios" }} {{ icono("flecha") }}
+            </button>
+        </div>
+    </form>
+
+    {% if not nuevo %}
+    <form class="formulario-eliminar" method="post"
+          action="{{ url_for('eliminar_registro', tabla=tabla, id_registro=id_registro) }}"
+          onsubmit="return confirm('¿Eliminar este registro? Esta acción no se puede deshacer.');">
+        <input type="hidden" name="volver" value="{{ volver }}">
+        <button type="submit" class="boton-eliminar">Eliminar registro</button>
+    </form>
+    {% endif %}
+
+</section>
+
+{% endblock %}

@@ -91,8 +91,11 @@
 {%- endmacro %}
 
 {# Botón para descargar la tabla en Excel, con los filtros actuales (estado y fechas) #}
-{% macro boton_excel(seccion, filtros={}, cantidad=None) -%}
+{% macro boton_excel(seccion, filtros={}, cantidad=None, agregar=False) -%}
 <div class="acciones-tabla">
+    {% if agregar %}
+    <a class="boton-excel" href="{{ url_for('editar_registro', tabla=seccion) }}">+ Agregar</a>
+    {% endif %}
     <a class="boton-excel"
        href="{{ url_for('exportar', seccion=seccion, **filtros) }}"
        download>

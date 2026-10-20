@@ -20,6 +20,7 @@ import datos as fuente
 import detalle
 import fechas
 import importar
+import registros
 from asistente import Asistente, construir_tablas, configuracion_ia
 from exportar import crear_excel, nombre_archivo
 
@@ -941,6 +942,154 @@ def subir_datos(tabla):
             flash(f"{importar.NOMBRES[tabla]}: {aviso}", "aviso")
 
     return redirect(url_for("cargar_datos") + f"#{tabla}")
+
+
+# =========================
+# AGREGAR, EDITAR Y ELIMINAR REGISTROS
+# =========================
+
+def tabla_valida(tabla):
+    if tabla not in importar.NOMBRES:
+        abort(404)
+
+
+def puede_editar():
+    return bool(session.get("empresa_id")) and cuentas.configurado()
+
+
+def volver_a(tabla):
+    """Página a la que se vuelve después de guardar (solo rutas internas)."""
+    destino = request.values.get("volver", "")
+    if destino.startswith("/") and not destino.startswith("//"):
+        return destino
+    return url_for("lista_registros", tabla=tabla)
+
+
+@app.route("/registros/<tabla>")
+def lista_registros(tabla):
+
+    tabla_valida(tabla)
+    D = datos_actuales()
+    df = getattr(D, tabla)
+    columnas = fuente.TABLAS[tabla][1]
+
+    # Búsqueda simple en todas las columnas
+    texto = request.args.get("q", "").strip()
+    if texto:
+        coincide = df[columnas].astype(str).apply(
+            lambda col: col.str.contains(texto, case=False, regex=False, na=False)
+        ).any(axis=1)
+        df = df[coincide]
+
+    df = df.sort_values(importar.clave(tabla), ascending=False)
+    pagina_df, pagina, total_paginas = paginar(df)
+
+    filas = []
+    for fila in pagina_df[columnas].to_dict("records"):
+        filas.append({
+            c: ("" if (isinstance(v, float) and v != v) else (int(v) if isinstance(v, float) and v.is_integer() else v))
+            for c, v in fila.items()
+        })
+
+    return render_template(
+        "registros_lista.html",
+        tabla=tabla,
+        nombre=importar.NOMBRES[tabla],
+        columnas=[(c, registros._etiqueta(tabla, c)) for c in columnas],
+        clave=importar.clave(tabla),
+        filas=filas,
+        total=len(df),
+        pagina=pagina,
+        total_paginas=total_paginas,
+        busqueda=texto,
+        puede_editar=puede_editar(),
+    )
+
+
+@app.route("/registros/<tabla>/nuevo", methods=["GET", "POST"])
+@app.route("/registros/<tabla>/<int:id_registro>/editar", methods=["GET", "POST"])
+def editar_registro(tabla, id_registro=None):
+
+    tabla_valida(tabla)
+
+    if not puede_editar():
+        flash("En la demo no se pueden agregar ni editar datos. Crea la cuenta de tu empresa.", "error")
+        return redirect(url_for("lista_registros", tabla=tabla))
+
+    D = datos_actuales()
+    clave = importar.clave(tabla)
+    nuevo = id_registro is None
+    actual = None if nuevo else registros.buscar(tabla, D, id_registro)
+
+    if not nuevo and actual is None:
+        abort(404)
+
+    error = None
+    valores = actual or {clave: registros.siguiente_id(tabla, D)}
+
+    if request.method == "POST":
+        formulario = request.form.to_dict()
+        if not nuevo:
+            formulario[clave] = str(id_registro)  # el ID no se cambia al editar
+
+        try:
+            registro = registros.validar_formulario(tabla, formulario)
+
+            if nuevo and registros.buscar(tabla, D, registro[clave]) is not None:
+                raise importar.ErrorCarga(
+                    f"Ya existe un registro con {clave} = {registro[clave]}. Usa otro número."
+                )
+
+            importar.guardar(session["empresa_id"], tabla, [registro])
+
+        except importar.ErrorCarga as problema:
+            error = str(problema)
+            valores = {c: formulario.get(c, "") for c in fuente.TABLAS[tabla][1]}
+
+        else:
+            nombre = importar.NOMBRES[tabla]
+            flash(f"{nombre}: registro {registro[clave]} {'agregado' if nuevo else 'actualizado'}.", "exito")
+            return redirect(volver_a(tabla))
+
+    campos = registros.campos(tabla, D, valores)
+    if error:
+        # Si hubo error, se muestra lo que la persona escribió
+        for campo in campos:
+            if campo["nombre"] in valores and campo["tipo"] != "fecha":
+                campo["valor"] = valores[campo["nombre"]] or ""
+
+    return render_template(
+        "registro_form.html",
+        tabla=tabla,
+        nombre=importar.NOMBRES[tabla],
+        nuevo=nuevo,
+        id_registro=id_registro,
+        campos=campos,
+        error=error,
+        volver=request.values.get("volver", ""),
+    )
+
+
+@app.route("/registros/<tabla>/<int:id_registro>/eliminar", methods=["POST"])
+def eliminar_registro(tabla, id_registro):
+
+    tabla_valida(tabla)
+
+    if not puede_editar():
+        abort(403)
+
+    try:
+        registros.eliminar(session["empresa_id"], tabla, id_registro)
+    except importar.ErrorCarga as problema:
+        flash(str(problema), "error")
+    else:
+        flash(f"{importar.NOMBRES[tabla]}: registro {id_registro} eliminado.", "exito")
+
+    destino = volver_a(tabla)
+    # No volver a la página de detalle de algo que ya no existe
+    if f"/{id_registro}" in destino:
+        destino = url_for("lista_registros", tabla=tabla)
+    return redirect(destino)
 
 
 @app.errorhandler(413)

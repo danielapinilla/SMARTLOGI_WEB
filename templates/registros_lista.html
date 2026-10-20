@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% from "iconos.html" import icono, insignia %}
+
+{% block title %}{{ nombre }} - Ver y editar - SMARTLOGIC{% endblock %}
+
+{% block content %}
+
+<a class="volver" href="{{ url_for('cargar_datos') }}">← Volver a cargar datos</a>
+
+<div class="registros-encabezado">
+    <h1>{{ nombre }}</h1>
+
+    {% if puede_editar %}
+    <a class="boton-principal boton-agregar"
+       href="{{ url_for('editar_registro', tabla=tabla, volver=request.full_path) }}">
+        + Agregar
+    </a>
+    {% endif %}
+</div>
+
+<section class="panel">
+
+    <form class="registros-busqueda" method="get">
+        <input class="buscador" type="search" name="q" value="{{ busqueda }}"
+               placeholder="Buscar en {{ nombre | lower }}…" aria-label="Buscar">
+    </form>
+
+    <p class="panel-subtitulo">
+        {{ total | miles }} registro{{ "s" if total != 1 }}
+        {% if busqueda %} que coincide{{ "n" if total != 1 }} con «{{ busqueda }}»{% endif %}
+        {% if puede_editar %}· Haz clic en el ID para editar.{% endif %}
+    </p>
+
+    {% if filas %}
+    <div class="tabla-scroll">
+        <table>
+            <thead>
+                <tr>
+                    {% for columna, etiqueta in columnas %}
+                    <th>{{ etiqueta }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for fila in filas %}
+                <tr>
+                    {% for columna, etiqueta in columnas %}
+                    <td>
+                        {% if columna == clave and puede_editar %}
+                        <a class="enlace-detalle"
+                           href="{{ url_for('editar_registro', tabla=tabla, id_registro=fila[columna], volver=request.full_path) }}">
+                            {{ fila[columna] }} ✎
+                        </a>
+                        {% else %}
+                        {{ fila[columna] }}
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if total_paginas > 1 %}
+    <div class="pagination">
+        {% if pagina > 1 %}
+        <a href="{{ url_for('lista_registros', tabla=tabla, pagina=pagina-1, q=busqueda or None) }}">←</a>
+        {% endif %}
+        <span class="pagina-actual">{{ pagina }} de {{ total_paginas }}</span>
+        {% if pagina < total_paginas %}
+        <a href="{{ url_for('lista_registros', tabla=tabla, pagina=pagina+1, q=busqueda or None) }}">→</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <p class="vacio">
+        {% if busqueda %}No hay registros que coincidan.{% else %}Todavía no hay registros.{% endif %}
+        {% if puede_editar %}
+        <a href="{{ url_for('editar_registro', tabla=tabla) }}">Agrega el primero</a> o
+        <a href="{{ url_for('cargar_datos') }}#{{ tabla }}">súbelos desde Excel</a>.
+        {% endif %}
+    </p>
+    {% endif %}
+
+</section>
+
+{% endblock %}

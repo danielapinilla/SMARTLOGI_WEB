@@ -32,6 +32,10 @@
             <li>Ingreso <strong>{{ info.fecha_ingreso | replace("/", "-") }}</strong></li>
         </ul>
     </div>
+    {% if not es_demo %}
+    <a class="boton-excel" style="margin-left: auto; align-self: flex-start;"
+       href="{{ url_for('editar_registro', tabla='conductores', id_registro=info.conductor_id, volver=request.path) }}">✎ Editar</a>
+    {% endif %}
 </section>
 
 
