@@ -19,6 +19,7 @@ import cuentas
 import datos as fuente
 import detalle
 import fechas
+import importar
 from asistente import Asistente, construir_tablas, configuracion_ia
 from exportar import crear_excel, nombre_archivo
 
@@ -39,6 +40,8 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
 
 app.config.update(
+    # Vercel acepta hasta ~4,5 MB por envío; se deja un margen
+    MAX_CONTENT_LENGTH=4 * 1024 * 1024,
     PERMANENT_SESSION_LIFETIME=timedelta(hours=8),
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",
@@ -858,6 +861,92 @@ def pagina_vehiculo(vehiculo_id):
         abort(404)
 
     return render_template("detalle_vehiculo.html", **datos)
+
+
+# =========================
+# CARGAR DATOS (EXCEL / CSV)
+# =========================
+
+# Orden sugerido: primero lo que otras tablas usan (vehículos, conductores...)
+ORDEN_CARGA = ["vehiculos", "conductores", "rutas", "clientes", "pedidos",
+               "entregas", "mantenciones", "combustible", "incidentes"]
+
+
+@app.route("/cargar-datos")
+def cargar_datos():
+
+    D = datos_actuales()
+    tablas = [
+        {
+            "clave": tabla,
+            "nombre": importar.NOMBRES[tabla],
+            "descripcion": importar.DESCRIPCIONES[tabla],
+            "cantidad": len(getattr(D, tabla)),
+        }
+        for tabla in ORDEN_CARGA
+    ]
+
+    return render_template(
+        "cargar_datos.html",
+        tablas=tablas,
+        puede_cargar=bool(session.get("empresa_id")) and cuentas.configurado(),
+        max_filas=importar.MAX_FILAS,
+    )
+
+
+@app.route("/cargar-datos/plantilla/<tabla>")
+def descargar_plantilla(tabla):
+
+    if tabla not in importar.NOMBRES:
+        abort(404)
+
+    return send_file(
+        importar.plantilla(tabla),
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        as_attachment=True,
+        download_name=f"plantilla_smartlogic_{tabla}.xlsx",
+    )
+
+
+@app.route("/cargar-datos/<tabla>", methods=["POST"])
+def subir_datos(tabla):
+
+    if tabla not in importar.NOMBRES:
+        abort(404)
+
+    empresa_id = session.get("empresa_id")
+    if not empresa_id:
+        flash("En la demo no se pueden cargar datos. Crea la cuenta de tu empresa.", "error")
+        return redirect(url_for("cargar_datos"))
+
+    archivo = request.files.get("archivo")
+    if not archivo or not archivo.filename:
+        flash("Elige un archivo Excel o CSV.", "error")
+        return redirect(url_for("cargar_datos") + f"#{tabla}")
+
+    reemplazar = request.form.get("modo") == "reemplazar"
+
+    try:
+        df = importar.leer_archivo(archivo.read(), archivo.filename)
+        registros, avisos = importar.validar(df, tabla)
+        cantidad = importar.guardar(empresa_id, tabla, registros, reemplazar)
+
+    except importar.ErrorCarga as problema:
+        flash(f"{importar.NOMBRES[tabla]}: {problema}", "error")
+
+    else:
+        accion = "reemplazaron con" if reemplazar else "cargaron"
+        flash(f"{importar.NOMBRES[tabla]}: se {accion} {cantidad:,} filas.".replace(",", "."), "exito")
+        for aviso in avisos:
+            flash(f"{importar.NOMBRES[tabla]}: {aviso}", "aviso")
+
+    return redirect(url_for("cargar_datos") + f"#{tabla}")
+
+
+@app.errorhandler(413)
+def archivo_muy_grande(error):
+    flash("El archivo es muy grande (máximo 4 MB). Divídelo en partes más pequeñas.", "error")
+    return redirect(url_for("cargar_datos"))
 
 
 # =========================

@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+{% from "iconos.html" import icono, insignia %}
+
+{% block title %}Cargar datos - SMARTLOGIC{% endblock %}
+
+{% block content %}
+
+<style>
+    .carga-intro {
+        margin: -8px 0 18px;
+        color: var(--secundario);
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .carga-pasos {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+
+    .carga-paso {
+        display: flex;
+        gap: 10px;
+        padding: 14px;
+        border: 1px solid var(--borde);
+        border-radius: var(--radio);
+        background: var(--superficie);
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .carga-paso b {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: var(--marino);
+        color: var(--acento);
+        font-size: 12px;
+    }
+
+    .carga-tablas {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 14px;
+    }
+
+    .carga-tabla {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        scroll-margin-top: 20px;
+    }
+
+    .carga-tabla:target {
+        border-color: var(--marino);
+        box-shadow: inset 0 3px 0 var(--acento), var(--sombra);
+    }
+
+    .carga-encabezado {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .carga-encabezado h2 {
+        margin: 0;
+        font-size: 16px;
+    }
+
+    .carga-tabla p {
+        margin: 0;
+        color: var(--secundario);
+        font-size: 13px;
+    }
+
+    .carga-tabla input[type="file"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px dashed var(--borde);
+        border-radius: 8px;
+        background: var(--campo);
+        color: var(--texto);
+        font-size: 12px;
+    }
+
+    .carga-modo {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 12px;
+        color: var(--secundario);
+    }
+
+    .carga-modo label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+    }
+
+    .carga-acciones {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .carga-acciones .boton-principal {
+        width: auto;
+        margin: 0;
+        padding: 9px 14px;
+        font-size: 13px;
+    }
+
+    .carga-acciones .boton-principal svg {
+        width: 16px;
+        height: 16px;
+        margin-left: 8px;
+    }
+
+    .carga-tabla .enlace-detalle {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+    }
+
+    .carga-tabla .enlace-detalle svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .mensaje-flash {
+        white-space: pre-line;
+    }
+
+    @media (max-width: 800px) {
+        .carga-pasos {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+</style>
+
+<h1>{{ insignia("subir") }} Cargar datos</h1>
+
+{% if not puede_cargar %}
+
+<section class="panel">
+    <p class="vacio">
+        En la <strong>demo</strong> no se pueden cargar datos.
+        <a href="{{ url_for('registro') }}">Crea la cuenta de tu empresa</a>
+        para subir tu propia información desde Excel o CSV.
+    </p>
+</section>
+
+{% else %}
+
+<p class="carga-intro">
+    Sube la información de tu empresa desde un archivo <strong>Excel</strong> o <strong>CSV</strong>.
+    Solo tu empresa puede ver estos datos.
+</p>
+
+<div class="carga-pasos">
+    <div class="carga-paso"><b>1</b><span>Descarga la <strong>plantilla</strong> de lo que quieres cargar. Trae las columnas correctas y ejemplos.</span></div>
+    <div class="carga-paso"><b>2</b><span>Escribe tus datos en la hoja <strong>Datos</strong> (borra los ejemplos). Fechas como <strong>08-01-2026</strong>.</span></div>
+    <div class="carga-paso"><b>3</b><span>Súbelo aquí. Te avisamos en qué fila hay un error, si lo hay. Empieza por <strong>Vehículos</strong> y <strong>Conductores</strong>.</span></div>
+</div>
+
+<section class="carga-tablas">
+    {% for tabla in tablas %}
+    <article class="panel carga-tabla" id="{{ tabla.clave }}">
+
+        <div class="carga-encabezado">
+            <h2>{{ tabla.nombre }}</h2>
+            <span class="pastilla pastilla-{{ 'verde' if tabla.cantidad else 'azul' }}">
+                {{ tabla.cantidad | miles }} fila{{ "s" if tabla.cantidad != 1 }}
+            </span>
+        </div>
+
+        <p>{{ tabla.descripcion }}</p>
+
+        <a class="enlace-detalle" href="{{ url_for('descargar_plantilla', tabla=tabla.clave) }}" download>
+            {{ icono("descarga") }} Descargar plantilla
+        </a>
+
+        <form method="post" action="{{ url_for('subir_datos', tabla=tabla.clave) }}" enctype="multipart/form-data">
+            <input type="file" name="archivo" accept=".xlsx,.xls,.csv" required
+                   aria-label="Archivo de {{ tabla.nombre | lower }}">
+
+            <div class="carga-modo" role="radiogroup" aria-label="Qué hacer con los datos actuales">
+                <label><input type="radio" name="modo" value="agregar" checked>
+                    Agregar o actualizar (mantiene lo que ya hay)</label>
+                <label><input type="radio" name="modo" value="reemplazar">
+                    Reemplazar todo lo de {{ tabla.nombre | lower }}</label>
+            </div>
+
+            <div class="carga-acciones" style="margin-top: 10px;">
+                <span></span>
+                <button type="submit" class="boton-principal">Subir archivo {{ icono("subir") }}</button>
+            </div>
+        </form>
+
+    </article>
+    {% endfor %}
+</section>
+
+<p class="carga-intro" style="margin-top: 16px;">
+    Máximo {{ max_filas | miles }} filas y 4 MB por archivo. Si un identificador ya existe
+    (por ejemplo, el mismo <em>pedido_id</em>), esa fila se actualiza en vez de repetirse.
+</p>
+
+{% endif %}
+
+{% endblock %}

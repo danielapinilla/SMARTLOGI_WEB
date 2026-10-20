@@ -26,6 +26,7 @@
     ("/combustible", "combustible", "Combustible"),
     ("/incidentes", "alerta", "Incidentes"),
     ("/asistente", "chispa", "Asistente IA"),
+    ("/cargar-datos", "subir", "Cargar datos"),
 ] %}
 
 <body>
@@ -79,8 +80,9 @@
                 </p>
                 {% endif %}
 
-                {% for mensaje in get_flashed_messages() %}
-                <p class="login-exito" role="status">{{ mensaje }}</p>
+                {% for categoria, mensaje in get_flashed_messages(with_categories=true) %}
+                <p class="{{ 'login-error' if categoria == 'error' else ('aviso-demo' if categoria == 'aviso' else 'login-exito') }} mensaje-flash"
+                   role="{{ 'alert' if categoria == 'error' else 'status' }}">{{ mensaje }}</p>
                 {% endfor %}
 
                 {% block content %}

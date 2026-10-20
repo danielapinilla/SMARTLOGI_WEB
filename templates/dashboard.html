@@ -403,9 +403,11 @@
         <h2>¡Tu empresa ya tiene su panel! 🎉</h2>
         <p>
             Todavía no hay datos cargados, por eso todo aparece en cero.
-            Muy pronto podrás subir tus pedidos, vehículos, conductores y más
-            desde un archivo Excel o CSV.
+            Sube tus pedidos, vehículos, conductores y más desde un archivo Excel o CSV.
         </p>
+        <a class="boton-principal" href="{{ url_for('cargar_datos') }}" style="max-width: 240px; margin-top: 14px;">
+            Cargar mis datos {{ icono("flecha") }}
+        </a>
     </section>
     {% elif not total_pedidos %}
     <p class="vacio" style="margin-bottom: 14px;">
