@@ -1,0 +1,54 @@
+{% extends "login_base.html" %}
+
+{% block title %}SMARTLOGIC | Crear cuenta de empresa{% endblock %}
+
+{% block formulario %}
+<form class="login-caja" method="post">
+
+    <p class="login-eyebrow">NUEVA EMPRESA</p>
+    <h2>Crea tu cuenta</h2>
+    <p>Tu empresa tendrá su propio panel, con datos separados de los demás.</p>
+
+    {% if error %}
+    <p class="login-error" role="alert">{{ error }}</p>
+    {% endif %}
+
+    <div class="campo">
+        <label for="empresa">Nombre de la empresa</label>
+        <input type="text" id="empresa" name="empresa" value="{{ formulario.empresa }}"
+               maxlength="80" autocomplete="organization" required autofocus>
+    </div>
+
+    <div class="campo">
+        <label for="nombre">Tu nombre</label>
+        <input type="text" id="nombre" name="nombre" value="{{ formulario.nombre }}"
+               maxlength="80" autocomplete="name" required>
+    </div>
+
+    <div class="campo">
+        <label for="correo">Correo electrónico</label>
+        <input type="email" id="correo" name="correo" value="{{ formulario.correo }}"
+               autocomplete="username" required>
+    </div>
+
+    <div class="campo">
+        <label for="clave">Clave</label>
+        <input type="password" id="clave" name="clave" minlength="{{ largo_minimo }}"
+               autocomplete="new-password" required>
+    </div>
+
+    <div class="campo">
+        <label for="confirmacion">Repite la clave</label>
+        <input type="password" id="confirmacion" name="confirmacion" minlength="{{ largo_minimo }}"
+               autocomplete="new-password" required>
+    </div>
+
+    <button type="submit" class="boton-principal">
+        Crear cuenta
+        {{ icono("flecha") }}
+    </button>
+
+    <a class="login-link login-link-centro" href="{{ url_for('login') }}">¿Ya tienes cuenta? Inicia sesión</a>
+
+</form>
+{% endblock %}

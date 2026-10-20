@@ -1711,3 +1711,85 @@ textarea:focus {
         min-width: 0;
     }
 }
+
+/* =====================================================
+   REGISTRO DE EMPRESAS Y DEMO
+   ===================================================== */
+
+.login-separador {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 26px 0 12px;
+    color: var(--secundario);
+    font-size: 12px;
+}
+
+.login-separador::before,
+.login-separador::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--borde);
+}
+
+.boton-secundario {
+    display: block;
+    width: 100%;
+    padding: 13px 16px;
+    border: 1px solid var(--marino);
+    border-radius: 7px;
+    color: var(--texto);
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    transition: background .15s;
+}
+
+.boton-secundario:hover {
+    background: var(--superficie-2);
+}
+
+.login-demo {
+    margin-top: 4px;
+}
+
+.boton-texto {
+    width: 100%;
+    border: none;
+    background: none;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.aviso-demo {
+    margin: 0 0 16px;
+    padding: 11px 14px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background: var(--acento-suave);
+    color: var(--texto);
+    font-size: 13px;
+}
+
+.aviso-demo a {
+    color: var(--marino-3);
+    font-weight: 700;
+}
+
+.bienvenida-empresa {
+    margin-bottom: 14px;
+}
+
+.bienvenida-empresa p {
+    margin: 6px 0 0;
+    color: var(--secundario);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* El login tiene dos formularios (entrar y ver demo): uno debajo del otro */
+.login-formulario {
+    flex-direction: column;
+}

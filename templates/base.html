@@ -56,13 +56,13 @@
 
             <header class="barra-superior">
                 <div>
-                    <small>Panel del administrador</small>
-                    <strong>Gestión de flota</strong>
+                    <small>{% if es_demo %}Demo con datos de ejemplo{% else %}Panel de la empresa{% endif %}</small>
+                    <strong>{{ empresa_nombre }}</strong>
                 </div>
 
                 <div class="usuario">
                     {{ boton_tema() }}
-                    <span class="usuario-avatar">{{ session.usuario[:1] }}</span>
+                    <span class="usuario-avatar">{{ (session.usuario or "?")[:1] }}</span>
                     <span class="usuario-correo">{{ session.usuario }}</span>
 
                     <form action="{{ url_for('logout') }}" method="post">
@@ -72,6 +72,17 @@
             </header>
 
             <main>
+                {% if es_visitante %}
+                <p class="aviso-demo">
+                    Estás viendo la <strong>demo</strong> con datos de ejemplo.
+                    <a href="{{ url_for('registro') }}">Crea la cuenta de tu empresa</a> para usar tus propios datos.
+                </p>
+                {% endif %}
+
+                {% for mensaje in get_flashed_messages() %}
+                <p class="login-exito" role="status">{{ mensaje }}</p>
+                {% endfor %}
+
                 {% block content %}
                 {% endblock %}
             </main>

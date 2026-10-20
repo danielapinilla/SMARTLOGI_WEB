@@ -53,5 +53,15 @@
         Acceso protegido por Supabase Auth
     </p>
 
+    <div class="login-separador"><span>¿Tu empresa aún no tiene cuenta?</span></div>
+
+    <a class="boton-secundario" href="{{ url_for('registro') }}">Crear cuenta de empresa</a>
+
+</form>
+
+<form class="login-caja login-demo" method="post" action="{{ url_for('entrar_demo') }}">
+    <button type="submit" class="login-link login-link-centro boton-texto">
+        O mira la demo con datos de ejemplo →
+    </button>
 </form>
 {% endblock %}

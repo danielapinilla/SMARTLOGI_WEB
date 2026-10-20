@@ -398,7 +398,16 @@
 
     {{ filtro_fechas("inicio", fechas) }}
 
-    {% if not total_pedidos %}
+    {% if sin_datos %}
+    <section class="panel bienvenida-empresa">
+        <h2>¡Tu empresa ya tiene su panel! 🎉</h2>
+        <p>
+            Todavía no hay datos cargados, por eso todo aparece en cero.
+            Muy pronto podrás subir tus pedidos, vehículos, conductores y más
+            desde un archivo Excel o CSV.
+        </p>
+    </section>
+    {% elif not total_pedidos %}
     <p class="vacio" style="margin-bottom: 14px;">
         No hay pedidos registrados en este período. Prueba con otro rango de fechas.
     </p>

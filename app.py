@@ -7,19 +7,19 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta
 from functools import lru_cache
-from pathlib import Path
 
-import pandas as pd
 from dotenv import load_dotenv
 from flask import (
-    Flask, abort, flash, jsonify, redirect, render_template, request,
+    Flask, abort, flash, g, jsonify, redirect, render_template, request,
     send_file, session, url_for,
 )
 from werkzeug.middleware.proxy_fix import ProxyFix
 
+import cuentas
+import datos as fuente
 import detalle
 import fechas
-from asistente import Asistente, construir_tablas
+from asistente import Asistente, construir_tablas, configuracion_ia
 from exportar import crear_excel, nombre_archivo
 
 # Cargar variables privadas desde .env (en Vercel se configuran en el panel)
@@ -53,14 +53,6 @@ SUPABASE_URL = (
     .removesuffix("/rest/v1")
 )
 SUPABASE_ANON_KEY = os.environ.get("SUPABASE_ANON_KEY", "")
-
-# Correos con permiso de administrador, separados por coma.
-# Si se deja vacío, cualquier usuario de Supabase puede entrar.
-ADMIN_EMAILS = {
-    correo.strip().lower()
-    for correo in os.environ.get("ADMIN_EMAILS", "").split(",")
-    if correo.strip()
-}
 
 REGISTROS_POR_PAGINA = 50
 
@@ -101,31 +93,33 @@ def formato_porcentaje(valor, decimales=1):
 
 
 # =========================
-# CARGAR DATOS
+# DATOS DE LA EMPRESA
 # =========================
 
-CARPETA_DATOS = Path(__file__).resolve().parent / "data"
+NOMBRE_DEMO = "Empresa demo"
 
 
-def leer_csv(nombre):
-    return pd.read_csv(CARPETA_DATOS / nombre)
+def datos_actuales():
+    """Datos de la empresa de quien inició sesión (o de la demo).
+
+    Se guardan en `g` para leerlos una sola vez por visita a una página.
+    """
+
+    if "datos" not in g:
+        empresa_id = session.get("empresa_id")
+        g.datos = fuente.de_empresa(empresa_id) if empresa_id else fuente.demo()
+
+    return g.datos
 
 
-pedidos_df = leer_csv("fact_pedidos_10000.csv")
-vehiculos_df = leer_csv("dim_vehiculos_30.csv")
-conductores_df = leer_csv("dim_conductores_50.csv")
-rutas_df = leer_csv("dim_rutas_100.csv")
-mantenciones_df = leer_csv("fact_mantenciones_1000.csv")
-combustible_df = leer_csv("fact_combustible_3000.csv")
-incidentes_df = leer_csv("fact_incidentes_500.csv")
-entregas_df = leer_csv("fact_entregas.csv")
-clientes_df = leer_csv("dim_clientes_500.csv")
-
-mapa_patentes = (
-    vehiculos_df
-    .set_index("vehiculo_id")["patente"]
-    .to_dict()
-)
+@app.context_processor
+def datos_de_sesion():
+    """Disponible en todas las plantillas."""
+    return {
+        "empresa_nombre": session.get("empresa") or NOMBRE_DEMO,
+        "es_demo": not session.get("empresa_id"),
+        "es_visitante": bool(session.get("visitante")),
+    }
 
 
 # =========================
@@ -255,7 +249,7 @@ def destino_seguro(destino):
 
 
 # Páginas que se pueden ver sin haber iniciado sesión
-PAGINAS_PUBLICAS = {"login", "recuperar_clave", "nueva_clave", "static"}
+PAGINAS_PUBLICAS = {"login", "registro", "entrar_demo", "recuperar_clave", "nueva_clave", "static"}
 
 
 @app.before_request
@@ -290,9 +284,6 @@ def login():
         if not correo or not clave:
             error = "Ingresa tu correo y tu clave."
 
-        elif ADMIN_EMAILS and correo not in ADMIN_EMAILS:
-            error = "Este correo no tiene acceso de administrador."
-
         else:
             respuesta, error = llamar_supabase(
                 "POST",
@@ -302,9 +293,16 @@ def login():
 
             if respuesta:
                 usuario = respuesta.get("user") or {}
-                session.clear()
-                session.permanent = True
-                session["usuario"] = usuario.get("email", correo)
+
+                # ¿A qué empresa pertenece? (sin empresa = ve la demo)
+                miembro = None
+                if cuentas.configurado():
+                    try:
+                        miembro = cuentas.empresa_de_usuario(usuario.get("id"))
+                    except cuentas.ErrorCuenta:
+                        app.logger.exception("No se pudo leer la empresa del usuario")
+
+                iniciar_sesion(usuario.get("email", correo), miembro)
                 return redirect(destino_seguro(request.args.get("next")))
 
             # No mostrar el detalle técnico de Supabase al usuario
@@ -312,6 +310,86 @@ def login():
                 error = "Correo o clave incorrectos."
 
     return render_template("login.html", error=error, correo=correo)
+
+
+def iniciar_sesion(correo, miembro=None, visitante=False):
+    """Guarda en la sesión quién entró y a qué empresa pertenece."""
+
+    session.clear()
+    session.permanent = True
+    session["usuario"] = correo
+
+    if miembro:
+        session["empresa_id"] = miembro["empresa_id"]
+        session["empresa"] = miembro["empresa"]
+
+    if visitante:
+        session["visitante"] = True
+
+
+@app.route("/registro", methods=["GET", "POST"])
+def registro():
+    """Crear la cuenta de una empresa nueva (con sus datos separados)."""
+
+    if session.get("usuario") and not session.get("visitante"):
+        return redirect(url_for("inicio"))
+
+    error = None
+    formulario = {"empresa": "", "nombre": "", "correo": ""}
+
+    if not cuentas.configurado():
+        error = "El registro todavía no está habilitado (falta SUPABASE_SERVICE_KEY)."
+
+    elif request.method == "POST":
+
+        formulario = {
+            "empresa": request.form.get("empresa", "").strip(),
+            "nombre": request.form.get("nombre", "").strip(),
+            "correo": request.form.get("correo", "").strip().lower(),
+        }
+        clave = request.form.get("clave", "")
+        confirmacion = request.form.get("confirmacion", "")
+
+        if not all(formulario.values()) or not clave:
+            error = "Completa todos los campos."
+
+        elif len(formulario["empresa"]) > 80 or len(formulario["nombre"]) > 80:
+            error = "El nombre de la empresa y tu nombre pueden tener hasta 80 caracteres."
+
+        elif "@" not in formulario["correo"]:
+            error = "Escribe un correo válido."
+
+        elif len(clave) < LARGO_MINIMO_CLAVE:
+            error = f"La clave debe tener al menos {LARGO_MINIMO_CLAVE} caracteres."
+
+        elif clave != confirmacion:
+            error = "Las claves no coinciden."
+
+        else:
+            try:
+                _, empresa_id = cuentas.registrar_empresa(
+                    formulario["empresa"], formulario["nombre"], formulario["correo"], clave
+                )
+            except cuentas.ErrorCuenta as problema:
+                error = str(problema)
+            else:
+                iniciar_sesion(formulario["correo"], {
+                    "empresa_id": empresa_id,
+                    "empresa": formulario["empresa"],
+                })
+                flash(f"¡Bienvenida/o! La cuenta de {formulario['empresa']} quedó creada.")
+                return redirect(url_for("inicio"))
+
+    return render_template(
+        "registro.html", error=error, formulario=formulario, largo_minimo=LARGO_MINIMO_CLAVE
+    )
+
+
+@app.route("/demo", methods=["POST"])
+def entrar_demo():
+    """Entrar a ver la Empresa demo sin crear cuenta."""
+    iniciar_sesion("Visitante", visitante=True)
+    return redirect(url_for("inicio"))
 
 
 @app.route("/recuperar-clave", methods=["GET", "POST"])
@@ -332,18 +410,17 @@ def recuperar_clave():
             error = "Ingresa tu correo."
 
         else:
-            # Solo se envía el correo a administradores, pero el mensaje
-            # es el mismo para todos: así nadie puede averiguar qué correos existen.
-            if not ADMIN_EMAILS or correo in ADMIN_EMAILS:
-                destino = url_for("nueva_clave", _external=True)
-                _, error_envio = llamar_supabase(
-                    "POST",
-                    "recover?redirect_to=" + urllib.parse.quote(destino, safe=""),
-                    {"email": correo},
-                )
+            # El mensaje es el mismo exista o no la cuenta:
+            # así nadie puede averiguar qué correos están registrados.
+            destino = url_for("nueva_clave", _external=True)
+            _, error_envio = llamar_supabase(
+                "POST",
+                "recover?redirect_to=" + urllib.parse.quote(destino, safe=""),
+                {"email": correo},
+            )
 
-                if error_envio:
-                    app.logger.warning("No se pudo enviar recuperación: %s", error_envio)
+            if error_envio:
+                app.logger.warning("No se pudo enviar recuperación: %s", error_envio)
 
             enviado = True
 
@@ -410,22 +487,21 @@ MESES_CORTOS = ["Ene", "Feb", "Mar", "Abr", "May", "Jun",
                 "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
 
 
-@lru_cache(maxsize=32)
-def indicadores_dashboard(desde=None, hasta=None):
-    """Indicadores del período (fechas como date o None = sin límite).
+@lru_cache(maxsize=64)
+def indicadores_dashboard(D, desde=None, hasta=None):
+    """Indicadores de una empresa (D) para el período (fechas o None = sin límite).
 
-    Los CSV no cambian mientras la app corre, así que cada período se calcula
-    una sola vez y se guarda.
+    Cada combinación de empresa y período se calcula una vez y se guarda.
     """
 
-    pedidos = fechas.filtrar_por_fecha(pedidos_df, "fecha_pedido_id", desde, hasta)
-    entregas = fechas.filtrar_por_fecha(entregas_df, "fecha_salida_id", desde, hasta)
-    combustible = fechas.filtrar_por_fecha(combustible_df, "fecha_id", desde, hasta)
-    mantenciones = fechas.filtrar_por_fecha(mantenciones_df, "fecha_mantencion_id", desde, hasta)
-    incidentes = fechas.filtrar_por_fecha(incidentes_df, "fecha_incidente_id", desde, hasta)
+    pedidos = fechas.filtrar_por_fecha(D.pedidos, "fecha_pedido_id", desde, hasta)
+    entregas = fechas.filtrar_por_fecha(D.entregas, "fecha_salida_id", desde, hasta)
+    combustible = fechas.filtrar_por_fecha(D.combustible, "fecha_id", desde, hasta)
+    mantenciones = fechas.filtrar_por_fecha(D.mantenciones, "fecha_mantencion_id", desde, hasta)
+    incidentes = fechas.filtrar_por_fecha(D.incidentes, "fecha_incidente_id", desde, hasta)
 
     estados_pedidos = pedidos["estado_pedido"].value_counts().to_dict()
-    estados_vehiculos = vehiculos_df["estado"].value_counts().to_dict()
+    estados_vehiculos = D.vehiculos["estado"].value_counts().to_dict()
 
     # Entregas realizadas a tiempo
     a_tiempo = (
@@ -459,17 +535,17 @@ def indicadores_dashboard(desde=None, hasta=None):
 
     return dict(
         total_pedidos=len(pedidos),
-        total_vehiculos=len(vehiculos_df),
-        total_conductores=len(conductores_df),
-        total_rutas=len(rutas_df),
+        total_vehiculos=len(D.vehiculos),
+        total_conductores=len(D.conductores),
+        total_rutas=len(D.rutas),
         estados_pedidos=estados_pedidos,
         estados_vehiculos=estados_vehiculos,
         estados_pedidos_labels=list(estados_pedidos.keys()),
         estados_pedidos_valores=list(estados_pedidos.values()),
         estados_vehiculos_labels=list(estados_vehiculos.keys()),
         estados_vehiculos_valores=list(estados_vehiculos.values()),
-        vehiculos_disponibles=int((vehiculos_df["estado"] == "Disponible").sum()),
-        conductores_activos=int((conductores_df["estado"] == "Activo").sum()),
+        vehiculos_disponibles=int((D.vehiculos["estado"] == "Disponible").sum()),
+        conductores_activos=int((D.conductores["estado"] == "Activo").sum()),
         total_entregas=total_entregas,
         entregas_a_tiempo=entregas_a_tiempo,
         porcentaje_a_tiempo=porcentaje_a_tiempo,
@@ -486,14 +562,16 @@ def indicadores_dashboard(desde=None, hasta=None):
 @app.route("/")
 def inicio():
 
-    _, contexto_fechas, args_fechas = filtro_de_fechas(pedidos_df, "fecha_pedido_id")
+    D = datos_actuales()
+    _, contexto_fechas, args_fechas = filtro_de_fechas(D.pedidos, "fecha_pedido_id")
     desde, hasta = fechas.leer_rango(request.args)
 
     return render_template(
         "dashboard.html",
         fechas=contexto_fechas,
         args_fechas=args_fechas,
-        **indicadores_dashboard(desde, hasta),
+        sin_datos=D.vacia,
+        **indicadores_dashboard(D, desde, hasta),
     )
 
 
@@ -504,7 +582,9 @@ def inicio():
 @app.route("/pedidos")
 def pedidos():
 
-    pedidos_periodo, contexto_fechas, _ = filtro_de_fechas(pedidos_df, "fecha_pedido_id")
+    D = datos_actuales()
+
+    pedidos_periodo, contexto_fechas, _ = filtro_de_fechas(D.pedidos, "fecha_pedido_id")
 
     pedidos_filtrados, estado_filtro = filtrar_por_estado(
         pedidos_periodo,
@@ -541,8 +621,10 @@ def pedidos():
 @app.route("/vehiculos")
 def vehiculos():
 
+    D = datos_actuales()
+
     vehiculos_filtrados, estado_filtro = filtrar_por_estado(
-        vehiculos_df,
+        D.vehiculos,
         *FILTROS_ESTADO["vehiculos"]
     )
 
@@ -555,9 +637,9 @@ def vehiculos():
         pagina=pagina,
         total_paginas=total_paginas,
         total_registros=len(vehiculos_filtrados),
-        estados_vehiculos=vehiculos_df["estado"].value_counts().to_dict(),
+        estados_vehiculos=D.vehiculos["estado"].value_counts().to_dict(),
         estado_filtro=estado_filtro,
-        total_vehiculos=len(vehiculos_df)
+        total_vehiculos=len(D.vehiculos)
     )
 
 
@@ -568,8 +650,10 @@ def vehiculos():
 @app.route("/conductores")
 def conductores():
 
+    D = datos_actuales()
+
     conductores_filtrados, estado_filtro = filtrar_por_estado(
-        conductores_df,
+        D.conductores,
         *FILTROS_ESTADO["conductores"]
     )
 
@@ -582,8 +666,8 @@ def conductores():
         pagina=pagina,
         total_paginas=total_paginas,
         total_registros=len(conductores_filtrados),
-        total_conductores=len(conductores_df),
-        estados_conductores=conductores_df["estado"].value_counts().to_dict(),
+        total_conductores=len(D.conductores),
+        estados_conductores=D.conductores["estado"].value_counts().to_dict(),
         estado_filtro=estado_filtro
     )
 
@@ -595,8 +679,10 @@ def conductores():
 @app.route("/rutas")
 def rutas():
 
+    D = datos_actuales()
+
     rutas_filtradas, estado_filtro = filtrar_por_estado(
-        rutas_df,
+        D.rutas,
         *FILTROS_ESTADO["rutas"]
     )
 
@@ -609,8 +695,8 @@ def rutas():
         pagina=pagina,
         total_paginas=total_paginas,
         total_registros=len(rutas_filtradas),
-        total_rutas=len(rutas_df),
-        estados_rutas=rutas_df["estado"].value_counts().to_dict(),
+        total_rutas=len(D.rutas),
+        estados_rutas=D.rutas["estado"].value_counts().to_dict(),
         estado_filtro=estado_filtro
     )
 
@@ -622,8 +708,10 @@ def rutas():
 @app.route("/mantenciones")
 def mantenciones():
 
+    D = datos_actuales()
+
     mantenciones_periodo, contexto_fechas, filtros_url = filtro_de_fechas(
-        mantenciones_df, "fecha_mantencion_id"
+        D.mantenciones, "fecha_mantencion_id"
     )
 
     datos_mantenciones, pagina, total_paginas = paginar(mantenciones_periodo)
@@ -633,7 +721,7 @@ def mantenciones():
     )
 
     datos_mantenciones["patente"] = (
-        datos_mantenciones["vehiculo_id"].map(mapa_patentes).fillna("")
+        datos_mantenciones["vehiculo_id"].map(D.mapa_patentes).fillna("")
     )
 
     return render_template(
@@ -656,8 +744,10 @@ def mantenciones():
 @app.route("/combustible")
 def combustible():
 
+    D = datos_actuales()
+
     combustible_periodo, contexto_fechas, filtros_url = filtro_de_fechas(
-        combustible_df, "fecha_id"
+        D.combustible, "fecha_id"
     )
 
     datos_combustible, pagina, total_paginas = paginar(combustible_periodo)
@@ -667,7 +757,7 @@ def combustible():
     )
 
     datos_combustible["patente"] = (
-        datos_combustible["vehiculo_id"].map(mapa_patentes).fillna("")
+        datos_combustible["vehiculo_id"].map(D.mapa_patentes).fillna("")
     )
 
     return render_template(
@@ -687,29 +777,12 @@ def combustible():
 # INCIDENTES
 # =========================
 
-# Convertir la columna "resuelto" a un estado visible
-incidentes_df["estado_incidente"] = (
-    incidentes_df["resuelto"]
-    .astype(str)
-    .str.strip()
-    .str.lower()
-    .map({
-        "true": "Resuelto",
-        "1": "Resuelto",
-        "si": "Resuelto",
-        "sí": "Resuelto",
-        "false": "Abierto",
-        "0": "Abierto",
-        "no": "Abierto"
-    })
-    .fillna("Abierto")
-)
-
-
 @app.route("/incidentes")
 def incidentes():
 
-    incidentes_periodo, contexto_fechas, _ = filtro_de_fechas(incidentes_df, "fecha_incidente_id")
+    D = datos_actuales()
+
+    incidentes_periodo, contexto_fechas, _ = filtro_de_fechas(D.incidentes, "fecha_incidente_id")
 
     incidentes_filtrados, estado_filtro = filtrar_por_estado(
         incidentes_periodo,
@@ -723,12 +796,12 @@ def incidentes():
     )
 
     datos_incidentes["patente"] = (
-        datos_incidentes["vehiculo_id"].map(mapa_patentes).fillna("")
+        datos_incidentes["vehiculo_id"].map(D.mapa_patentes).fillna("")
     )
 
     datos_incidentes["nombre_conductor"] = (
         datos_incidentes["conductor_id"]
-        .map(conductores_df.set_index("conductor_id")["nombre_conductor"])
+        .map(D.conductores.set_index("conductor_id")["nombre_conductor"])
         .fillna(datos_incidentes["conductor_id"].astype(str))
     )
 
@@ -759,8 +832,10 @@ def pagina_no_encontrada(error):
 @app.route("/conductores/<int:conductor_id>")
 def pagina_conductor(conductor_id):
 
+    D = datos_actuales()
+
     datos = detalle.detalle_conductor(
-        conductor_id, conductores_df, entregas_df, incidentes_df, rutas_df, vehiculos_df
+        conductor_id, D.conductores, D.entregas, D.incidentes, D.rutas, D.vehiculos
     )
 
     if datos is None:
@@ -772,9 +847,11 @@ def pagina_conductor(conductor_id):
 @app.route("/vehiculos/<int:vehiculo_id>")
 def pagina_vehiculo(vehiculo_id):
 
+    D = datos_actuales()
+
     datos = detalle.detalle_vehiculo(
-        vehiculo_id, vehiculos_df, entregas_df, mantenciones_df,
-        combustible_df, incidentes_df, conductores_df
+        vehiculo_id, D.vehiculos, D.entregas, D.mantenciones,
+        D.combustible, D.incidentes, D.conductores
     )
 
     if datos is None:
@@ -790,30 +867,32 @@ def pagina_vehiculo(vehiculo_id):
 def datos_para_exportar(seccion):
     """Tabla completa de la sección, con nombres legibles agregados."""
 
+    D = datos_actuales()
+
     if seccion == "pedidos":
-        df = pedidos_df.copy()
+        df = D.pedidos.copy()
         df["nombre_cliente"] = df["cliente_id"].map(
-            clientes_df.set_index("cliente_id")["nombre_cliente"]
+            D.clientes.set_index("cliente_id")["nombre_cliente"]
         )
         return df
 
     if seccion == "incidentes":
-        df = incidentes_df.copy()
-        df["patente"] = df["vehiculo_id"].map(mapa_patentes)
+        df = D.incidentes.copy()
+        df["patente"] = df["vehiculo_id"].map(D.mapa_patentes)
         df["nombre_conductor"] = df["conductor_id"].map(
-            conductores_df.set_index("conductor_id")["nombre_conductor"]
+            D.conductores.set_index("conductor_id")["nombre_conductor"]
         )
         return df
 
     if seccion in ("mantenciones", "combustible"):
-        df = (mantenciones_df if seccion == "mantenciones" else combustible_df).copy()
-        df["patente"] = df["vehiculo_id"].map(mapa_patentes)
+        df = (D.mantenciones if seccion == "mantenciones" else D.combustible).copy()
+        df["patente"] = df["vehiculo_id"].map(D.mapa_patentes)
         return df
 
     return {
-        "vehiculos": vehiculos_df,
-        "conductores": conductores_df,
-        "rutas": rutas_df,
+        "vehiculos": D.vehiculos,
+        "conductores": D.conductores,
+        "rutas": D.rutas,
     }[seccion].copy()
 
 
@@ -861,13 +940,31 @@ def exportar(seccion):
 # ASISTENTE CON IA
 # =========================
 
-asistente = Asistente(
-    construir_tablas(
-        pedidos_df, entregas_df, vehiculos_df, conductores_df, rutas_df,
-        clientes_df, mantenciones_df, combustible_df, incidentes_df,
-    ),
-    resumen=indicadores_dashboard,
-)
+_asistentes = {}  # id de los datos de la empresa -> Asistente
+
+
+def asistente_actual():
+    """Asistente que responde con los datos de la empresa de la sesión."""
+
+    D = datos_actuales()
+    clave = id(D)
+
+    if clave not in _asistentes:
+        if len(_asistentes) > 20:  # no acumular asistentes de datos antiguos
+            _asistentes.clear()
+        _asistentes[clave] = Asistente(
+            construir_tablas(
+                D.pedidos, D.entregas, D.vehiculos, D.conductores, D.rutas,
+                D.clientes, D.mantenciones, D.combustible, D.incidentes,
+            ),
+            resumen=lambda: indicadores_dashboard(D),
+        )
+
+    return _asistentes[clave]
+
+
+def ia_disponible():
+    return configuracion_ia()[0] is not None
 
 # Límite de preguntas por sesión (cuida el saldo o la cuota gratis de la IA)
 PREGUNTAS_POR_HORA = 40
@@ -876,13 +973,13 @@ LARGO_MAXIMO_PREGUNTA = 500
 
 @app.route("/asistente")
 def pagina_asistente():
-    return render_template("asistente.html", disponible=asistente.disponible)
+    return render_template("asistente.html", disponible=ia_disponible())
 
 
 @app.route("/asistente/preguntar", methods=["POST"])
 def preguntar_asistente():
 
-    if not asistente.disponible:
+    if not ia_disponible():
         return jsonify(error="Falta configurar GEMINI_API_KEY (o OPENAI_API_KEY)."), 503
 
     datos = request.get_json(silent=True) or {}
@@ -908,7 +1005,7 @@ def preguntar_asistente():
     historial = [m for m in historial if isinstance(m, dict)][-8:]
 
     try:
-        respuesta = asistente.responder(pregunta, historial)
+        respuesta = asistente_actual().responder(pregunta, historial)
 
     except Exception as error:
         # Queda en los registros (Logs) de Vercel con el detalle completo
