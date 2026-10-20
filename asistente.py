@@ -16,9 +16,9 @@ import pandas as pd
 URL_GEMINI = "https://generativelanguage.googleapis.com/v1beta/openai/"
 
 
-# Si el modelo principal de Gemini está saturado (error 503), se prueba este,
-# que también es gratis y suele tener menos demanda.
-MODELO_RESPALDO_GEMINI = "gemini-2.5-flash"
+# Si el modelo principal de Gemini falla (saturado, no disponible o no responde),
+# se prueban estos en orden. Todos tienen plan gratis.
+MODELOS_RESPALDO_GEMINI = ["gemini-3.6-flash", "gemini-2.5-flash", "gemini-2.5-flash-lite"]
 
 
 def configuracion_ia():
@@ -29,9 +29,7 @@ def configuracion_ia():
 
     if os.environ.get("GEMINI_API_KEY"):
         principal = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
-        modelos = [principal]
-        if principal != MODELO_RESPALDO_GEMINI:
-            modelos.append(MODELO_RESPALDO_GEMINI)
+        modelos = [principal] + [m for m in MODELOS_RESPALDO_GEMINI if m != principal]
         return os.environ["GEMINI_API_KEY"], URL_GEMINI, modelos
 
     if os.environ.get("OPENAI_API_KEY"):
@@ -400,7 +398,7 @@ class Asistente:
             from openai import OpenAI  # se importa solo si se usa el asistente
             clave, url_base, self.modelos = configuracion_ia()
             # max_retries: el cliente reintenta solo ante errores 5xx y 429
-            self._cliente = OpenAI(api_key=clave, base_url=url_base, timeout=30, max_retries=2)
+            self._cliente = OpenAI(api_key=clave, base_url=url_base, timeout=20, max_retries=1)
         return self._cliente
 
     def _ejecutar(self, nombre, argumentos):
@@ -449,7 +447,8 @@ class Asistente:
 
             except Exception as error:
                 codigo = getattr(error, "status_code", None) or 0
-                if codigo >= 500 or type(error).__name__ == "NotFoundError":
+                nombre = type(error).__name__
+                if (codigo >= 500 or nombre in ("NotFoundError", "APIConnectionError", "APITimeoutError")):
                     ultimo_error = error
                     continue
                 raise
